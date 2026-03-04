@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Conflict and Regional Event Signal Tracker</title>
+
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: #fff;
+      color: #111;
+      font-family: system-ui, -apple-system, sans-serif;
+      height: 100vh;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    header {
+      padding: 12px 20px;
+      border-bottom: 1px solid #e8e8e8;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-shrink: 0;
+    }
+    header h1 { font-size: 14px; font-weight: 600; }
+    header span { font-size: 12px; color: #999; }
+
+    #map-container { flex: 1; position: relative; }
+    #map { width: 100%; height: 100%; }
+    .leaflet-container { background: #fff !important; }
+
+    #panel {
+      position: absolute;
+      top: 12px; right: -320px;
+      width: 280px;
+      background: #fff;
+      border: 1px solid #e8e8e8;
+      border-radius: 6px;
+      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+      padding: 16px;
+      transition: right 0.2s ease;
+      z-index: 1000;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    #panel.open { right: 12px; }
+
+    #panel-close {
+      align-self: flex-end;
+      background: none; border: none;
+      font-size: 16px; color: #999;
+      cursor: pointer; line-height: 1;
+    }
+    #panel-close:hover { color: #111; }
+
+    #panel-country { font-size: 15px; font-weight: 600; }
+    #panel-score-label { font-size: 11px; color: #999; margin-bottom: 2px; }
+    #panel-score { font-size: 36px; font-weight: 700; line-height: 1; }
+
+    #panel-score-bar { height: 3px; background: #eee; border-radius: 2px; }
+    #panel-score-fill { height: 100%; border-radius: 2px; transition: width 0.3s ease; }
+
+    #panel-desc {
+      font-size: 13px; line-height: 1.6; color: #666;
+      border-top: 1px solid #eee; padding-top: 12px;
+    }
+
+    #legend {
+      position: absolute;
+      bottom: 20px; left: 16px;
+      z-index: 1000;
+      background: #fff;
+      border: 1px solid #e8e8e8;
+      border-radius: 6px;
+      padding: 10px 12px;
+      display: flex; flex-direction: column; gap: 5px;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+    }
+    #legend-label { font-size: 10px; color: #999; }
+    #legend-bar {
+      width: 160px; height: 4px; border-radius: 2px;
+      background: linear-gradient(to right, #6aaa6a, #d4aa44, #c05050);
+    }
+    #legend-ticks {
+      display: flex; justify-content: space-between;
+      font-size: 10px; color: #bbb; width: 160px;
+    }
+
+    #error-banner {
+      display: none;
+      position: absolute;
+      top: 16px; left: 50%; transform: translateX(-50%);
+      z-index: 1000;
+      background: #fff;
+      border: 1px solid #e8e8e8;
+      border-radius: 6px;
+      padding: 8px 16px;
+      font-size: 13px;
+      color: #888;
+      box-shadow: 0 1px 6px rgba(0,0,0,0.06);
+      white-space: nowrap;
+    }
+  </style>
+</head>
+<body>
+
+<header>
+  <h1>Conflict and Regional Event Signal Tracker</h1>
+</header>
+
+<div id="map-container">
+  <div id="map"></div>
+  <div id="error-banner">Signal data unavailable — please refresh to try again.</div>
+
+  <div id="panel">
+    <button id="panel-close">&#x2715;</button>
+    <div id="panel-country">—</div>
+    <div>
+      <div id="panel-score-label">Signal Intensity</div>
+      <div id="panel-score">—</div>
+    </div>
+    <div id="panel-score-bar"><div id="panel-score-fill"></div></div>
+    <div id="panel-desc">Select a country to view signal data.</div>
+  </div>
+
+  <div id="legend">
+    <div id="legend-label">Signal Level</div>
+    <div id="legend-bar"></div>
+    <div id="legend-ticks">
+      <span>Low</span>
+      <span>Medium</span>
+      <span>High</span>
+    </div>
+  </div>
+</div>
+
+<script>
+  // ── Active scores: ISO alpha-2 → 0–100, populated from GDELT ──────────────
+  let countryScores = {};
+
+  // ── FIPS 10-4 → ISO alpha-2 (GDELT returns FIPS codes) ────────────────────
+  const FIPS_TO_ISO = {
+    'AF':'AF','AL':'AL','AG':'DZ','AO':'AO','AR':'AR','AS':'AU','AU':'AT',
+    'BA':'BH','BC':'BW','BE':'BE','BG':'BD','BK':'BA','BL':'BO','BM':'MM',
+    'BN':'BJ','BO':'BY','BR':'BR','BT':'BT','BU':'BG','BY':'BI','CA':'CA',
+    'CB':'KH','CD':'TD','CE':'LK','CF':'CG','CG':'CD','CH':'CN','CI':'CL',
+    'CM':'CM','CO':'CO','CS':'CR','CT':'CF','CU':'CU','CV':'CV','CY':'CY',
+    'CZ':'CZ','DA':'DK','DR':'DO','EC':'EC','EG':'EG','EI':'IE','EK':'GQ',
+    'EN':'EE','ER':'ER','ET':'ET','EZ':'CZ','FI':'FI','FJ':'FJ','FR':'FR',
+    'GA':'GM','GB':'GA','GG':'GE','GH':'GH','GL':'GL','GM':'DE','GN':'GN',
+    'GR':'GR','GT':'GT','GV':'GW','GY':'GY','HA':'HT','HO':'HN','HU':'HU',
+    'IC':'IS','ID':'ID','IN':'IN','IR':'IR','IS':'IL','IT':'IT','IV':'CI',
+    'IZ':'IQ','JA':'JP','JM':'JM','JO':'JO','KE':'KE','KG':'KG','KN':'KP',
+    'KS':'KR','KU':'KW','KZ':'KZ','LA':'LA','LE':'LB','LG':'LV','LH':'LT',
+    'LI':'LR','LO':'SK','LT':'LS','LU':'LU','LY':'LY','MA':'MG','MC':'MO',
+    'MD':'MD','MG':'MN','MI':'MW','MK':'MK','ML':'ML','MN':'MC','MO':'MA',
+    'MP':'MU','MR':'MR','MT':'MT','MU':'OM','MV':'MV','MX':'MX','MY':'MY',
+    'MZ':'MZ','NG':'NE','NI':'NG','NL':'NL','NO':'NO','NP':'NP','NS':'SR',
+    'NU':'NI','NZ':'NZ','PA':'PG','PE':'PE','PK':'PK','PL':'PL','PM':'PA',
+    'PO':'PL','PU':'GW','QA':'QA','RI':'RS','RO':'RO','RP':'PH','RS':'RU',
+    'RW':'RW','SA':'SA','SE':'SC','SF':'ZA','SG':'SN','SI':'SI','SL':'SL',
+    'SM':'SM','SN':'SG','SO':'SO','SP':'ES','SS':'SS','SU':'SD','SW':'SE',
+    'SY':'SY','SZ':'SZ','TD':'TT','TH':'TH','TI':'TJ','TN':'TO','TO':'TG',
+    'TP':'TL','TS':'TN','TU':'TR','TX':'TM','TW':'TW','TZ':'TZ','UG':'UG',
+    'UK':'GB','UP':'UA','US':'US','UY':'UY','UZ':'UZ','VE':'VE','VM':'VN',
+    'WA':'NA','WE':'PS','WS':'WS','YM':'YE','ZA':'ZM','ZI':'ZW',
+  };
+
+  // ── Color scale: muted green → yellow → red ───────────────────────────────
+  const colorScale = d3.scaleLinear()
+    .domain([0, 50, 100])
+    .range(['#6aaa6a', '#d4aa44', '#c05050']);
+
+  function scoreToColor(score) { return colorScale(score); }
+
+  // ── Leaflet map init ───────────────────────────────────────────────────────
+  const map = L.map('map', {
+    center: [20, 10], zoom: 2, minZoom: 2, maxZoom: 6,
+    zoomControl: true, attributionControl: false,
+  });
+
+  // ── ISO numeric → alpha-2 ──────────────────────────────────────────────────
+  const ISO_NUMERIC_TO_A2 = {
+    '004':'AF','008':'AL','012':'DZ','024':'AO','031':'AZ','032':'AR',
+    '036':'AU','040':'AT','050':'BD','051':'AM','056':'BE','064':'BT',
+    '068':'BO','070':'BA','076':'BR','100':'BG','104':'MM','112':'BY',
+    '116':'KH','120':'CM','124':'CA','140':'CF','144':'LK','152':'CL',
+    '156':'CN','170':'CO','180':'CD','188':'CR','191':'HR','192':'CU',
+    '203':'CZ','204':'BJ','208':'DK','214':'DO','218':'EC','222':'SV',
+    '231':'ET','233':'EE','246':'FI','250':'FR','266':'GA','268':'GE',
+    '270':'GM','275':'PS','276':'DE','288':'GH','300':'GR','320':'GT',
+    '324':'GN','332':'HT','340':'HN','348':'HU','356':'IN','360':'ID',
+    '364':'IR','368':'IQ','372':'IE','376':'IL','380':'IT','388':'JM',
+    '392':'JP','398':'KZ','400':'JO','404':'KE','408':'KP','410':'KR',
+    '414':'KW','417':'KG','418':'LA','422':'LB','428':'LV','430':'LR',
+    '434':'LY','440':'LT','484':'MX','496':'MN','499':'ME','504':'MA',
+    '508':'MZ','516':'NA','524':'NP','528':'NL','554':'NZ','558':'NI',
+    '562':'NE','566':'NG','578':'NO','586':'PK','591':'PA','598':'PG',
+    '600':'PY','604':'PE','608':'PH','616':'PL','620':'PT','634':'QA',
+    '642':'RO','643':'RU','646':'RW','682':'SA','686':'SN','688':'RS',
+    '694':'SL','703':'SK','704':'VN','705':'SI','706':'SO','710':'ZA',
+    '716':'ZW','724':'ES','729':'SD','740':'SR','752':'SE','756':'CH',
+    '760':'SY','762':'TJ','764':'TH','768':'TG','784':'AE','788':'TN',
+    '792':'TR','795':'TM','800':'UG','804':'UA','807':'MK','818':'EG',
+    '826':'GB','834':'TZ','840':'US','858':'UY','860':'UZ','862':'VE',
+    '887':'YE','894':'ZM',
+  };
+
+  let geoLayer = null;
+
+  // ── Load topojson lib, then geo data, then GDELT ───────────────────────────
+  const script = document.createElement('script');
+  script.src = 'https://cdn.jsdelivr.net/npm/topojson-client@3/dist/topojson-client.min.js';
+  script.onload = () => fetchGeoData().then(fetchGDELT);
+  document.head.appendChild(script);
+
+  async function fetchGeoData() {
+    const world = await fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json').then(r => r.json());
+    const countries = topojson.feature(world, world.objects.countries);
+    countries.features = countries.features.filter(f => {
+      const id = Number(f.id);
+      return id !== 10 && id !== -99 && !isNaN(id);
+    });
+    countries.features.forEach(f => {
+      if (!f.geometry) return;
+      const fix = ring => {
+        for (let i = 1; i < ring.length; i++) {
+          const dx = ring[i][0] - ring[i - 1][0];
+          if (dx > 180)  ring[i][0] -= 360;
+          if (dx < -180) ring[i][0] += 360;
+        }
+      };
+      const coords = f.geometry.coordinates;
+      if (f.geometry.type === 'Polygon')      coords.forEach(fix);
+      if (f.geometry.type === 'MultiPolygon') coords.forEach(p => p.forEach(fix));
+    });
+    renderMap(countries);
+  }
+
+  function getCountryISO(feature) {
+    return ISO_NUMERIC_TO_A2[String(feature.id).padStart(3, '0')] || null;
+  }
+
+  function styleFeature(feature) {
+    const iso = getCountryISO(feature);
+    const score = iso != null ? countryScores[iso] : undefined;
+    return {
+      fillColor: score != null ? scoreToColor(score) : '#e0e0e0',
+      fillOpacity: 1,
+      color: '#ccc',
+      weight: 0.5,
+      opacity: 1,
+    };
+  }
+
+  function renderMap(geojson) {
+    geoLayer = L.geoJSON(geojson, {
+      style: styleFeature,
+      onEachFeature(feature, layer) {
+        layer.on({
+          mouseover(e) {
+            const iso = getCountryISO(feature);
+            const score = iso != null ? countryScores[iso] : undefined;
+            e.target.setStyle({
+              fillColor: score != null ? scoreToColor(score) : '#c8c8c8',
+              weight: 1.5,
+              color: '#888',
+            });
+          },
+          mouseout(e)  { geoLayer.resetStyle(e.target); },
+          click()      { openPanel(feature); },
+        });
+      },
+    }).addTo(map);
+  }
+
+  // ── GDELT fetch ────────────────────────────────────────────────────────────
+  async function fetchGDELT() {
+    const GDELT_URL = 'https://api.gdeltproject.org/api/v2/doc/doc' +
+      '?query=war%20OR%20conflict%20OR%20military%20OR%20crisis' +
+      '&mode=timelinecountry&timespan=24h&format=json';
+
+    console.log('[GDELT] requesting:', GDELT_URL);
+
+    let resp;
+    try {
+      resp = await fetch(GDELT_URL);
+    } catch (err) {
+      console.error('[GDELT] fetch() threw — network error or CORS block:', err);
+      document.getElementById('error-banner').style.display = 'block';
+      return;
+    }
+
+    console.log('[GDELT] response status:', resp.status, resp.statusText);
+    console.log('[GDELT] response headers:', Object.fromEntries(resp.headers.entries()));
+
+    let text;
+    try {
+      text = await resp.text();
+    } catch (err) {
+      console.error('[GDELT] failed to read response body:', err);
+      document.getElementById('error-banner').style.display = 'block';
+      return;
+    }
+
+    console.log('[GDELT] raw response text (first 2000 chars):', text.slice(0, 2000));
+
+    let raw;
+    try {
+      raw = JSON.parse(text);
+    } catch (err) {
+      console.error('[GDELT] JSON.parse failed:', err);
+      console.error('[GDELT] unparseable body:', text);
+      document.getElementById('error-banner').style.display = 'block';
+      return;
+    }
+
+    console.log('[GDELT] parsed JSON:', raw);
+    console.log('[GDELT] top-level keys:', Object.keys(raw));
+    console.log('[GDELT] has "timeline" key:', 'timeline' in raw);
+    console.log('[GDELT] timeline is array:', Array.isArray(raw.timeline));
+    if (Array.isArray(raw.timeline)) {
+      console.log('[GDELT] timeline.length:', raw.timeline.length);
+      if (raw.timeline.length > 0) {
+        console.log('[GDELT] timeline[0] sample:', raw.timeline[0]);
+        console.log('[GDELT] timeline[0] keys:', Object.keys(raw.timeline[0]));
+      }
+    }
+
+    const scores = parseGDELT(raw);
+
+    console.log('[GDELT] parseGDELT output:', scores);
+    console.log('[GDELT] scored country count:', Object.keys(scores).length);
+
+    if (Object.keys(scores).length === 0) {
+      console.warn('[GDELT] 0 countries after parsing — raw structure for inspection:', raw);
+      document.getElementById('error-banner').style.display = 'block';
+      return;
+    }
+
+    countryScores = scores;
+    console.log('[GDELT] countryScores loaded, count:', Object.keys(countryScores).length);
+    if (geoLayer) geoLayer.setStyle(styleFeature);
+  }
+
+  function parseGDELT(raw) {
+    if (!raw || !Array.isArray(raw.timeline)) {
+      console.warn('[GDELT:parse] no timeline array — raw:', raw);
+      return {};
+    }
+
+    const totals = {}; // FIPS → sum
+
+    for (const entry of raw.timeline) {
+      if (!Array.isArray(entry.data)) continue;
+      // Shape A: country field on each data point
+      if (entry.data[0]?.country !== undefined) {
+        for (const pt of entry.data) {
+          if (pt.country) totals[pt.country] = (totals[pt.country] || 0) + (pt.value || 0);
+        }
+      } else {
+        // Shape B: country field on the entry itself
+        const fips = entry.country || entry.series || entry.label;
+        if (fips) {
+          for (const pt of entry.data) totals[fips] = (totals[fips] || 0) + (pt.value || 0);
+        }
+      }
+    }
+
+    console.log('[GDELT:parse] FIPS totals (', Object.keys(totals).length, 'countries):', totals);
+
+    // Map FIPS → ISO
+    const isoTotals = {};
+    const unmapped = [];
+    for (const [fips, val] of Object.entries(totals)) {
+      const iso = FIPS_TO_ISO[fips];
+      if (iso) {
+        isoTotals[iso] = (isoTotals[iso] || 0) + val;
+      } else {
+        unmapped.push(fips);
+      }
+    }
+
+    console.log('[GDELT:parse] ISO totals (', Object.keys(isoTotals).length, 'countries):', isoTotals);
+    if (unmapped.length) console.warn('[GDELT:parse] unmapped FIPS codes:', unmapped);
+
+    // Normalize to 0–100
+    const vals = Object.values(isoTotals);
+    if (!vals.length) {
+      console.warn('[GDELT:parse] isoTotals is empty after FIPS mapping');
+      return {};
+    }
+    const min = Math.min(...vals), max = Math.max(...vals), range = max - min || 1;
+    console.log('[GDELT:parse] normalization — min:', min, 'max:', max, 'range:', range);
+    return Object.fromEntries(
+      Object.entries(isoTotals).map(([iso, v]) => [iso, Math.round((v - min) / range * 100)])
+    );
+  }
+
+  // ── Panel ──────────────────────────────────────────────────────────────────
+  const panel        = document.getElementById('panel');
+  const panelCountry = document.getElementById('panel-country');
+  const panelScore   = document.getElementById('panel-score');
+  const panelFill    = document.getElementById('panel-score-fill');
+  const panelDesc    = document.getElementById('panel-desc');
+
+  function openPanel(feature) {
+    const iso   = getCountryISO(feature);
+    const name  = feature.properties?.name || iso || 'Unknown';
+    const score = iso != null ? countryScores[iso] : undefined;
+
+    panelCountry.textContent = name;
+
+    if (score != null) {
+      panelScore.textContent    = score;
+      panelScore.style.color    = scoreToColor(score);
+      panelFill.style.width     = score + '%';
+      panelFill.style.background = scoreToColor(score);
+      panelDesc.textContent     = 'Coverage volume from GDELT 24h news index. Normalized 0–100 across all countries.';
+    } else {
+      panelScore.textContent    = '—';
+      panelScore.style.color    = '#111';
+      panelFill.style.width     = '0%';
+      panelDesc.textContent     = 'No signal data for this country in the current 24h window.';
+    }
+
+    panel.classList.add('open');
+  }
+
+  document.getElementById('panel-close').addEventListener('click', () => {
+    panel.classList.remove('open');
+  });
+</script>
+</body>
+</html>
