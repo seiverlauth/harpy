@@ -3,6 +3,7 @@ name: Fetch Signals
 on:
   schedule:
     - cron: "*/30 * * * *"
+  workflow_dispatch:
 
 jobs:
   fetch:
