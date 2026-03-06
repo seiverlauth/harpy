@@ -253,11 +253,10 @@ def hits_to_scores(hits):
 def normalize(counts):
     if not counts:
         return {}
-    log_counts = {iso: math.log(v + 1) for iso, v in counts.items()}
-    lo = min(log_counts.values())
-    hi = max(log_counts.values())
-    span = hi - lo or 1
-    return {iso: round((v - lo) / span * 100) for iso, v in log_counts.items()}
+    ranked = sorted(counts.items(), key=lambda x: x[1])
+    n = len(ranked)
+    return {iso: round((i / (n - 1)) * 99) + 1 if n > 1 else 50
+            for i, (iso, _) in enumerate(ranked)}
 
 
 def fetch_layer(feeds, label):
