@@ -3,8 +3,6 @@ name: Fetch Signals
 on:
   schedule:
     - cron: "*/30 * * * *"
-  push:
-    branches: [main]
 
 jobs:
   fetch:
