@@ -494,6 +494,29 @@
     });
   }
 
+  // ── Dynamic panel description ──────────────────────────────────────────────
+  function buildDescription(iso) {
+    if (!signalData.layers || !iso) return null;
+    const wire   = (signalData.layers.wire        || {})[iso] || 0;
+    const think  = (signalData.layers.think_tank  || {})[iso] || 0;
+    const gov    = (signalData.layers.government  || {})[iso] || 0;
+
+    const wC = wire * 1, tC = think * 2, gC = gov * 3;
+    const total = wC + tC + gC;
+    if (total === 0) return null;
+
+    const present = [wC > 0 && 'wire', tC > 0 && 'think_tank', gC > 0 && 'government'].filter(Boolean);
+
+    if (present.length === 1) {
+      const label = { wire: 'wire services', think_tank: 'think tanks', government: 'government sources' }[present[0]];
+      return 'Signal from ' + label + ' only — not yet reflected in other sources.';
+    }
+    if (wC / total > 0.6) return 'Wire services driving signal — elevated headline volume in the last 24h.';
+    if (gC / total > 0.6) return 'Signal driven primarily by government sources — Federal Register, State Dept.';
+    if (tC / total > 0.6) return 'Think tank attention elevated — may indicate policy narrative forming.';
+    return 'Cross-layer signal — wire coverage and institutional attention both elevated.';
+  }
+
   // ── Panel ──────────────────────────────────────────────────────────────────
   const panel        = document.getElementById('panel');
   const panelCountry = document.getElementById('panel-country');
@@ -509,7 +532,7 @@
       panelScore.style.color     = scoreToColor(score);
       panelFill.style.width      = score + '%';
       panelFill.style.background = scoreToColor(score);
-      panelDesc.textContent      = 'News mention volume from RSS feeds, normalized 0–100 across all countries in the current window.';
+      panelDesc.textContent      = buildDescription(iso) || 'News mention volume from RSS feeds, normalized 0–100 across all countries in the current window.';
     } else {
       panelScore.textContent     = '—';
       panelScore.style.color     = '#111';
