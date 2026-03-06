@@ -434,7 +434,7 @@
             geoLayer.resetStyle(e.target);
             document.getElementById('tooltip').style.display = 'none';
           },
-          click(e) { openPanel(feature, e.target); },
+          click() { openPanel(feature); },
         });
       },
     }).addTo(map);
@@ -514,14 +514,11 @@
     panel.classList.add('open');
   }
 
-  function openPanel(feature, layer) {
+  function openPanel(feature) {
     const iso   = getCountryISO(feature);
     const name  = ISO_A2_TO_NAME[iso] || iso || 'Unknown';
     const score = iso != null ? countryScores[iso] : undefined;
     openPanelForCountry(iso, name, score);
-    if (layer) {
-      try { map.fitBounds(layer.getBounds(), { padding: [40, 40] }); } catch (_) {}
-    }
   }
 
   document.getElementById('panel-close').addEventListener('click', () => {
