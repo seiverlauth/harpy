@@ -259,18 +259,27 @@ def hits_to_scores(hits, label=""):
     threshold = LAYER_THRESHOLDS.get(label, 0)
     filtered = {iso: v for iso, v in weighted_counts.items() if v >= threshold}
     print("  {} countries above threshold ({})".format(len(filtered), threshold))
-    scores = normalize(filtered)
+    min_mentions = 2 if label == "think_tank" else 3
+    scores = normalize(filtered, min_mentions=min_mentions)
     sources_sorted = {iso: sorted(feeds) for iso, feeds in sources.items() if iso in filtered}
     return scores, sources_sorted
 
 
-def normalize(counts):
+def normalize(counts, min_mentions=3):
     if not counts:
         return {}
-    ranked = sorted(counts.items(), key=lambda x: x[1])
-    n = len(ranked)
-    return {iso: round((i / (n - 1)) * 99) + 1 if n > 1 else 50
-            for i, (iso, _) in enumerate(ranked)}
+    # Apply minimum threshold
+    filtered = {iso: v for iso, v in counts.items() if v >= min_mentions}
+    if not filtered:
+        return {}
+    # Log normalization
+    log_counts = {iso: math.log(v + 1) for iso, v in filtered.items()}
+    lo = min(log_counts.values())
+    hi = max(log_counts.values())
+    if hi == lo:
+        return {iso: 50 for iso in filtered}
+    return {iso: round((lv - lo) / (hi - lo) * 100)
+            for iso, lv in log_counts.items()}
 
 
 def fetch_layer(feeds, label, desc_weight=0):
