@@ -1,28 +1,27 @@
 {
-  "updated": "2026-03-07T04:11:34.627498+00:00",
+  "updated": "2026-03-07T05:22:07.900558+00:00",
   "layers": {
     "wire": {
-      "IL": 59,
       "IR": 100,
-      "CN": 30,
+      "IL": 60,
       "HU": 7,
-      "LB": 19,
+      "CN": 33,
+      "RU": 27,
+      "LB": 23,
       "LK": 0,
-      "IN": 7,
-      "RU": 30,
-      "UA": 30,
-      "PK": 13,
-      "FR": 0,
+      "IN": 13,
+      "PK": 0,
+      "FR": 18,
       "KW": 0,
-      "CU": 19,
+      "CU": 18,
+      "UA": 18,
       "VE": 7,
-      "GE": 0,
+      "ID": 0,
       "EC": 0,
-      "AF": 0,
       "PS": 0,
+      "CA": 0,
       "DE": 0,
-      "IQ": 0,
-      "US": 0
+      "IQ": 0
     },
     "think_tank": {
       "IR": 100,
@@ -66,6 +65,13 @@
   },
   "sources": {
     "wire": {
+      "IR": [
+        "AFP",
+        "AP",
+        "Al Jazeera",
+        "BBC",
+        "Reuters"
+      ],
       "IL": [
         "AFP",
         "AP",
@@ -73,10 +79,8 @@
         "BBC",
         "Reuters"
       ],
-      "IR": [
-        "AFP",
+      "HU": [
         "AP",
-        "Al Jazeera",
         "BBC",
         "Reuters"
       ],
@@ -86,15 +90,15 @@
         "BBC",
         "Reuters"
       ],
-      "HU": [
+      "RU": [
         "AP",
-        "BBC",
         "Reuters"
       ],
       "LB": [
         "AFP",
         "AP",
         "Al Jazeera",
+        "BBC",
         "Reuters"
       ],
       "LK": [
@@ -106,23 +110,14 @@
         "AP",
         "Reuters"
       ],
-      "RU": [
-        "AP",
-        "Reuters"
-      ],
-      "UA": [
-        "AFP",
-        "AP",
-        "BBC",
-        "Reuters"
-      ],
       "PK": [
         "AFP",
         "AP"
       ],
       "FR": [
         "AFP",
-        "AP"
+        "AP",
+        "Reuters"
       ],
       "KW": [
         "AP",
@@ -134,24 +129,32 @@
         "BBC",
         "Reuters"
       ],
+      "UA": [
+        "AFP",
+        "AP",
+        "BBC",
+        "Reuters"
+      ],
       "VE": [
         "AP",
         "BBC",
         "Reuters"
       ],
-      "GE": [
-        "AP"
+      "ID": [
+        "AP",
+        "BBC",
+        "Reuters"
       ],
       "EC": [
         "AP",
         "Al Jazeera",
         "Reuters"
       ],
-      "AF": [
-        "AFP",
-        "AP"
-      ],
       "PS": [
+        "AFP",
+        "Reuters"
+      ],
+      "CA": [
         "AFP",
         "Reuters"
       ],
@@ -163,10 +166,6 @@
         "AFP",
         "Al Jazeera",
         "Reuters"
-      ],
-      "US": [
-        "AFP",
-        "BBC"
       ]
     },
     "think_tank": {
@@ -313,51 +312,51 @@
     }
   },
   "composite": {
-    "HU": 0,
-    "IR": 100,
-    "QA": 18,
-    "NE": 18,
-    "RU": 75,
-    "SD": 32,
-    "US": 92,
-    "GN": 59,
-    "VE": 27,
-    "LB": 23,
-    "SY": 18,
-    "CU": 23,
-    "KW": 61,
-    "IL": 51,
-    "AE": 32,
-    "CN": 73,
-    "IN": 0,
-    "PK": 14,
     "JP": 18,
-    "UA": 78,
+    "SY": 18,
+    "IR": 100,
+    "IN": 14,
+    "GN": 59,
+    "HU": 0,
+    "US": 92,
+    "RU": 75,
+    "LB": 28,
+    "AE": 32,
+    "NE": 18,
+    "FR": 22,
+    "SD": 32,
     "CD": 59,
-    "AR": 18
+    "CN": 73,
+    "KW": 61,
+    "CU": 22,
+    "QA": 18,
+    "UA": 76,
+    "VE": 27,
+    "AR": 18,
+    "IL": 52
   },
   "scores": {
-    "HU": 0,
-    "IR": 100,
-    "QA": 18,
-    "NE": 18,
-    "RU": 75,
-    "SD": 32,
-    "US": 92,
-    "GN": 59,
-    "VE": 27,
-    "LB": 23,
-    "SY": 18,
-    "CU": 23,
-    "KW": 61,
-    "IL": 51,
-    "AE": 32,
-    "CN": 73,
-    "IN": 0,
-    "PK": 14,
     "JP": 18,
-    "UA": 78,
+    "SY": 18,
+    "IR": 100,
+    "IN": 14,
+    "GN": 59,
+    "HU": 0,
+    "US": 92,
+    "RU": 75,
+    "LB": 28,
+    "AE": 32,
+    "NE": 18,
+    "FR": 22,
+    "SD": 32,
     "CD": 59,
-    "AR": 18
+    "CN": 73,
+    "KW": 61,
+    "CU": 22,
+    "QA": 18,
+    "UA": 76,
+    "VE": 27,
+    "AR": 18,
+    "IL": 52
   }
 }
