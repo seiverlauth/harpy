@@ -1,23 +1,23 @@
 {
-  "updated": "2026-03-09T21:35:10.735742+00:00",
+  "updated": "2026-03-09T22:31:44.118127+00:00",
   "layers": {
     "wire": {
       "IR": 100,
+      "AU": 13,
       "LB": 27,
-      "IL": 57,
-      "RU": 23,
+      "IL": 56,
+      "RU": 27,
       "CN": 30,
       "LK": 0,
       "PK": 13,
-      "UA": 30,
-      "KR": 0,
-      "IN": 27,
-      "PS": 23,
-      "FR": 7,
-      "AU": 13,
+      "UA": 23,
+      "US": 0,
+      "SA": 0,
+      "IN": 23,
+      "PS": 13,
+      "FR": 0,
       "TR": 7,
-      "CA": 7,
-      "QA": 0
+      "CA": 7
     },
     "think_tank": {
       "IR": 100,
@@ -31,37 +31,44 @@
       "US": 100,
       "SV": 5,
       "TN": 0,
-      "CL": 16,
-      "AE": 13,
-      "SA": 5,
-      "IL": 13,
-      "KW": 9,
-      "QA": 5,
-      "OM": 9,
+      "IR": 50,
+      "IQ": 0,
+      "CL": 18,
+      "AE": 10,
+      "SA": 0,
+      "IL": 10,
+      "KW": 5,
+      "QA": 0,
+      "OM": 5,
       "AF": 0,
-      "RU": 13,
-      "IR": 46,
-      "SD": 22,
+      "RU": 14,
+      "SD": 21,
       "AR": 0,
-      "AZ": 5,
-      "CD": 13,
+      "CD": 14,
       "BG": 0,
       "VE": 5,
       "UA": 0,
-      "CN": 22,
+      "CN": 25,
       "YE": 0,
       "SY": 0,
-      "GN": 25,
+      "GN": 28,
       "ML": 0,
       "NE": 5,
-      "CO": 5,
-      "LY": 5,
+      "CO": 0,
+      "LY": 0,
       "MM": 0
     }
   },
   "sources": {
     "wire": {
       "IR": [
+        "AFP",
+        "AP",
+        "Al Jazeera",
+        "BBC",
+        "Reuters"
+      ],
+      "AU": [
         "AFP",
         "AP",
         "Al Jazeera",
@@ -105,7 +112,12 @@
         "Al Jazeera",
         "Reuters"
       ],
-      "KR": [
+      "US": [
+        "AFP",
+        "AP",
+        "Al Jazeera"
+      ],
+      "SA": [
         "AFP",
         "AP",
         "Reuters"
@@ -122,15 +134,8 @@
         "Reuters"
       ],
       "FR": [
-        "AFP",
         "AP",
         "Al Jazeera",
-        "Reuters"
-      ],
-      "AU": [
-        "AFP",
-        "Al Jazeera",
-        "BBC",
         "Reuters"
       ],
       "TR": [
@@ -140,11 +145,6 @@
       "CA": [
         "AFP",
         "BBC",
-        "Reuters"
-      ],
-      "QA": [
-        "AFP",
-        "Al Jazeera",
         "Reuters"
       ]
     },
@@ -183,6 +183,15 @@
       ],
       "TN": [
         "GAO Reports",
+        "State Dept Travel Advisories"
+      ],
+      "IR": [
+        "State Dept Press Releases",
+        "State Dept Sec Remarks",
+        "State Dept Travel Advisories"
+      ],
+      "IQ": [
+        "State Dept Press Releases",
         "State Dept Travel Advisories"
       ],
       "CL": [
@@ -229,11 +238,6 @@
         "State Dept Sec Remarks",
         "State Dept Travel Advisories"
       ],
-      "IR": [
-        "State Dept Press Releases",
-        "State Dept Sec Remarks",
-        "State Dept Travel Advisories"
-      ],
       "SD": [
         "State Dept Press Releases",
         "State Dept Sec Remarks",
@@ -242,10 +246,6 @@
       "AR": [
         "State Dept Press Releases",
         "State Dept Sec Remarks",
-        "State Dept Travel Advisories"
-      ],
-      "AZ": [
-        "State Dept Press Releases",
         "State Dept Travel Advisories"
       ],
       "CD": [
@@ -295,65 +295,53 @@
     }
   },
   "composite": {
-    "IN": 31,
-    "CO": 17,
-    "CN": 69,
-    "FR": 0,
-    "SA": 17,
-    "QA": 17,
-    "AU": 14,
-    "GN": 56,
-    "KW": 31,
-    "IL": 62,
-    "PS": 27,
-    "TR": 0,
-    "VE": 17,
-    "IR": 100,
-    "CD": 40,
-    "AE": 40,
-    "LY": 17,
-    "PK": 14,
+    "SD": 52,
     "LB": 31,
-    "RU": 72,
-    "UA": 73,
-    "SD": 53,
+    "KW": 17,
+    "PK": 14,
     "CA": 0,
-    "OM": 31,
-    "US": 91,
-    "CL": 45,
+    "AE": 34,
+    "CD": 42,
+    "UA": 71,
+    "IR": 100,
+    "OM": 17,
+    "AU": 14,
+    "PS": 14,
+    "CL": 48,
+    "VE": 17,
+    "IL": 59,
+    "TR": 0,
+    "CN": 70,
+    "US": 90,
     "NE": 17,
     "SV": 17,
-    "AZ": 17
+    "RU": 73,
+    "GN": 59,
+    "IN": 27
   },
   "scores": {
-    "IN": 31,
-    "CO": 17,
-    "CN": 69,
-    "FR": 0,
-    "SA": 17,
-    "QA": 17,
-    "AU": 14,
-    "GN": 56,
-    "KW": 31,
-    "IL": 62,
-    "PS": 27,
-    "TR": 0,
-    "VE": 17,
-    "IR": 100,
-    "CD": 40,
-    "AE": 40,
-    "LY": 17,
-    "PK": 14,
+    "SD": 52,
     "LB": 31,
-    "RU": 72,
-    "UA": 73,
-    "SD": 53,
+    "KW": 17,
+    "PK": 14,
     "CA": 0,
-    "OM": 31,
-    "US": 91,
-    "CL": 45,
+    "AE": 34,
+    "CD": 42,
+    "UA": 71,
+    "IR": 100,
+    "OM": 17,
+    "AU": 14,
+    "PS": 14,
+    "CL": 48,
+    "VE": 17,
+    "IL": 59,
+    "TR": 0,
+    "CN": 70,
+    "US": 90,
     "NE": 17,
     "SV": 17,
-    "AZ": 17
+    "RU": 73,
+    "GN": 59,
+    "IN": 27
   }
 }
