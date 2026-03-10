@@ -1,19 +1,19 @@
 {
-  "updated": "2026-03-10T22:31:07.928443+00:00",
+  "updated": "2026-03-10T23:30:07.955824+00:00",
   "layers": {
     "wire": {
       "IR": 100,
-      "AU": 13,
+      "AU": 7,
       "RU": 33,
-      "LB": 27,
-      "IL": 58,
+      "LB": 23,
+      "IL": 59,
       "GE": 7,
       "KR": 0,
-      "PK": 7,
+      "PK": 0,
       "ES": 0,
       "SE": 0,
       "US": 7,
-      "UA": 19,
+      "UA": 18,
       "FR": 0,
       "CN": 30,
       "CA": 0,
@@ -31,16 +31,16 @@
     "government": {
       "US": 100,
       "TN": 0,
-      "SA": 5,
-      "IR": 53,
+      "GB": 0,
+      "IR": 55,
+      "SA": 0,
       "AF": 25,
       "IQ": 0,
       "CL": 10,
-      "AE": 10,
-      "IL": 10,
-      "KW": 5,
-      "QA": 0,
-      "OM": 5,
+      "AE": 5,
+      "IL": 5,
+      "KW": 0,
+      "OM": 0,
       "RU": 14,
       "SD": 22,
       "CD": 14,
@@ -81,7 +81,6 @@
       "LB": [
         "AFP",
         "AP",
-        "Al Jazeera",
         "BBC",
         "Reuters"
       ],
@@ -103,8 +102,7 @@
       ],
       "PK": [
         "AFP",
-        "AP",
-        "Reuters"
+        "AP"
       ],
       "ES": [
         "AP",
@@ -181,12 +179,16 @@
         "GAO Reports",
         "State Dept Travel Advisories"
       ],
-      "SA": [
+      "GB": [
+        "State Dept Press Releases",
+        "State Dept Travel Advisories"
+      ],
+      "IR": [
         "State Dept Press Releases",
         "State Dept Sec Remarks",
         "State Dept Travel Advisories"
       ],
-      "IR": [
+      "SA": [
         "State Dept Press Releases",
         "State Dept Sec Remarks",
         "State Dept Travel Advisories"
@@ -216,11 +218,6 @@
         "State Dept Travel Advisories"
       ],
       "KW": [
-        "State Dept Press Releases",
-        "State Dept Sec Remarks",
-        "State Dept Travel Advisories"
-      ],
-      "QA": [
         "State Dept Press Releases",
         "State Dept Sec Remarks",
         "State Dept Travel Advisories"
@@ -286,47 +283,39 @@
     }
   },
   "composite": {
-    "GE": 0,
-    "KW": 17,
-    "NE": 17,
-    "CL": 33,
+    "AU": 0,
     "US": 90,
-    "AE": 33,
-    "UA": 71,
-    "LB": 31,
-    "AU": 14,
-    "CD": 42,
-    "AF": 56,
-    "GN": 58,
-    "PK": 0,
-    "SD": 52,
+    "AF": 55,
+    "AE": 17,
+    "NE": 17,
+    "CD": 41,
     "CN": 69,
-    "OM": 17,
-    "IL": 59,
-    "IR": 100,
     "RU": 75,
-    "SA": 17
+    "GN": 58,
+    "GE": 0,
+    "SD": 52,
+    "CL": 33,
+    "UA": 70,
+    "IR": 100,
+    "IL": 55,
+    "LB": 27
   },
   "scores": {
-    "GE": 0,
-    "KW": 17,
-    "NE": 17,
-    "CL": 33,
+    "AU": 0,
     "US": 90,
-    "AE": 33,
-    "UA": 71,
-    "LB": 31,
-    "AU": 14,
-    "CD": 42,
-    "AF": 56,
-    "GN": 58,
-    "PK": 0,
-    "SD": 52,
+    "AF": 55,
+    "AE": 17,
+    "NE": 17,
+    "CD": 41,
     "CN": 69,
-    "OM": 17,
-    "IL": 59,
-    "IR": 100,
     "RU": 75,
-    "SA": 17
+    "GN": 58,
+    "GE": 0,
+    "SD": 52,
+    "CL": 33,
+    "UA": 70,
+    "IR": 100,
+    "IL": 55,
+    "LB": 27
   }
 }
