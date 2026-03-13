@@ -1,21 +1,20 @@
 {
-  "updated": "2026-03-13T13:03:18.206020+00:00",
+  "updated": "2026-03-13T14:11:10.477725+00:00",
   "layers": {
     "wire": {
       "IR": 100,
-      "LB": 14,
-      "AF": 0,
-      "PK": 0,
+      "LB": 25,
       "NP": 0,
       "AU": 0,
-      "IQ": 32,
+      "IQ": 33,
       "LK": 0,
-      "IL": 48,
-      "CU": 0,
+      "RU": 14,
+      "IL": 44,
       "FR": 14,
+      "CN": 44,
       "JP": 0,
-      "CN": 41,
       "TW": 0,
+      "PS": 14,
       "UA": 8
     },
     "think_tank": {
@@ -46,7 +45,7 @@
       "GN": 28,
       "ML": 0,
       "NE": 5,
-      "CO": 5,
+      "CO": 0,
       "LY": 0,
       "MM": 0,
       "CN": 21
@@ -63,16 +62,6 @@
       ],
       "LB": [
         "AFP",
-        "AP",
-        "Al Jazeera",
-        "Reuters"
-      ],
-      "AF": [
-        "AP",
-        "Al Jazeera",
-        "Reuters"
-      ],
-      "PK": [
         "AP",
         "Al Jazeera",
         "Reuters"
@@ -97,14 +86,14 @@
         "AP",
         "Al Jazeera"
       ],
+      "RU": [
+        "AP",
+        "Reuters"
+      ],
       "IL": [
         "AFP",
         "AP",
         "Al Jazeera",
-        "Reuters"
-      ],
-      "CU": [
-        "AP",
         "Reuters"
       ],
       "FR": [
@@ -113,16 +102,20 @@
         "BBC",
         "Reuters"
       ],
-      "JP": [
-        "Reuters"
-      ],
       "CN": [
         "AFP",
         "Al Jazeera",
         "BBC",
         "Reuters"
       ],
+      "JP": [
+        "Reuters"
+      ],
       "TW": [
+        "Al Jazeera",
+        "Reuters"
+      ],
+      "PS": [
         "Al Jazeera",
         "Reuters"
       ],
@@ -240,39 +233,39 @@
     }
   },
   "composite": {
-    "RU": 52,
-    "IL": 47,
-    "IR": 100,
-    "NE": 2,
-    "IQ": 23,
-    "CD": 31,
-    "UA": 62,
     "US": 88,
-    "AF": 43,
-    "CO": 2,
+    "RU": 57,
+    "CN": 58,
     "TR": 32,
-    "CN": 57,
-    "SD": 31,
     "GN": 51,
-    "LB": 0,
-    "FR": 20
+    "AF": 43,
+    "IQ": 24,
+    "SD": 31,
+    "IR": 100,
+    "IL": 45,
+    "PS": 0,
+    "UA": 62,
+    "LB": 16,
+    "FR": 20,
+    "NE": 2,
+    "CD": 31
   },
   "scores": {
-    "RU": 52,
-    "IL": 47,
-    "IR": 100,
-    "NE": 2,
-    "IQ": 23,
-    "CD": 31,
-    "UA": 62,
     "US": 88,
-    "AF": 43,
-    "CO": 2,
+    "RU": 57,
+    "CN": 58,
     "TR": 32,
-    "CN": 57,
-    "SD": 31,
     "GN": 51,
-    "LB": 0,
-    "FR": 20
+    "AF": 43,
+    "IQ": 24,
+    "SD": 31,
+    "IR": 100,
+    "IL": 45,
+    "PS": 0,
+    "UA": 62,
+    "LB": 16,
+    "FR": 20,
+    "NE": 2,
+    "CD": 31
   }
 }
