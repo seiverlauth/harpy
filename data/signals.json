@@ -1,23 +1,23 @@
 {
-  "updated": "2026-03-15T14:32:54.352785+00:00",
+  "updated": "2026-03-15T15:31:24.659174+00:00",
   "layers": {
     "wire": {
       "IR": 100,
-      "AE": 8,
-      "AU": 0,
+      "AE": 14,
+      "AU": 8,
+      "RU": 20,
       "LB": 44,
-      "IQ": 35,
+      "IQ": 32,
       "UA": 28,
       "CN": 32,
-      "IL": 44,
+      "IL": 41,
       "TW": 0,
-      "JP": 20,
+      "JP": 14,
+      "QA": 8,
       "PS": 14,
-      "RU": 14,
-      "SA": 14,
+      "SA": 0,
       "VE": 0,
-      "IN": 0,
-      "FR": 8
+      "FR": 0
     },
     "think_tank": {
       "UA": 46,
@@ -32,27 +32,28 @@
       "SV": 0,
       "TN": 0,
       "HN": 0,
+      "SN": 10,
       "CM": 0,
       "NG": 0,
-      "GN": 29,
+      "GN": 30,
       "RW": 0,
       "CD": 17,
-      "NE": 9,
+      "NE": 10,
       "AE": 0,
       "FR": 5,
       "GB": 0,
-      "IR": 44,
-      "AF": 9,
+      "IR": 45,
+      "AF": 10,
       "RU": 5,
-      "SD": 13,
+      "SD": 14,
       "BG": 0,
       "YE": 0,
       "SY": 0,
       "ML": 0,
-      "CO": 5,
+      "CO": 0,
       "LY": 0,
       "MM": 0,
-      "CN": 20
+      "CN": 21
     }
   },
   "sources": {
@@ -72,6 +73,12 @@
       "AU": [
         "AFP",
         "AP",
+        "Al Jazeera",
+        "Reuters"
+      ],
+      "RU": [
+        "AP",
+        "BBC",
         "Reuters"
       ],
       "LB": [
@@ -110,13 +117,14 @@
       "JP": [
         "Reuters"
       ],
+      "QA": [
+        "AFP",
+        "Al Jazeera",
+        "Reuters"
+      ],
       "PS": [
         "AFP",
         "Al Jazeera",
-        "BBC",
-        "Reuters"
-      ],
-      "RU": [
         "BBC",
         "Reuters"
       ],
@@ -125,9 +133,6 @@
         "Reuters"
       ],
       "VE": [
-        "Reuters"
-      ],
-      "IN": [
         "Reuters"
       ],
       "FR": [
@@ -174,6 +179,10 @@
         "State Dept Travel Advisories"
       ],
       "HN": [
+        "State Dept Press Releases",
+        "State Dept Travel Advisories"
+      ],
+      "SN": [
         "State Dept Press Releases",
         "State Dept Travel Advisories"
       ],
@@ -260,47 +269,49 @@
     }
   },
   "composite": {
-    "UA": 67,
-    "AE": 0,
-    "GN": 59,
-    "CN": 60,
-    "JP": 22,
-    "US": 91,
-    "IL": 42,
     "CD": 45,
-    "TR": 22,
-    "AF": 29,
+    "QA": 0,
+    "SN": 32,
+    "JP": 13,
+    "AF": 32,
+    "US": 90,
     "IR": 100,
-    "NE": 29,
-    "RU": 56,
+    "RU": 58,
+    "FR": 15,
     "PS": 13,
-    "LB": 42,
-    "FR": 25,
-    "SA": 13,
-    "CO": 15,
-    "SD": 39,
-    "IQ": 36
+    "IQ": 33,
+    "AE": 13,
+    "GN": 60,
+    "AU": 0,
+    "IL": 40,
+    "NE": 32,
+    "LB": 41,
+    "SD": 40,
+    "CN": 61,
+    "UA": 67,
+    "TR": 22
   },
   "scores": {
-    "UA": 67,
-    "AE": 0,
-    "GN": 59,
-    "CN": 60,
-    "JP": 22,
-    "US": 91,
-    "IL": 42,
     "CD": 45,
-    "TR": 22,
-    "AF": 29,
+    "QA": 0,
+    "SN": 32,
+    "JP": 13,
+    "AF": 32,
+    "US": 90,
     "IR": 100,
-    "NE": 29,
-    "RU": 56,
+    "RU": 58,
+    "FR": 15,
     "PS": 13,
-    "LB": 42,
-    "FR": 25,
-    "SA": 13,
-    "CO": 15,
-    "SD": 39,
-    "IQ": 36
+    "IQ": 33,
+    "AE": 13,
+    "GN": 60,
+    "AU": 0,
+    "IL": 40,
+    "NE": 32,
+    "LB": 41,
+    "SD": 40,
+    "CN": 61,
+    "UA": 67,
+    "TR": 22
   }
 }
