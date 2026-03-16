@@ -1,0 +1,13 @@
+{
+  "iso": "MR",
+  "name": "Mauritania",
+  "structural_interest_score": 2,
+  "score_rationale": "Sahel jihadist spillover \u2014 active pressure on northern border (+1), emerging hydrocarbon production (+1)",
+  "key_structural_interests": [
+    "Sahel spillover",
+    "hydrocarbons"
+  ],
+  "suppression_baseline": "low_coverage",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

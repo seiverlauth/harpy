@@ -1,0 +1,16 @@
+{
+  "iso": "IQ",
+  "name": "Iraq",
+  "structural_interest_score": 7,
+  "score_rationale": "Massive hydrocarbon reserves \u2014 top-5 global producer (+2), active conflict \u2014 militia warfare and ISIS remnants (+2), Iran-US proxy contest (+1), major US basing presence (+1), active sanctions history and ongoing restrictions (+1)",
+  "key_structural_interests": [
+    "hydrocarbons",
+    "active conflict",
+    "proxy hub",
+    "US basing",
+    "sanctions"
+  ],
+  "suppression_baseline": "high_coverage",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

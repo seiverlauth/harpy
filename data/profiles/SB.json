@@ -1,0 +1,12 @@
+{
+  "iso": "SB",
+  "name": "Solomon Islands",
+  "structural_interest_score": 1,
+  "score_rationale": "Chinese security pact \u2014 Pacific basing contest, potential PLA access (+1)",
+  "key_structural_interests": [
+    "BRI exposure"
+  ],
+  "suppression_baseline": "low_coverage",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

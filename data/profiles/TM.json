@@ -1,0 +1,12 @@
+{
+  "iso": "TM",
+  "name": "Turkmenistan",
+  "structural_interest_score": 2,
+  "score_rationale": "World's fourth-largest natural gas reserves (+2)",
+  "key_structural_interests": [
+    "hydrocarbons"
+  ],
+  "suppression_baseline": "suppressed",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

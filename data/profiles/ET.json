@@ -1,0 +1,14 @@
+{
+  "iso": "ET",
+  "name": "Ethiopia",
+  "structural_interest_score": 4,
+  "score_rationale": "Active conflict \u2014 Tigray war and ongoing ethnic insurgencies (+2), regional power in Horn of Africa (+1), Nile water rights dispute with Egypt (+1)",
+  "key_structural_interests": [
+    "active conflict",
+    "regional power",
+    "Nile dispute"
+  ],
+  "suppression_baseline": "low_coverage",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

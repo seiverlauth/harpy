@@ -1,0 +1,14 @@
+{
+  "iso": "KR",
+  "name": "South Korea",
+  "structural_interest_score": 4,
+  "score_rationale": "Major US basing \u2014 28,000 troops, USFK (+1), latent nuclear capability \u2014 active discussion of indigenous program (+2), regional power and semiconductor/industrial hub (+1)",
+  "key_structural_interests": [
+    "US basing",
+    "nuclear program",
+    "regional power"
+  ],
+  "suppression_baseline": "high_coverage",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

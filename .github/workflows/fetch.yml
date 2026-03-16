@@ -2,7 +2,7 @@ name: Fetch Signals
 
 on:
   schedule:
-    - cron: "*/30 * * * *"
+    - cron: "0 6 * * *"
   workflow_dispatch:
 
 jobs:
@@ -22,7 +22,7 @@ jobs:
           python-version: "3.11"
 
       - name: Install dependencies
-        run: pip install feedparser requests
+        run: pip install requests beautifulsoup4
 
       - name: Configure git and pull latest
         run: |
@@ -30,12 +30,20 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git pull origin main --rebase
 
-      - name: Run fetch_signals.py
-        run: python scripts/fetch_signals.py
+      - name: Run fetch_dsca.py
+        run: python scripts/fetch_dsca.py
 
-      - name: Commit signals.json if changed
+      - name: Run fetch_sam.py
+        run: python scripts/fetch_sam.py
+        env:
+          SAM_API_KEY: ${{ secrets.SAM_API_KEY }}
+
+      - name: Run build_signals.py
+        run: python scripts/build_signals.py
+
+      - name: Commit updated data
         run: |
-          git add data/signals.json
+          git add data/signals.json data/dsca_signals.json data/sam_signals.json
           git commit -m "update signals [skip ci]" || echo "nothing to commit"
           git push origin main --force-with-lease
         env:

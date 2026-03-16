@@ -1,0 +1,18 @@
+{
+  "iso": "TR",
+  "name": "Turkey",
+  "structural_interest_score": 8,
+  "score_rationale": "Controls Turkish Straits \u2014 Bosphorus and Dardanelles, only Black Sea exit (+3), US nuclear weapons at Incirlik (+2), major US basing (+1), regional power \u2014 NATO member playing both sides (+1), proxy hub Syria/Libya/Azerbaijan/Ukraine (+1)",
+  "key_structural_interests": [
+    "maritime chokepoint",
+    "Turkish Straits",
+    "Bosphorus",
+    "nuclear hosting",
+    "US basing",
+    "regional power",
+    "proxy hub"
+  ],
+  "suppression_baseline": "high_coverage",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

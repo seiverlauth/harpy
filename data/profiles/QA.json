@@ -1,0 +1,15 @@
+{
+  "iso": "QA",
+  "name": "Qatar",
+  "structural_interest_score": 4,
+  "score_rationale": "World's largest LNG exporter \u2014 hydrocarbon reserves (+2), Al Udeid Air Base \u2014 largest US air base in Middle East (+1), proxy hub \u2014 Hamas, Taliban mediation (+1)",
+  "key_structural_interests": [
+    "hydrocarbons",
+    "LNG",
+    "US basing",
+    "proxy hub"
+  ],
+  "suppression_baseline": "moderate_coverage",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

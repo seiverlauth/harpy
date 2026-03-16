@@ -1,0 +1,14 @@
+{
+  "iso": "PL",
+  "name": "Poland",
+  "structural_interest_score": 3,
+  "score_rationale": "NATO eastern flank \u2014 largest non-US NATO army (+1), major US basing expansion (+1), Suwalki Gap border state (+1)",
+  "key_structural_interests": [
+    "NATO flank",
+    "US basing",
+    "Suwalki Gap"
+  ],
+  "suppression_baseline": "moderate_coverage",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

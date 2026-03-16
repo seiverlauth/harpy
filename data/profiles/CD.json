@@ -1,0 +1,17 @@
+{
+  "iso": "CD",
+  "name": "Congo (Democratic Republic)",
+  "structural_interest_score": 6,
+  "score_rationale": "Active multi-faction conflict (+2), world's largest cobalt reserves plus coltan and strategic minerals (+2), Chinese mining dominance/BRI (+1), regional proxy hub M23/Rwanda/Uganda (+1)",
+  "key_structural_interests": [
+    "active conflict",
+    "strategic minerals",
+    "cobalt",
+    "coltan",
+    "BRI exposure",
+    "proxy hub"
+  ],
+  "suppression_baseline": "suppressed",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

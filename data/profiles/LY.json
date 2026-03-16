@@ -1,0 +1,14 @@
+{
+  "iso": "LY",
+  "name": "Libya",
+  "structural_interest_score": 5,
+  "score_rationale": "Active civil conflict \u2014 GNA/LNA split (+2), major hydrocarbon reserves (+2), proxy hub \u2014 Turkey, Russia, UAE, Egypt contest (+1)",
+  "key_structural_interests": [
+    "active conflict",
+    "hydrocarbons",
+    "proxy hub"
+  ],
+  "suppression_baseline": "moderate_coverage",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

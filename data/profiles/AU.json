@@ -1,0 +1,16 @@
+{
+  "iso": "AU",
+  "name": "Australia",
+  "structural_interest_score": 5,
+  "score_rationale": "Major strategic minerals producer and processor \u2014 rare earths, lithium, uranium (+2), major US basing and AUKUS partner (+1), regional power Indo-Pacific (+1), hydrocarbon exports (+1)",
+  "key_structural_interests": [
+    "strategic minerals",
+    "US basing",
+    "AUKUS",
+    "regional power",
+    "hydrocarbons"
+  ],
+  "suppression_baseline": "high_coverage",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

@@ -1,0 +1,13 @@
+{
+  "iso": "BD",
+  "name": "Bangladesh",
+  "structural_interest_score": 2,
+  "score_rationale": "Significant Chinese BRI/port exposure at Chittagong (+1), Bay of Bengal strategic position (+1)",
+  "key_structural_interests": [
+    "BRI exposure",
+    "Bay of Bengal"
+  ],
+  "suppression_baseline": "low_coverage",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

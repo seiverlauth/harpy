@@ -1,0 +1,13 @@
+{
+  "iso": "BA",
+  "name": "Bosnia and Herzegovina",
+  "structural_interest_score": 2,
+  "score_rationale": "Occupied/contested political structure, Republika Srpska separatism (+1), Russia-West proxy contest (+1)",
+  "key_structural_interests": [
+    "contested territory",
+    "proxy hub"
+  ],
+  "suppression_baseline": "low_coverage",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

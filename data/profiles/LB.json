@@ -1,0 +1,14 @@
+{
+  "iso": "LB",
+  "name": "Lebanon",
+  "structural_interest_score": 4,
+  "score_rationale": "Active conflict \u2014 Israeli strikes, Hezbollah war, state collapse (+2), Iran proxy hub \u2014 Hezbollah HQ (+1), active sanctions on Hezbollah networks (+1)",
+  "key_structural_interests": [
+    "active conflict",
+    "proxy hub",
+    "sanctions"
+  ],
+  "suppression_baseline": "moderate_coverage",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

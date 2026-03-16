@@ -1,0 +1,15 @@
+{
+  "iso": "PK",
+  "name": "Pakistan",
+  "structural_interest_score": 6,
+  "score_rationale": "Active nuclear weapons program (+2), active conflict \u2014 TTP insurgency, Baloch separatism (+2), major BRI/CPEC corridor (+1), regional proxy hub \u2014 Taliban, Afghan spillover (+1)",
+  "key_structural_interests": [
+    "nuclear program",
+    "active conflict",
+    "BRI exposure",
+    "proxy hub"
+  ],
+  "suppression_baseline": "high_coverage",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

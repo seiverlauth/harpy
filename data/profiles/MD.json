@@ -1,0 +1,13 @@
+{
+  "iso": "MD",
+  "name": "Moldova",
+  "structural_interest_score": 3,
+  "score_rationale": "Occupied territory \u2014 Transnistria under Russian control, Russian troops present (+2), active proxy contest Russia-EU (+1)",
+  "key_structural_interests": [
+    "occupied territory",
+    "proxy hub"
+  ],
+  "suppression_baseline": "low_coverage",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

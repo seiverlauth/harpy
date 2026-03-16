@@ -1,0 +1,16 @@
+{
+  "iso": "ID",
+  "name": "Indonesia",
+  "structural_interest_score": 7,
+  "score_rationale": "Controls Malacca, Lombok, and Sunda Straits \u2014 critical global chokepoints (+3), major hydrocarbon producer (+2), regional power (+1), significant BRI/Chinese investment (+1)",
+  "key_structural_interests": [
+    "maritime chokepoint",
+    "Malacca Strait",
+    "hydrocarbons",
+    "regional power",
+    "BRI exposure"
+  ],
+  "suppression_baseline": "moderate_coverage",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

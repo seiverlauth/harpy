@@ -1,0 +1,13 @@
+{
+  "iso": "NP",
+  "name": "Nepal",
+  "structural_interest_score": 2,
+  "score_rationale": "China-India competition for influence \u2014 Himalayan buffer state (+1), BRI/Chinese infrastructure pressure (+1)",
+  "key_structural_interests": [
+    "China-India contest",
+    "BRI exposure"
+  ],
+  "suppression_baseline": "low_coverage",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

@@ -1,0 +1,14 @@
+{
+  "iso": "AM",
+  "name": "Armenia",
+  "structural_interest_score": 4,
+  "score_rationale": "Active conflict/occupied territory \u2014 Nagorno-Karabakh displacement and Russian-Turkish-Azerbaijani contest (+2), regional proxy hub (+1), BRI adjacent (+1)",
+  "key_structural_interests": [
+    "active conflict",
+    "proxy hub",
+    "Russia-Turkey-Azerbaijan theater"
+  ],
+  "suppression_baseline": "moderate_coverage",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

@@ -1,0 +1,14 @@
+{
+  "iso": "ZA",
+  "name": "South Africa",
+  "structural_interest_score": 4,
+  "score_rationale": "World-class strategic minerals \u2014 platinum group metals, chrome, manganese (+2), regional power in sub-Saharan Africa (+1), Cape of Good Hope sea route \u2014 alternative to Suez (+1)",
+  "key_structural_interests": [
+    "strategic minerals",
+    "regional power",
+    "maritime corridor"
+  ],
+  "suppression_baseline": "moderate_coverage",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

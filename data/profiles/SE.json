@@ -1,0 +1,13 @@
+{
+  "iso": "SE",
+  "name": "Sweden",
+  "structural_interest_score": 2,
+  "score_rationale": "NATO new member with Baltic Sea strategic position (+1), rare earth deposits \u2014 Kiruna LKAB discovery, largest in Europe (+1)",
+  "key_structural_interests": [
+    "NATO flank",
+    "strategic minerals"
+  ],
+  "suppression_baseline": "moderate_coverage",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

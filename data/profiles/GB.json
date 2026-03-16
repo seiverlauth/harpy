@@ -1,0 +1,15 @@
+{
+  "iso": "GB",
+  "name": "United Kingdom",
+  "structural_interest_score": 5,
+  "score_rationale": "Active nuclear weapons program \u2014 Trident (+2), regional power and global basing network (+1), major US interoperability partner \u2014 Five Eyes, AUKUS (+1), controls Gibraltar and Diego Garcia chokepoints (+1)",
+  "key_structural_interests": [
+    "nuclear program",
+    "regional power",
+    "US partner",
+    "maritime chokepoint"
+  ],
+  "suppression_baseline": "high_coverage",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

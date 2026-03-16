@@ -1,0 +1,14 @@
+{
+  "iso": "VE",
+  "name": "Venezuela",
+  "structural_interest_score": 4,
+  "score_rationale": "Western Hemisphere presence (+1), world's largest proven hydrocarbon reserves (+2), comprehensive US sanctions regime (+1)",
+  "key_structural_interests": [
+    "hydrocarbons",
+    "Western Hemisphere",
+    "sanctions"
+  ],
+  "suppression_baseline": "moderate_coverage",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

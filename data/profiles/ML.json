@@ -1,0 +1,16 @@
+{
+  "iso": "ML",
+  "name": "Mali",
+  "structural_interest_score": 5,
+  "score_rationale": "Active Sahel jihadist conflict (+2), gold and strategic mineral deposits (+2), Russia/Wagner proxy hub \u2014 French expulsion (+1)",
+  "key_structural_interests": [
+    "active conflict",
+    "strategic minerals",
+    "gold",
+    "proxy hub",
+    "Wagner"
+  ],
+  "suppression_baseline": "low_coverage",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

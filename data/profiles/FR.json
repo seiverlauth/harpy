@@ -1,0 +1,15 @@
+{
+  "iso": "FR",
+  "name": "France",
+  "structural_interest_score": 5,
+  "score_rationale": "Active nuclear weapons program (+2), regional power and global military presence (+1), major US-allied basing network including Africa and Pacific (+1), strategic minerals via overseas territories (+1)",
+  "key_structural_interests": [
+    "nuclear program",
+    "regional power",
+    "global basing",
+    "strategic minerals"
+  ],
+  "suppression_baseline": "high_coverage",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

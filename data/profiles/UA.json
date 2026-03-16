@@ -1,0 +1,16 @@
+{
+  "iso": "UA",
+  "name": "Ukraine",
+  "structural_interest_score": 8,
+  "score_rationale": "Active full-scale war with Russia (+2), occupied territory \u2014 Crimea, Donbas (+2), major strategic minerals \u2014 rare earths, titanium, manganese, lithium (+2), active broad sanctions regime (+1), NATO/EU proxy contest (+1)",
+  "key_structural_interests": [
+    "active conflict",
+    "occupied territory",
+    "strategic minerals",
+    "sanctions",
+    "proxy hub"
+  ],
+  "suppression_baseline": "high_coverage",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

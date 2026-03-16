@@ -1,0 +1,13 @@
+{
+  "iso": "TN",
+  "name": "Tunisia",
+  "structural_interest_score": 2,
+  "score_rationale": "Sicily Channel \u2014 sits at Mediterranean narrowing (+1), Sahel/Libya instability spillover and migration corridor (+1)",
+  "key_structural_interests": [
+    "maritime corridor",
+    "Sahel spillover"
+  ],
+  "suppression_baseline": "low_coverage",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

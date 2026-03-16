@@ -1,0 +1,14 @@
+{
+  "iso": "IT",
+  "name": "Italy",
+  "structural_interest_score": 3,
+  "score_rationale": "Major US basing \u2014 Sigonella, Aviano, Naples 6th Fleet (+1), US tactical nuclear weapons hosted (+2 latent nuclear), Mediterranean transit hub",
+  "key_structural_interests": [
+    "US basing",
+    "nuclear hosting",
+    "Mediterranean hub"
+  ],
+  "suppression_baseline": "high_coverage",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

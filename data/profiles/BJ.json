@@ -1,0 +1,12 @@
+{
+  "iso": "BJ",
+  "name": "Benin",
+  "structural_interest_score": 1,
+  "score_rationale": "Sahel jihadist spillover pressure, nascent instability (+1)",
+  "key_structural_interests": [
+    "Sahel spillover"
+  ],
+  "suppression_baseline": "low_coverage",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

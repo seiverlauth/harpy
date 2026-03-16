@@ -1,0 +1,16 @@
+{
+  "iso": "IN",
+  "name": "India",
+  "structural_interest_score": 7,
+  "score_rationale": "Nuclear weapons program (+2), regional power (+1), strategic minerals including rare earths (+2), Indian Ocean chokepoint adjacency \u2014 controls Andaman sea lanes (+1), major US security partner and arms customer (+1)",
+  "key_structural_interests": [
+    "nuclear program",
+    "regional power",
+    "strategic minerals",
+    "Indian Ocean",
+    "US partner"
+  ],
+  "suppression_baseline": "high_coverage",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

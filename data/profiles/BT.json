@@ -1,0 +1,12 @@
+{
+  "iso": "BT",
+  "name": "Bhutan",
+  "structural_interest_score": 1,
+  "score_rationale": "Border dispute with China, Himalayan buffer state (+1)",
+  "key_structural_interests": [
+    "China border dispute"
+  ],
+  "suppression_baseline": "low_coverage",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

@@ -1,0 +1,15 @@
+{
+  "iso": "MM",
+  "name": "Myanmar",
+  "structural_interest_score": 5,
+  "score_rationale": "Active civil war \u2014 post-coup resistance vs. military (+2), rare earth and jade deposits \u2014 Chinese mining dominance (+2), BRI/Kyaukphyu port \u2014 Chinese Indian Ocean access (+1)",
+  "key_structural_interests": [
+    "active conflict",
+    "strategic minerals",
+    "BRI exposure",
+    "Chinese access"
+  ],
+  "suppression_baseline": "moderate_coverage",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

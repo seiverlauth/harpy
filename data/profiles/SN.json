@@ -1,0 +1,13 @@
+{
+  "iso": "SN",
+  "name": "Senegal",
+  "structural_interest_score": 2,
+  "score_rationale": "Major new offshore LNG discoveries \u2014 becoming significant producer (+2)",
+  "key_structural_interests": [
+    "hydrocarbons",
+    "LNG"
+  ],
+  "suppression_baseline": "low_coverage",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

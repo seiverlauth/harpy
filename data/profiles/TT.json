@@ -1,0 +1,13 @@
+{
+  "iso": "TT",
+  "name": "Trinidad and Tobago",
+  "structural_interest_score": 3,
+  "score_rationale": "Western Hemisphere presence (+1), significant hydrocarbon production \u2014 LNG exporter (+2)",
+  "key_structural_interests": [
+    "hydrocarbons",
+    "Western Hemisphere"
+  ],
+  "suppression_baseline": "low_coverage",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

@@ -1,0 +1,14 @@
+{
+  "iso": "DE",
+  "name": "Germany",
+  "structural_interest_score": 4,
+  "score_rationale": "Major US basing \u2014 EUCOM, Ramstein, Landstuhl (+1), US tactical nuclear weapons hosted (+2 latent nuclear), regional power and NATO anchor (+1)",
+  "key_structural_interests": [
+    "US basing",
+    "nuclear hosting",
+    "regional power"
+  ],
+  "suppression_baseline": "high_coverage",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

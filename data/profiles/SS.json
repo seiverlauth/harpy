@@ -1,0 +1,13 @@
+{
+  "iso": "SS",
+  "name": "South Sudan",
+  "structural_interest_score": 4,
+  "score_rationale": "Active civil conflict \u2014 recurrent war, mass atrocities (+2), major hydrocarbon reserves \u2014 landlocked oil producer (+2)",
+  "key_structural_interests": [
+    "active conflict",
+    "hydrocarbons"
+  ],
+  "suppression_baseline": "suppressed",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

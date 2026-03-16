@@ -1,0 +1,12 @@
+{
+  "iso": "NL",
+  "name": "Netherlands",
+  "structural_interest_score": 2,
+  "score_rationale": "US tactical nuclear weapons hosted at Volkel Air Base (+2)",
+  "key_structural_interests": [
+    "nuclear hosting"
+  ],
+  "suppression_baseline": "moderate_coverage",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

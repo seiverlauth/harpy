@@ -52,6 +52,8 @@
       display: flex;
       flex-direction: column;
       gap: 12px;
+      max-height: calc(100vh - 80px);
+      overflow-y: auto;
     }
     #panel.open { right: 212px; }
     @media (max-width: 640px) {
@@ -229,6 +231,99 @@
       padding-top: 8px;
     }
 
+    /* ── Signal list in panel ── */
+    .panel-meta {
+      font-size: 11px;
+      color: #aaa;
+    }
+
+    .signal-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      border-top: 1px solid #eee;
+      padding-top: 8px;
+    }
+
+    .sig-row {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      border-bottom: 1px solid #f5f5f5;
+      padding-bottom: 6px;
+    }
+
+    .sig-date {
+      font-size: 10px;
+      color: #bbb;
+    }
+
+    .sig-title {
+      font-size: 12px;
+      color: #333;
+      line-height: 1.4;
+    }
+
+    .sig-title a {
+      color: #333;
+      text-decoration: underline;
+      text-decoration-color: #ccc;
+    }
+
+    .sig-title a:hover { color: #111; }
+
+    .sig-value {
+      font-size: 10px;
+      color: #999;
+    }
+
+    .sig-source {
+      font-size: 10px;
+      color: #bbb;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    /* ── Profile section in panel ── */
+    .profile-section {
+      border-top: 1px solid #eee;
+      padding-top: 10px;
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .profile-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+    }
+
+    .profile-label {
+      font-size: 10px;
+      color: #aaa;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+    }
+
+    .profile-val {
+      font-size: 12px;
+      color: #333;
+    }
+
+    .profile-rationale {
+      font-size: 12px;
+      color: #666;
+      line-height: 1.5;
+    }
+
+    .profile-list {
+      margin-left: 14px;
+      font-size: 12px;
+      color: #555;
+      line-height: 1.6;
+    }
+
     /* ── Smooth fill transitions ── */
     .leaflet-interactive { transition: fill 0.3s ease; }
   </style>
@@ -291,11 +386,28 @@
 
   function relativeTime(isoStr) {
     const diff = Math.floor((Date.now() - new Date(isoStr)) / 60000);
-    if (diff < 1)  return 'just now';
-    if (diff === 1) return '1 minute ago';
-    if (diff < 60) return diff + ' minutes ago';
+    if (diff < 1)   return 'just now';
+    if (diff === 1)  return '1 minute ago';
+    if (diff < 60)   return diff + ' minutes ago';
     const h = Math.floor(diff / 60);
-    return h === 1 ? '1 hour ago' : h + ' hours ago';
+    if (h < 24) return h === 1 ? '1 hour ago' : h + ' hours ago';
+    const d = Math.floor(h / 24);
+    return d === 1 ? '1 day ago' : d + ' days ago';
+  }
+
+  function escHtml(str) {
+    return String(str)
+      .replace(/&/g, '&amp;')
+      .replace(/</g, '&lt;')
+      .replace(/>/g, '&gt;')
+      .replace(/"/g, '&quot;');
+  }
+
+  function formatUSD(val) {
+    if (val >= 1e9) return (val / 1e9).toFixed(1) + 'B';
+    if (val >= 1e6) return (val / 1e6).toFixed(1) + 'M';
+    if (val >= 1e3) return (val / 1e3).toFixed(0) + 'K';
+    return val.toFixed(0);
   }
 
   // ── ISO alpha-2 → display name ─────────────────────────────────────────────
@@ -455,21 +567,39 @@
     }).addTo(map);
   }
 
-  // ── Fetch signals.json ─────────────────────────────────────────────────────
+  // ── Fetch and process signals.json ─────────────────────────────────────────
   async function fetchSignals() {
     try {
       const data = await fetch('./data/signals.json?t=' + Date.now()).then(r => r.json());
-      const scores = data.composite || data.scores;
-      if (!scores || Object.keys(scores).length === 0) throw new Error('empty');
-      countryScores = scores;
-      signalData    = data;
-      console.log('countryScores', countryScores);
+      const signals = data.signals;
+      if (!signals || signals.length === 0) throw new Error('empty');
+
+      signalData = data;
+
+      // Count records per ISO
+      const counts = {};
+      for (const sig of signals) {
+        if (!sig.iso || sig.iso === 'XN') continue;
+        counts[sig.iso] = (counts[sig.iso] || 0) + 1;
+      }
+
+      // Normalize against 90th percentile
+      const vals = Object.values(counts);
+      const sorted = [...vals].sort((a, b) => a - b);
+      const p90idx = Math.floor(sorted.length * 0.9);
+      const p90 = sorted[Math.min(p90idx, sorted.length - 1)] || 1;
+
+      countryScores = {};
+      for (const [iso, count] of Object.entries(counts)) {
+        countryScores[iso] = Math.round(Math.min(count / p90, 1) * 100);
+      }
+
       if (geoLayer) geoLayer.setStyle(styleFeature);
       renderRankings();
-      if (data.updated) {
-        lastUpdated = data.updated;
-        document.getElementById('updated').textContent = 'Updated ' + relativeTime(data.updated);
-      }
+
+      lastUpdated = data.generated_at;
+      document.getElementById('updated').textContent = 'Updated ' + relativeTime(data.generated_at);
+
     } catch (err) {
       document.getElementById('error-banner').style.display = 'block';
     }
@@ -494,29 +624,6 @@
     });
   }
 
-  // ── Dynamic panel description ──────────────────────────────────────────────
-  function buildDescription(iso) {
-    if (!signalData.layers || !iso) return null;
-    const wire   = (signalData.layers.wire        || {})[iso] || 0;
-    const think  = (signalData.layers.think_tank  || {})[iso] || 0;
-    const gov    = (signalData.layers.government  || {})[iso] || 0;
-
-    const wC = wire * 1, tC = think * 2, gC = gov * 3;
-    const total = wC + tC + gC;
-    if (total === 0) return null;
-
-    const present = [wC > 0 && 'wire', tC > 0 && 'think_tank', gC > 0 && 'government'].filter(Boolean);
-
-    if (present.length === 1) {
-      const label = { wire: 'wire services', think_tank: 'think tanks', government: 'government sources' }[present[0]];
-      return 'Signal from ' + label + ' only — not yet reflected in other sources.';
-    }
-    if (wC / total > 0.6) return 'Wire services driving signal — elevated headline volume in the last 24h.';
-    if (gC / total > 0.6) return 'Signal driven primarily by government sources — Federal Register, State Dept.';
-    if (tC / total > 0.6) return 'Think tank attention elevated — may indicate policy narrative forming.';
-    return 'Cross-layer signal — wire coverage and institutional attention both elevated.';
-  }
-
   // ── Panel ──────────────────────────────────────────────────────────────────
   const panel        = document.getElementById('panel');
   const panelCountry = document.getElementById('panel-country');
@@ -527,36 +634,99 @@
 
   function openPanelForCountry(iso, name, score) {
     panelCountry.textContent = name;
-    if (score != null) {
+    panelSources.textContent = '';
+
+    if (score != null && score > 0) {
       panelScore.textContent     = score;
       panelScore.style.color     = scoreToColor(score);
       panelFill.style.width      = score + '%';
       panelFill.style.background = scoreToColor(score);
-      panelDesc.textContent      = buildDescription(iso) || 'News mention volume from RSS feeds, normalized 0–100 across all countries in the current window.';
     } else {
       panelScore.textContent     = '—';
       panelScore.style.color     = '#111';
       panelFill.style.width      = '0%';
-      panelDesc.textContent      = 'No signal data for this country in the current 24h window.';
+      panelFill.style.background = '#eee';
     }
-    // Sources from signals.json
-    const allSources = new Set();
-    if (signalData.sources && iso) {
-      for (const layer of Object.values(signalData.sources)) {
-        (layer[iso] || []).forEach(f => allSources.add(f));
+
+    // Filter and sort signals for this country
+    const signals = (signalData.signals || [])
+      .filter(s => s.iso === iso)
+      .sort((a, b) => (b.signal_date || '').localeCompare(a.signal_date || ''));
+
+    const count = signals.length;
+    const sources = [...new Set(signals.map(s => s.source).filter(Boolean))];
+
+    let html = '';
+
+    if (count > 0) {
+      html += '<div class="panel-meta">' +
+        count + ' signal' + (count !== 1 ? 's' : '') +
+        (sources.length ? ' &middot; ' + sources.map(escHtml).join(', ') : '') +
+        '</div>';
+      html += '<div class="signal-list">';
+      for (const sig of signals) {
+        const safeTitle = escHtml(sig.title || '—');
+        const titleEl = sig.pdf_url
+          ? '<a href="' + escHtml(sig.pdf_url) + '" target="_blank" rel="noopener">' + safeTitle + '</a>'
+          : safeTitle;
+        const valueEl = sig.value_usd != null
+          ? ' <span class="sig-value">$' + formatUSD(sig.value_usd) + '</span>'
+          : '';
+        html += '<div class="sig-row">' +
+          '<span class="sig-date">' + escHtml(sig.signal_date || '—') + '</span>' +
+          '<span class="sig-title">' + titleEl + valueEl + '</span>' +
+          '<span class="sig-source">' + escHtml(sig.source || '') + '</span>' +
+          '</div>';
       }
+      html += '</div>';
+    } else {
+      html += '<div class="panel-meta">No signals for this country.</div>';
     }
-    panelSources.textContent = allSources.size > 0
-      ? 'Sources: ' + [...allSources].join(', ')
-      : '';
+
+    panelDesc.innerHTML = html;
     panel.classList.add('open');
+
+    // Fetch profile lazily
+    if (iso) {
+      fetch('data/profiles/' + iso + '.json')
+        .then(r => r.ok ? r.json() : Promise.reject())
+        .then(profile => {
+          let pHtml = '<div class="profile-section">';
+          if (profile.structural_interest_score != null) {
+            pHtml += '<div class="profile-row">' +
+              '<span class="profile-label">Structural interest</span>' +
+              '<span class="profile-val">' + escHtml(String(profile.structural_interest_score)) + '</span>' +
+              '</div>';
+          }
+          if (profile.score_rationale) {
+            pHtml += '<div class="profile-rationale">' + escHtml(profile.score_rationale) + '</div>';
+          }
+          if (profile.key_structural_interests && profile.key_structural_interests.length) {
+            pHtml += '<div class="profile-label">Key interests</div>' +
+              '<ul class="profile-list">';
+            for (const item of profile.key_structural_interests) {
+              pHtml += '<li>' + escHtml(item) + '</li>';
+            }
+            pHtml += '</ul>';
+          }
+          if (profile.suppression_baseline) {
+            pHtml += '<div class="profile-row">' +
+              '<span class="profile-label">Suppression baseline</span>' +
+              '<span class="profile-val">' + escHtml(profile.suppression_baseline) + '</span>' +
+              '</div>';
+          }
+          pHtml += '</div>';
+          panelDesc.innerHTML += pHtml;
+        })
+        .catch(() => {}); // not found — skip silently
+    }
   }
 
   function openPanel(feature) {
     const iso   = getCountryISO(feature);
     const name  = ISO_A2_TO_NAME[iso] || iso || 'Unknown';
     const raw   = iso != null ? countryScores[iso] : undefined;
-    const score = (raw != null && raw > 0) ? raw : undefined;
+    const score = (raw != null && raw > 0) ? raw : null;
     openPanelForCountry(iso, name, score);
   }
 

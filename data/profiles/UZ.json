@@ -1,0 +1,14 @@
+{
+  "iso": "UZ",
+  "name": "Uzbekistan",
+  "structural_interest_score": 3,
+  "score_rationale": "Strategic minerals \u2014 uranium, gold, copper (+2), BRI/Chinese infrastructure exposure (+1)",
+  "key_structural_interests": [
+    "strategic minerals",
+    "uranium",
+    "BRI exposure"
+  ],
+  "suppression_baseline": "low_coverage",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

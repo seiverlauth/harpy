@@ -1,0 +1,13 @@
+{
+  "iso": "RW",
+  "name": "Rwanda",
+  "structural_interest_score": 3,
+  "score_rationale": "Active conflict \u2014 DRC/M23 proxy war, direct military involvement (+2), regional proxy hub in Great Lakes (+1)",
+  "key_structural_interests": [
+    "active conflict",
+    "proxy hub"
+  ],
+  "suppression_baseline": "low_coverage",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

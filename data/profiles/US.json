@@ -1,0 +1,17 @@
+{
+  "iso": "US",
+  "name": "United States",
+  "structural_interest_score": 10,
+  "score_rationale": "World's largest nuclear arsenal (+2), global military basing network \u2014 750+ installations (+1), major hydrocarbon producer (+2), strategic minerals processing (+2), Western Hemisphere hegemon (+1), global proxy hub and sanctions issuer (+1), regional power in all theaters (+1)",
+  "key_structural_interests": [
+    "nuclear program",
+    "US basing",
+    "hydrocarbons",
+    "strategic minerals",
+    "Western Hemisphere",
+    "regional power"
+  ],
+  "suppression_baseline": "high_coverage",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

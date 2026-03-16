@@ -1,0 +1,13 @@
+{
+  "iso": "GY",
+  "name": "Guyana",
+  "structural_interest_score": 3,
+  "score_rationale": "Western Hemisphere presence (+1), massive new deepwater hydrocarbon discoveries \u2014 one of world's fastest-growing producers (+2)",
+  "key_structural_interests": [
+    "hydrocarbons",
+    "Western Hemisphere"
+  ],
+  "suppression_baseline": "low_coverage",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

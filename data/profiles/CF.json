@@ -1,0 +1,16 @@
+{
+  "iso": "CF",
+  "name": "Central African Republic",
+  "structural_interest_score": 5,
+  "score_rationale": "Active conflict (+2), uranium and strategic mineral deposits (+2), Russia/Wagner proxy hub (+1)",
+  "key_structural_interests": [
+    "active conflict",
+    "strategic minerals",
+    "uranium",
+    "proxy hub",
+    "Wagner"
+  ],
+  "suppression_baseline": "suppressed",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

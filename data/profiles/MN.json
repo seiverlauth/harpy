@@ -1,0 +1,13 @@
+{
+  "iso": "MN",
+  "name": "Mongolia",
+  "structural_interest_score": 3,
+  "score_rationale": "Major strategic mineral deposits \u2014 copper, coal, rare earths (+2), BRI/Chinese economic dependency (+1)",
+  "key_structural_interests": [
+    "strategic minerals",
+    "BRI exposure"
+  ],
+  "suppression_baseline": "low_coverage",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

@@ -1,0 +1,15 @@
+{
+  "iso": "SY",
+  "name": "Syria",
+  "structural_interest_score": 6,
+  "score_rationale": "Active conflict \u2014 post-Assad fragmentation, ongoing fighting (+2), occupied territory \u2014 Israeli-held Golan, Turkish zones, US/SDF zone (+2), active sanctions regime (+1), proxy hub Russia/Iran/Turkey/US/Israel (+1)",
+  "key_structural_interests": [
+    "active conflict",
+    "occupied territory",
+    "sanctions",
+    "proxy hub"
+  ],
+  "suppression_baseline": "moderate_coverage",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

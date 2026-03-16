@@ -1,0 +1,13 @@
+{
+  "iso": "PG",
+  "name": "Papua New Guinea",
+  "structural_interest_score": 3,
+  "score_rationale": "Strategic mineral deposits \u2014 gold, copper, LNG (+2), Pacific strategic contest \u2014 US/Australia vs. China (+1)",
+  "key_structural_interests": [
+    "strategic minerals",
+    "hydrocarbons"
+  ],
+  "suppression_baseline": "low_coverage",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

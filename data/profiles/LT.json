@@ -1,0 +1,13 @@
+{
+  "iso": "LT",
+  "name": "Lithuania",
+  "structural_interest_score": 2,
+  "score_rationale": "NATO eastern flank (+1), Suwalki Gap \u2014 land corridor between Belarus and Kaliningrad, highest-density NATO chokepoint on land (+1)",
+  "key_structural_interests": [
+    "NATO flank",
+    "Suwalki Gap"
+  ],
+  "suppression_baseline": "low_coverage",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

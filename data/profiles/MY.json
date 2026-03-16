@@ -1,0 +1,14 @@
+{
+  "iso": "MY",
+  "name": "Malaysia",
+  "structural_interest_score": 5,
+  "score_rationale": "Co-controls Malacca Strait \u2014 world's busiest maritime chokepoint (+3), major hydrocarbon producer (+2)",
+  "key_structural_interests": [
+    "maritime chokepoint",
+    "Malacca Strait",
+    "hydrocarbons"
+  ],
+  "suppression_baseline": "moderate_coverage",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

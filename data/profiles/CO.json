@@ -1,0 +1,15 @@
+{
+  "iso": "CO",
+  "name": "Colombia",
+  "structural_interest_score": 6,
+  "score_rationale": "Western Hemisphere presence (+1), active ELN/FARC-dissident conflict (+2), hydrocarbon reserves (+2), major US basing and regional security partner (+1)",
+  "key_structural_interests": [
+    "active conflict",
+    "hydrocarbons",
+    "US basing",
+    "Western Hemisphere"
+  ],
+  "suppression_baseline": "moderate_coverage",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

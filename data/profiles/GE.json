@@ -1,0 +1,14 @@
+{
+  "iso": "GE",
+  "name": "Georgia",
+  "structural_interest_score": 5,
+  "score_rationale": "Occupied territory \u2014 South Ossetia and Abkhazia under Russian control (+2), BTC/SCP pipeline transit corridor (+2), Russia-West proxy contest (+1)",
+  "key_structural_interests": [
+    "occupied territory",
+    "pipeline transit",
+    "proxy hub"
+  ],
+  "suppression_baseline": "low_coverage",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

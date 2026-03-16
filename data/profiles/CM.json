@@ -1,0 +1,13 @@
+{
+  "iso": "CM",
+  "name": "Cameroon",
+  "structural_interest_score": 4,
+  "score_rationale": "Active Anglophone separatist conflict and Boko Haram pressure (+2), hydrocarbon production (+2)",
+  "key_structural_interests": [
+    "active conflict",
+    "hydrocarbons"
+  ],
+  "suppression_baseline": "suppressed",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

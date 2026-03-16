@@ -1,0 +1,15 @@
+{
+  "iso": "CU",
+  "name": "Cuba",
+  "structural_interest_score": 4,
+  "score_rationale": "Western Hemisphere presence (+1), active US sanctions regime (+1), Russian/Chinese intelligence infrastructure (+1), regional proxy hub (+1)",
+  "key_structural_interests": [
+    "sanctions",
+    "proxy hub",
+    "Western Hemisphere",
+    "Russian/Chinese presence"
+  ],
+  "suppression_baseline": "moderate_coverage",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

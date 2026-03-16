@@ -1,0 +1,15 @@
+{
+  "iso": "VN",
+  "name": "Vietnam",
+  "structural_interest_score": 4,
+  "score_rationale": "South China Sea territorial disputes \u2014 Paracel and Spratly Islands (+1), world's second-largest rare earth reserves (+2), US defense relationship expanding post-normalization (+1)",
+  "key_structural_interests": [
+    "South China Sea",
+    "strategic minerals",
+    "rare earths",
+    "US partner"
+  ],
+  "suppression_baseline": "moderate_coverage",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

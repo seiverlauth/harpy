@@ -1,0 +1,13 @@
+{
+  "iso": "XK",
+  "name": "Kosovo",
+  "structural_interest_score": 2,
+  "score_rationale": "Contested sovereignty \u2014 ongoing Serbia/Russia pressure (+1), major US basing at Camp Bondsteel (+1)",
+  "key_structural_interests": [
+    "contested territory",
+    "US basing"
+  ],
+  "suppression_baseline": "low_coverage",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

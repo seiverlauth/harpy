@@ -1,0 +1,16 @@
+{
+  "iso": "YE",
+  "name": "Yemen",
+  "structural_interest_score": 7,
+  "score_rationale": "Houthi control of Bab-el-Mandeb approaches \u2014 Red Sea chokepoint (+3), active full-scale conflict (+2), Iran-Saudi proxy theater (+1), active sanctions on Houthis (+1)",
+  "key_structural_interests": [
+    "maritime chokepoint",
+    "Bab-el-Mandeb",
+    "active conflict",
+    "proxy hub",
+    "sanctions"
+  ],
+  "suppression_baseline": "moderate_coverage",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

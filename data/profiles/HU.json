@@ -1,0 +1,13 @@
+{
+  "iso": "HU",
+  "name": "Hungary",
+  "structural_interest_score": 2,
+  "score_rationale": "Chinese BRI investment hub, Budapest-Belgrade rail (+1), NATO member acting as Russian gas conduit and political spoiler (+1)",
+  "key_structural_interests": [
+    "BRI exposure",
+    "proxy hub"
+  ],
+  "suppression_baseline": "moderate_coverage",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

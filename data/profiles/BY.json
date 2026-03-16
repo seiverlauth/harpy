@@ -1,0 +1,16 @@
+{
+  "iso": "BY",
+  "name": "Belarus",
+  "structural_interest_score": 5,
+  "score_rationale": "Occupied/co-belligerent in Ukraine war, Russian forward position (+2), active sanctions regime (+1), Russia proxy hub (+1), nuclear weapons hosted (+1 latent nuclear)",
+  "key_structural_interests": [
+    "active conflict",
+    "sanctions",
+    "proxy hub",
+    "nuclear hosting",
+    "Russian forward base"
+  ],
+  "suppression_baseline": "moderate_coverage",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

@@ -1,0 +1,13 @@
+{
+  "iso": "PS",
+  "name": "Palestine",
+  "structural_interest_score": 3,
+  "score_rationale": "Active conflict \u2014 Gaza war (+2), Iran/Hezbollah proxy theater (+1)",
+  "key_structural_interests": [
+    "active conflict",
+    "proxy hub"
+  ],
+  "suppression_baseline": "high_coverage",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

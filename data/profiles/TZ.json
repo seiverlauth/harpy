@@ -1,0 +1,13 @@
+{
+  "iso": "TZ",
+  "name": "Tanzania",
+  "structural_interest_score": 3,
+  "score_rationale": "Strategic minerals \u2014 gold, tanzanite, niobium, rare earth potential (+2), LNG reserves \u2014 Rovuma basin shared with Mozambique (+1)",
+  "key_structural_interests": [
+    "strategic minerals",
+    "hydrocarbons"
+  ],
+  "suppression_baseline": "low_coverage",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

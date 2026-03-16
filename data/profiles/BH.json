@@ -1,0 +1,15 @@
+{
+  "iso": "BH",
+  "name": "Bahrain",
+  "structural_interest_score": 4,
+  "score_rationale": "US 5th Fleet HQ, major basing presence (+1), Persian Gulf hydrocarbon transit hub (+2), Shia/Sunni proxy dynamic, Iranian pressure (+1)",
+  "key_structural_interests": [
+    "US basing",
+    "5th Fleet",
+    "hydrocarbons",
+    "proxy hub"
+  ],
+  "suppression_baseline": "low_coverage",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

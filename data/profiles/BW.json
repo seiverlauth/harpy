@@ -1,0 +1,13 @@
+{
+  "iso": "BW",
+  "name": "Botswana",
+  "structural_interest_score": 2,
+  "score_rationale": "Major diamond processing and strategic mineral deposits (+2)",
+  "key_structural_interests": [
+    "strategic minerals",
+    "diamonds"
+  ],
+  "suppression_baseline": "low_coverage",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

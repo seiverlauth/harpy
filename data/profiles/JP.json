@@ -1,0 +1,15 @@
+{
+  "iso": "JP",
+  "name": "Japan",
+  "structural_interest_score": 6,
+  "score_rationale": "Latent nuclear program \u2014 plutonium stockpile, can weaponize rapidly (+2), regional power (+1), strategic minerals processing hub (+2), major US basing \u2014 Yokosuka, Kadena, Okinawa (+1)",
+  "key_structural_interests": [
+    "nuclear program",
+    "regional power",
+    "strategic minerals",
+    "US basing"
+  ],
+  "suppression_baseline": "high_coverage",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

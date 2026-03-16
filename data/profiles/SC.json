@@ -1,0 +1,12 @@
+{
+  "iso": "SC",
+  "name": "Seychelles",
+  "structural_interest_score": 1,
+  "score_rationale": "Indian Ocean strategic position \u2014 key EEZ in central Indian Ocean (+1)",
+  "key_structural_interests": [
+    "Indian Ocean"
+  ],
+  "suppression_baseline": "low_coverage",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

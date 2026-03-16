@@ -1,0 +1,14 @@
+{
+  "iso": "MZ",
+  "name": "Mozambique",
+  "structural_interest_score": 4,
+  "score_rationale": "Active ISIS-affiliate conflict in Cabo Delgado (+2), massive LNG reserves \u2014 Rovuma basin (+2)",
+  "key_structural_interests": [
+    "active conflict",
+    "hydrocarbons",
+    "LNG"
+  ],
+  "suppression_baseline": "suppressed",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

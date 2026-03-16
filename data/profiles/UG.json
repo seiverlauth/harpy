@@ -1,0 +1,13 @@
+{
+  "iso": "UG",
+  "name": "Uganda",
+  "structural_interest_score": 4,
+  "score_rationale": "Active conflict \u2014 ADF insurgency, Great Lakes instability (+2), Lake Albert hydrocarbon reserves \u2014 major oil development underway (+2)",
+  "key_structural_interests": [
+    "active conflict",
+    "hydrocarbons"
+  ],
+  "suppression_baseline": "low_coverage",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

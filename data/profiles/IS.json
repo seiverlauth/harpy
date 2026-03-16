@@ -1,0 +1,14 @@
+{
+  "iso": "IS",
+  "name": "Iceland",
+  "structural_interest_score": 4,
+  "score_rationale": "GIUK Gap \u2014 North Atlantic chokepoint between Greenland, Iceland, UK (+3), US Keflavik basing access (+1)",
+  "key_structural_interests": [
+    "maritime chokepoint",
+    "GIUK Gap",
+    "US basing"
+  ],
+  "suppression_baseline": "low_coverage",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

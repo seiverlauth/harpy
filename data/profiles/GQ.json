@@ -1,0 +1,12 @@
+{
+  "iso": "GQ",
+  "name": "Equatorial Guinea",
+  "structural_interest_score": 2,
+  "score_rationale": "Significant offshore hydrocarbon production (+2)",
+  "key_structural_interests": [
+    "hydrocarbons"
+  ],
+  "suppression_baseline": "suppressed",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

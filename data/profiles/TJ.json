@@ -1,0 +1,13 @@
+{
+  "iso": "TJ",
+  "name": "Tajikistan",
+  "structural_interest_score": 2,
+  "score_rationale": "Afghan border \u2014 narco-trafficking and insurgent spillover corridor (+1), BRI/Chinese infrastructure exposure (+1)",
+  "key_structural_interests": [
+    "BRI exposure",
+    "Afghan corridor"
+  ],
+  "suppression_baseline": "low_coverage",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

@@ -1,0 +1,16 @@
+{
+  "iso": "EG",
+  "name": "Egypt",
+  "structural_interest_score": 7,
+  "score_rationale": "Controls Suez Canal \u2014 global maritime chokepoint (+3), major US basing and security partner (+1), regional power (+1), hydrocarbon producer and gas hub (+2)",
+  "key_structural_interests": [
+    "maritime chokepoint",
+    "Suez Canal",
+    "US basing",
+    "regional power",
+    "hydrocarbons"
+  ],
+  "suppression_baseline": "moderate_coverage",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

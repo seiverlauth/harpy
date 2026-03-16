@@ -1,0 +1,14 @@
+{
+  "iso": "AZ",
+  "name": "Azerbaijan",
+  "structural_interest_score": 4,
+  "score_rationale": "Hydrocarbon reserves and BTC/TANAP pipeline transit (+2), post-conflict occupied territory in Karabakh (+1), proxy hub between Russia, Turkey, Iran (+1)",
+  "key_structural_interests": [
+    "hydrocarbons",
+    "pipeline transit",
+    "proxy hub"
+  ],
+  "suppression_baseline": "low_coverage",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

@@ -1,0 +1,15 @@
+{
+  "iso": "BR",
+  "name": "Brazil",
+  "structural_interest_score": 5,
+  "score_rationale": "Western Hemisphere presence (+1), major pre-salt hydrocarbon reserves (+2), regional power (+1), strategic minerals including niobium (+1)",
+  "key_structural_interests": [
+    "hydrocarbons",
+    "regional power",
+    "strategic minerals",
+    "Western Hemisphere"
+  ],
+  "suppression_baseline": "moderate_coverage",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

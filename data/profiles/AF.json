@@ -1,0 +1,15 @@
+{
+  "iso": "AF",
+  "name": "Afghanistan",
+  "structural_interest_score": 5,
+  "score_rationale": "Active conflict/instability (+2), Taliban sanctions (+1), BRI engagement/Chinese interest (+1), regional proxy hub (+1)",
+  "key_structural_interests": [
+    "active conflict",
+    "sanctions",
+    "BRI exposure",
+    "proxy hub"
+  ],
+  "suppression_baseline": "moderate_coverage",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

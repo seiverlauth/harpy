@@ -1,0 +1,14 @@
+{
+  "iso": "GR",
+  "name": "Greece",
+  "structural_interest_score": 3,
+  "score_rationale": "Major US basing \u2014 Souda Bay, Alexandroupolis (+1), controls Aegean Sea access \u2014 strategic maritime corridor (+1), NATO southeastern flank and Eastern Med gas contest (+1)",
+  "key_structural_interests": [
+    "US basing",
+    "maritime corridor",
+    "NATO flank"
+  ],
+  "suppression_baseline": "moderate_coverage",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

@@ -1,0 +1,15 @@
+{
+  "iso": "SG",
+  "name": "Singapore",
+  "structural_interest_score": 5,
+  "score_rationale": "Controls eastern Malacca Strait \u2014 most critical maritime chokepoint by volume (+3), major US naval access (+1), regional financial and logistics hub (+1)",
+  "key_structural_interests": [
+    "maritime chokepoint",
+    "Malacca Strait",
+    "US basing",
+    "regional hub"
+  ],
+  "suppression_baseline": "moderate_coverage",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

@@ -1,0 +1,12 @@
+{
+  "iso": "ST",
+  "name": "S\u00e3o Tom\u00e9 and Pr\u00edncipe",
+  "structural_interest_score": 1,
+  "score_rationale": "Gulf of Guinea offshore hydrocarbon potential (+1)",
+  "key_structural_interests": [
+    "hydrocarbons"
+  ],
+  "suppression_baseline": "low_coverage",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

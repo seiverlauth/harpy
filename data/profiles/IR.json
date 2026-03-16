@@ -1,0 +1,17 @@
+{
+  "iso": "IR",
+  "name": "Iran",
+  "structural_interest_score": 9,
+  "score_rationale": "Controls northern shore of Strait of Hormuz \u2014 world's most critical oil chokepoint (+3), active nuclear program (+2), massive hydrocarbon reserves (+2), active sanctions regime (+1), regional proxy hub \u2014 Hezbollah, Houthis, Iraq militias (+1)",
+  "key_structural_interests": [
+    "maritime chokepoint",
+    "Strait of Hormuz",
+    "nuclear program",
+    "hydrocarbons",
+    "sanctions",
+    "proxy hub"
+  ],
+  "suppression_baseline": "high_coverage",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

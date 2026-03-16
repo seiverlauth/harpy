@@ -1,0 +1,13 @@
+{
+  "iso": "RS",
+  "name": "Serbia",
+  "structural_interest_score": 2,
+  "score_rationale": "Russia-EU proxy contest \u2014 refuses sanctions, Serbian-Kosovo tension (+1), Chinese BRI investment hub in Balkans (+1)",
+  "key_structural_interests": [
+    "proxy hub",
+    "BRI exposure"
+  ],
+  "suppression_baseline": "low_coverage",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

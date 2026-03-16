@@ -1,0 +1,12 @@
+{
+  "iso": "WS",
+  "name": "Samoa",
+  "structural_interest_score": 1,
+  "score_rationale": "Pacific strategic contest \u2014 Chinese BRI infrastructure investment (+1)",
+  "key_structural_interests": [
+    "BRI exposure"
+  ],
+  "suppression_baseline": "low_coverage",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

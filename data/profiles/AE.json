@@ -1,0 +1,14 @@
+{
+  "iso": "AE",
+  "name": "United Arab Emirates",
+  "structural_interest_score": 4,
+  "score_rationale": "Major hydrocarbon reserves (+2), US basing access \u2014 Al Dhafra Air Base (+1), regional proxy hub \u2014 Sudan, Libya, Horn of Africa (+1)",
+  "key_structural_interests": [
+    "hydrocarbons",
+    "US basing",
+    "proxy hub"
+  ],
+  "suppression_baseline": "moderate_coverage",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

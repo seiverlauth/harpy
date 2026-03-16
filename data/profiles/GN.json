@@ -1,0 +1,14 @@
+{
+  "iso": "GN",
+  "name": "Guinea",
+  "structural_interest_score": 3,
+  "score_rationale": "World's largest bauxite reserves plus iron ore \u2014 critical minerals (+2), Chinese mining dominance/BRI (+1)",
+  "key_structural_interests": [
+    "strategic minerals",
+    "bauxite",
+    "BRI exposure"
+  ],
+  "suppression_baseline": "suppressed",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

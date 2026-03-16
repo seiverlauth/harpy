@@ -1,0 +1,17 @@
+{
+  "iso": "DJ",
+  "name": "Djibouti",
+  "structural_interest_score": 7,
+  "score_rationale": "Bab-el-Mandeb chokepoint \u2014 Red Sea/Indian Ocean (+3), US Camp Lemonnier basing (+1), Chinese PLA overseas base (+1), BRI exposure (+1), multi-nation basing hub (+1)",
+  "key_structural_interests": [
+    "maritime chokepoint",
+    "Bab-el-Mandeb",
+    "US basing",
+    "Chinese base",
+    "BRI exposure",
+    "proxy hub"
+  ],
+  "suppression_baseline": "suppressed",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

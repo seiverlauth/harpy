@@ -1,0 +1,13 @@
+{
+  "iso": "ES",
+  "name": "Spain",
+  "structural_interest_score": 2,
+  "score_rationale": "Major US basing \u2014 Rota naval base, Mor\u00f3n Air Base (+1), Gibraltar Strait \u2014 controls northern approach (+1)",
+  "key_structural_interests": [
+    "US basing",
+    "maritime corridor"
+  ],
+  "suppression_baseline": "moderate_coverage",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

@@ -1,0 +1,13 @@
+{
+  "iso": "PT",
+  "name": "Portugal",
+  "structural_interest_score": 2,
+  "score_rationale": "Azores \u2014 strategic North Atlantic position, US Lajes Air Base (+1), lithium deposits \u2014 significant European reserves (+1)",
+  "key_structural_interests": [
+    "US basing",
+    "strategic minerals"
+  ],
+  "suppression_baseline": "low_coverage",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

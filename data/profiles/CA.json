@@ -1,0 +1,14 @@
+{
+  "iso": "CA",
+  "name": "Canada",
+  "structural_interest_score": 5,
+  "score_rationale": "Western Hemisphere presence (+1), major hydrocarbon producer (+2), strategic minerals including uranium and rare earths (+2)",
+  "key_structural_interests": [
+    "hydrocarbons",
+    "strategic minerals",
+    "Western Hemisphere"
+  ],
+  "suppression_baseline": "high_coverage",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

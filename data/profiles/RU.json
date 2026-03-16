@@ -1,0 +1,18 @@
+{
+  "iso": "RU",
+  "name": "Russia",
+  "structural_interest_score": 10,
+  "score_rationale": "Active nuclear weapons \u2014 largest arsenal (+2), major hydrocarbon producer and pipeline network (+2), active conflict \u2014 Ukraine war (+2), comprehensive sanctions regime (+1), regional power and global proxy hub (+1), controls Arctic sea routes (+1), strategic minerals (+1)",
+  "key_structural_interests": [
+    "nuclear program",
+    "hydrocarbons",
+    "active conflict",
+    "sanctions",
+    "regional power",
+    "Arctic",
+    "proxy hub"
+  ],
+  "suppression_baseline": "high_coverage",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

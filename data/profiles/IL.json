@@ -1,0 +1,16 @@
+{
+  "iso": "IL",
+  "name": "Israel",
+  "structural_interest_score": 7,
+  "score_rationale": "Undeclared nuclear weapons program (+2), active conflict \u2014 Gaza war, Lebanon, regional escalation (+2), major US security guarantor and basing access (+1), regional power (+1), active sanctions against counterparties (+1)",
+  "key_structural_interests": [
+    "nuclear program",
+    "active conflict",
+    "US basing",
+    "regional power",
+    "sanctions"
+  ],
+  "suppression_baseline": "high_coverage",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

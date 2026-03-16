@@ -1,0 +1,14 @@
+{
+  "iso": "NA",
+  "name": "Namibia",
+  "structural_interest_score": 4,
+  "score_rationale": "Major uranium deposits (+2), significant offshore hydrocarbon discoveries \u2014 Orange Basin (+2)",
+  "key_structural_interests": [
+    "strategic minerals",
+    "uranium",
+    "hydrocarbons"
+  ],
+  "suppression_baseline": "low_coverage",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

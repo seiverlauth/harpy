@@ -1,0 +1,15 @@
+{
+  "iso": "MA",
+  "name": "Morocco",
+  "structural_interest_score": 4,
+  "score_rationale": "World's largest phosphate reserves \u2014 critical for global food security (+2), controls Gibraltar Strait approach from south (+1), regional power in Maghreb/Sahel (+1)",
+  "key_structural_interests": [
+    "strategic minerals",
+    "phosphates",
+    "maritime corridor",
+    "regional power"
+  ],
+  "suppression_baseline": "low_coverage",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

@@ -1,0 +1,13 @@
+{
+  "iso": "DZ",
+  "name": "Algeria",
+  "structural_interest_score": 3,
+  "score_rationale": "Major hydrocarbon reserves and European gas supplier (+2), regional power in Sahel/Maghreb (+1)",
+  "key_structural_interests": [
+    "hydrocarbons",
+    "regional power"
+  ],
+  "suppression_baseline": "low_coverage",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

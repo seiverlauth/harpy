@@ -1,0 +1,12 @@
+{
+  "iso": "BG",
+  "name": "Bulgaria",
+  "structural_interest_score": 1,
+  "score_rationale": "NATO Black Sea flank, Russian gas transit history (+1)",
+  "key_structural_interests": [
+    "NATO flank"
+  ],
+  "suppression_baseline": "low_coverage",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

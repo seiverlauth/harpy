@@ -1,0 +1,14 @@
+{
+  "iso": "ER",
+  "name": "Eritrea",
+  "structural_interest_score": 4,
+  "score_rationale": "Active conflict \u2014 direct military involvement in Tigray war (+2), Red Sea strategic coastline (+1), proxy hub for regional power contest (+1)",
+  "key_structural_interests": [
+    "active conflict",
+    "Red Sea",
+    "proxy hub"
+  ],
+  "suppression_baseline": "suppressed",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

@@ -1,0 +1,14 @@
+{
+  "iso": "CY",
+  "name": "Cyprus",
+  "structural_interest_score": 4,
+  "score_rationale": "Active occupation \u2014 Turkish-occupied northern Cyprus (+2), UK sovereign bases (Akrotiri/Dhekelia) with US access (+1), Eastern Med gas fields (+1)",
+  "key_structural_interests": [
+    "occupied territory",
+    "US/UK basing",
+    "hydrocarbons"
+  ],
+  "suppression_baseline": "low_coverage",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

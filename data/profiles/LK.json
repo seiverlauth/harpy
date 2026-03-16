@@ -1,0 +1,13 @@
+{
+  "iso": "LK",
+  "name": "Sri Lanka",
+  "structural_interest_score": 2,
+  "score_rationale": "Chinese BRI debt trap \u2014 Hambantota Port 99-year lease (+1), Indian Ocean strategic position astride major shipping lanes (+1)",
+  "key_structural_interests": [
+    "BRI exposure",
+    "Indian Ocean"
+  ],
+  "suppression_baseline": "low_coverage",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

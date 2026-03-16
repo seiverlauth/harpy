@@ -1,0 +1,63 @@
+{
+  "generated_at": "2026-03-16T06:48:39.255502+00:00",
+  "sources": [
+    "dsca"
+  ],
+  "signals": [
+    {
+      "iso": "XN",
+      "source": "dsca",
+      "signal_date": "2024-12-12",
+      "title": "Press Release - NATO 13-06 _0 CN.PDF",
+      "value_usd": null,
+      "description": null,
+      "raw_score": null,
+      "cn_number": "13-06",
+      "pdf_url": "https://media.defense.gov/2024/Dec/12/2003610908/-1/-1/0/NATO_13-06_0.PDF"
+    },
+    {
+      "iso": "XN",
+      "source": "dsca",
+      "signal_date": "2024-12-12",
+      "title": "Press Release - NATO - NSPA 17-19 CN.PDF",
+      "value_usd": null,
+      "description": null,
+      "raw_score": null,
+      "cn_number": "17-19",
+      "pdf_url": "https://media.defense.gov/2024/Dec/12/2003610907/-1/-1/0/NATO_17-19.PDF"
+    },
+    {
+      "iso": "XN",
+      "source": "dsca",
+      "signal_date": "2024-12-12",
+      "title": "Press Release - NATO NSPA 17-06 CN.PDF",
+      "value_usd": null,
+      "description": null,
+      "raw_score": null,
+      "cn_number": "17-06",
+      "pdf_url": "https://media.defense.gov/2024/Dec/12/2003610906/-1/-1/0/NATO_17-06.PDF"
+    },
+    {
+      "iso": "XN",
+      "source": "dsca",
+      "signal_date": "2025-08-27",
+      "title": "PRESS RELEASE - NSPA 25-55 CN.PDF",
+      "value_usd": null,
+      "description": null,
+      "raw_score": null,
+      "cn_number": "25-55",
+      "pdf_url": "https://media.defense.gov/2025/Aug/27/2003789027/-1/-1/0/PRESS RELEASE - NSPA 25-55 CN.PDF"
+    },
+    {
+      "iso": "XN",
+      "source": "dsca",
+      "signal_date": "2025-12-18",
+      "title": "PRESS RELEASE - NSPA 25-97 CN.PDF",
+      "value_usd": null,
+      "description": null,
+      "raw_score": null,
+      "cn_number": "25-97",
+      "pdf_url": "https://media.defense.gov/2025/Dec/18/2003844868/-1/-1/0/PRESS RELEASE - NSPA 25-97 CN.PDF"
+    }
+  ]
+}

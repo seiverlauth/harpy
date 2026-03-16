@@ -1,0 +1,15 @@
+{
+  "iso": "BO",
+  "name": "Bolivia",
+  "structural_interest_score": 4,
+  "score_rationale": "World's largest lithium reserves (+2), Western Hemisphere presence (+1), BRI/Chinese mineral investment (+1)",
+  "key_structural_interests": [
+    "strategic minerals",
+    "lithium",
+    "Western Hemisphere",
+    "BRI exposure"
+  ],
+  "suppression_baseline": "low_coverage",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}

@@ -1,0 +1,13 @@
+{
+  "iso": "BN",
+  "name": "Brunei",
+  "structural_interest_score": 3,
+  "score_rationale": "Hydrocarbon reserves (+2), South China Sea territorial dispute (+1)",
+  "key_structural_interests": [
+    "hydrocarbons",
+    "South China Sea"
+  ],
+  "suppression_baseline": "low_coverage",
+  "last_reviewed": "2026-03-15",
+  "last_generated": "2026-03-16"
+}
