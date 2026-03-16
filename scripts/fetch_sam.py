@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-fetch_sam.py — SAM.gov procurement signal pipeline for CREST
+fetch_sam.py — SAM.gov procurement signal pipeline for HARPY
 
 Usage:
   python fetch_sam.py --probe                            # dump raw API response, exit
@@ -796,7 +796,7 @@ def normalize(countries):
 # ---------------------------------------------------------------------------
 
 def main():
-    parser = argparse.ArgumentParser(description="CREST SAM.gov signal pipeline")
+    parser = argparse.ArgumentParser(description="HARPY SAM.gov signal pipeline")
     parser.add_argument("--probe", action="store_true",
                         help="Dump raw SAM.gov response (limit=5) and exit")
     parser.add_argument("--backtest", nargs=2, metavar=("COUNTRY_CODE", "EVENT_DATE"),

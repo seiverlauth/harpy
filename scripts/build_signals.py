@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-build_signals.py — Aggregation layer for CREST.
+build_signals.py — Aggregation layer for HARPY.
 Reads all data/*_signals.json source files, merges into data/signals.json.
 """
 

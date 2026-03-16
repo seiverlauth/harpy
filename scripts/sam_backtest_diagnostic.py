@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-sam_backtest_diagnostic.py — SAM.gov date-range diagnostic for CREST backtest
+sam_backtest_diagnostic.py — SAM.gov date-range diagnostic for HARPY backtest
 
 Tests two pre-Ukraine-invasion windows to determine:
   1. Whether SAM.gov allows historical queries (2021–2022 range)
