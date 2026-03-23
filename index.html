@@ -4,754 +4,368 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>HARPY</title>
-
-  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
-  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
-
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
-    body {
-      background: #fff;
-      color: #111;
-      font-family: system-ui, -apple-system, sans-serif;
-      height: 100vh;
-      overflow: hidden;
-      display: flex;
-      flex-direction: column;
+    :root {
+      --bg:     #0a0a0f;
+      --panel:  #0f0f1a;
+      --border: #1e2a3a;
+      --text:   #8899aa;
+      --dim:    #4a5a6a;
+      --accent: #00ff88;
+      --alert:  #6b0000;
+      --mono:   "Courier New", Courier, monospace;
     }
 
+    html, body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--mono);
+      font-size: 13px;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { text-decoration: underline; }
+
+    /* ── Layout ── */
+    .outer {
+      max-width: 860px;
+      margin: 0 auto;
+      padding: 40px 24px 80px;
+    }
+
+    /* ── Header ── */
     header {
-      padding: 12px 20px;
-      border-bottom: 1px solid #e8e8e8;
+      border-bottom: 1px solid var(--border);
+      padding-bottom: 20px;
+      margin-bottom: 32px;
+    }
+
+    header h1 {
+      font-size: 22px;
+      font-weight: normal;
+      letter-spacing: 0.18em;
+      color: var(--accent);
+      font-family: var(--mono);
+    }
+
+    header .subtitle {
+      font-size: 11px;
+      color: var(--dim);
+      margin-top: 4px;
+      letter-spacing: 0.04em;
+    }
+
+    /* ── Feed ── */
+    #feed {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+
+    /* ── Feed item ── */
+    .item {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      padding: 18px 22px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      column-gap: 20px;
+    }
+
+    .item:hover {
+      border-color: #2e3f54;
+    }
+
+    /* Row 1: description (headline) + value */
+    .item-description {
+      grid-column: 1;
+      grid-row: 1;
+      font-size: 14px;
+      color: #c8d8e8;
+      letter-spacing: 0.01em;
+      align-self: start;
+    }
+
+    .item-value {
+      grid-column: 2;
+      grid-row: 1;
+      font-size: 14px;
+      color: var(--accent);
+      white-space: nowrap;
+      text-align: right;
+      align-self: start;
+      letter-spacing: 0.02em;
+    }
+
+    /* Row 2: country + date + score */
+    .item-meta {
+      grid-column: 1 / -1;
+      grid-row: 2;
       display: flex;
       align-items: center;
-      gap: 12px;
-      flex-shrink: 0;
+      gap: 16px;
+      margin-top: 7px;
+      flex-wrap: wrap;
     }
-    header h1 { font-size: 14px; font-weight: 600; }
-    header span { font-size: 12px; color: #999; }
 
-    #map-container { flex: 1; position: relative; overflow: hidden; }
-    #map { width: 100%; height: 100%; }
-    .leaflet-container { background: #fff !important; }
+    .item-country {
+      color: var(--text);
+      font-size: 12px;
+    }
 
-    /* ── Detail panel ── */
-    #panel {
-      position: absolute;
-      top: 12px; right: -320px;
-      width: 280px;
-      background: #fff;
-      border: 1px solid #e8e8e8;
-      border-radius: 6px;
-      box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-      padding: 16px;
-      transition: right 0.2s ease;
-      z-index: 1000;
+    .item-iso {
+      color: var(--dim);
+      font-size: 11px;
+      margin-left: 5px;
+    }
+
+    .item-date {
+      color: var(--dim);
+      font-size: 11px;
+    }
+
+    .item-score {
+      color: var(--dim);
+      font-size: 11px;
       display: flex;
-      flex-direction: column;
-      gap: 12px;
-      max-height: calc(100vh - 80px);
-      overflow-y: auto;
-    }
-    #panel.open { right: 212px; }
-    @media (max-width: 640px) {
-      #panel.open { right: 12px; }
+      align-items: center;
+      gap: 5px;
     }
 
-    #panel-close {
-      align-self: flex-end;
-      background: none; border: none;
-      font-size: 16px; color: #999;
-      cursor: pointer; line-height: 1;
-    }
-    #panel-close:hover { color: #111; }
-
-    #panel-country { font-size: 15px; font-weight: 600; }
-    #panel-score-label { font-size: 11px; color: #999; margin-bottom: 2px; }
-    #panel-score { font-size: 36px; font-weight: 700; line-height: 1; }
-
-    #panel-score-bar { height: 3px; background: #eee; border-radius: 2px; }
-    #panel-score-fill { height: 100%; border-radius: 2px; transition: width 0.3s ease; }
-
-    #panel-desc {
-      font-size: 13px; line-height: 1.6; color: #666;
-      border-top: 1px solid #eee; padding-top: 12px;
+    .score-dots {
+      display: inline-flex;
+      gap: 2px;
     }
 
-    /* ── Rankings sidebar ── */
-    #rankings {
-      position: absolute;
-      top: 0; right: 0; bottom: 0;
-      width: 200px;
-      background: #fff;
-      border-left: 1px solid #e8e8e8;
-      z-index: 900;
+    .dot {
+      width: 5px;
+      height: 5px;
+      background: var(--border);
+      display: inline-block;
+    }
+
+    .dot.on {
+      background: var(--accent);
+      opacity: 0.55;
+    }
+
+    /* Row 3: context + source link */
+    .item-footer {
+      grid-column: 1 / -1;
+      grid-row: 3;
       display: flex;
-      flex-direction: column;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-top: 8px;
+      padding-top: 8px;
+      border-top: 1px solid var(--border);
+      gap: 16px;
     }
 
-    #rankings-header {
-      padding: 10px 12px;
-      border-bottom: 1px solid #e8e8e8;
-      font-size: 10px;
-      font-weight: 600;
-      color: #aaa;
+    .item-context {
+      color: var(--dim);
+      font-size: 11px;
       letter-spacing: 0.06em;
       text-transform: uppercase;
-      flex-shrink: 0;
-    }
-
-    #rankings-list {
       flex: 1;
-      overflow-y: auto;
     }
 
-    .rank-row {
-      display: flex;
-      align-items: center;
-      gap: 7px;
-      padding: 6px 12px;
-      cursor: pointer;
-      border-bottom: 1px solid #f5f5f5;
-    }
-    .rank-row:hover { background: #fafafa; }
-
-    .rank-num {
-      font-size: 10px;
-      color: #ccc;
-      min-width: 16px;
-      text-align: right;
-      flex-shrink: 0;
-    }
-
-    .rank-swatch {
-      width: 8px; height: 8px;
-      border-radius: 2px;
-      flex-shrink: 0;
-    }
-
-    .rank-name {
-      flex: 1;
-      font-size: 12px;
-      color: #333;
-      overflow: hidden;
-      text-overflow: ellipsis;
+    .item-source a {
+      font-size: 11px;
+      color: var(--dim);
+      letter-spacing: 0.05em;
       white-space: nowrap;
     }
 
-    .rank-score {
-      font-size: 11px;
-      color: #999;
-      min-width: 22px;
-      text-align: right;
-      flex-shrink: 0;
+    .item-source a:hover {
+      color: var(--accent);
+      text-decoration: none;
     }
 
-    /* ── Rankings toggle (small screens) ── */
-    #rankings-toggle {
-      display: none;
-      position: absolute;
-      top: 12px; right: 12px;
-      z-index: 950;
-      background: #fff;
-      border: 1px solid #e8e8e8;
-      border-radius: 6px;
-      padding: 6px 10px;
+    /* ── States ── */
+    #status {
+      color: var(--dim);
       font-size: 12px;
-      color: #555;
-      cursor: pointer;
-      box-shadow: 0 1px 6px rgba(0,0,0,0.06);
-    }
-
-    @media (max-width: 640px) {
-      #rankings { display: none; }
-      #rankings.visible { display: flex; width: 200px; }
-      #rankings-toggle { display: block; }
-    }
-
-    /* ── Legend ── */
-    #legend {
-      position: absolute;
-      bottom: 20px; left: 16px;
-      z-index: 1000;
-      background: #fff;
-      border: 1px solid #e8e8e8;
-      border-radius: 6px;
-      padding: 10px 12px;
-      display: flex; flex-direction: column; gap: 5px;
-      box-shadow: 0 1px 6px rgba(0,0,0,0.06);
-    }
-    #legend-label { font-size: 10px; color: #999; }
-    #legend-bar {
-      width: 160px; height: 4px; border-radius: 2px;
-      background: linear-gradient(to right, #d0d0d0, #e8a090, #d45040, #aa2020, #6b0000);
-    }
-    #legend-ticks {
-      display: flex; justify-content: space-between;
-      font-size: 10px; color: #bbb; width: 160px;
-    }
-
-    #error-banner {
-      display: none;
-      position: absolute;
-      top: 16px; left: 50%; transform: translateX(-50%);
-      z-index: 1000;
-      background: #fff;
-      border: 1px solid #e8e8e8;
-      border-radius: 6px;
-      padding: 8px 16px;
-      font-size: 13px;
-      color: #888;
-      box-shadow: 0 1px 6px rgba(0,0,0,0.06);
-      white-space: nowrap;
-    }
-
-    /* ── Hover tooltip ── */
-    #tooltip {
-      position: fixed;
-      pointer-events: none;
-      background: rgba(15, 15, 25, 0.82);
-      color: #fff;
-      padding: 4px 10px;
-      border-radius: 20px;
-      font-size: 12px;
-      white-space: nowrap;
-      display: none;
-      z-index: 2000;
-    }
-
-    /* ── Panel sources ── */
-    #panel-sources {
-      font-size: 11px;
-      color: #aaa;
-      line-height: 1.6;
-      border-top: 1px solid #eee;
-      padding-top: 8px;
-    }
-
-    /* ── Signal list in panel ── */
-    .panel-meta {
-      font-size: 11px;
-      color: #aaa;
-    }
-
-    .signal-list {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      border-top: 1px solid #eee;
-      padding-top: 8px;
-    }
-
-    .sig-row {
-      display: flex;
-      flex-direction: column;
-      gap: 2px;
-      border-bottom: 1px solid #f5f5f5;
-      padding-bottom: 6px;
-    }
-
-    .sig-date {
-      font-size: 10px;
-      color: #bbb;
-    }
-
-    .sig-title {
-      font-size: 12px;
-      color: #333;
-      line-height: 1.4;
-    }
-
-    .sig-title a {
-      color: #333;
-      text-decoration: underline;
-      text-decoration-color: #ccc;
-    }
-
-    .sig-title a:hover { color: #111; }
-
-    .sig-value {
-      font-size: 10px;
-      color: #999;
-    }
-
-    .sig-source {
-      font-size: 10px;
-      color: #bbb;
-      text-transform: uppercase;
+      padding: 24px 0;
       letter-spacing: 0.04em;
     }
 
-    /* ── Profile section in panel ── */
-    .profile-section {
-      border-top: 1px solid #eee;
-      padding-top: 10px;
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-    }
-
-    .profile-row {
-      display: flex;
-      justify-content: space-between;
-      align-items: baseline;
-    }
-
-    .profile-label {
-      font-size: 10px;
-      color: #aaa;
-      text-transform: uppercase;
-      letter-spacing: 0.04em;
-    }
-
-    .profile-val {
-      font-size: 12px;
-      color: #333;
-    }
-
-    .profile-rationale {
-      font-size: 12px;
-      color: #666;
-      line-height: 1.5;
-    }
-
-    .profile-list {
-      margin-left: 14px;
-      font-size: 12px;
-      color: #555;
-      line-height: 1.6;
-    }
-
-    /* ── Smooth fill transitions ── */
-    .leaflet-interactive { transition: fill 0.3s ease; }
+    #status.error { color: #cc3333; }
   </style>
 </head>
 <body>
-
-<header>
-  <h1>HARPY</h1>
-  <span>Hidden Action Reconnaissance Pre-narrative Yield</span>
-  <span id="updated"></span>
-</header>
-
-<div id="map-container">
-  <div id="map"></div>
-  <div id="error-banner">Signal data unavailable — please refresh to try again.</div>
-
-  <div id="panel">
-    <button id="panel-close">&#x2715;</button>
-    <div id="panel-country">—</div>
-    <div>
-      <div id="panel-score-label">Signal Intensity</div>
-      <div id="panel-score">—</div>
-    </div>
-    <div id="panel-score-bar"><div id="panel-score-fill"></div></div>
-    <div id="panel-desc">Select a country to view signal data.</div>
-    <div id="panel-sources"></div>
+  <div class="outer">
+    <header>
+      <h1>HARPY</h1>
+      <div class="subtitle" id="last-updated">—</div>
+    </header>
+    <div id="status">fetching signals…</div>
+    <div id="feed"></div>
   </div>
 
-  <div id="rankings">
-    <div id="rankings-header">Signal Rank</div>
-    <div id="rankings-list"></div>
-  </div>
+  <script>
+    const PROFILES_BASE = 'data/profiles/';
+    const SIGNALS_URL   = 'data/signals.json';
 
-  <button id="rankings-toggle">Rankings</button>
-  <div id="tooltip"></div>
+    // ── Formatters ──────────────────────────────────────────────────────────
 
-  <div id="legend">
-    <div id="legend-label">Signal Level</div>
-    <div id="legend-bar"></div>
-    <div id="legend-ticks">
-      <span>Low</span>
-      <span>Medium</span>
-      <span>High</span>
-    </div>
-  </div>
-</div>
-
-<script>
-  // ── Active scores: ISO alpha-2 → 0–100, populated from signals.json ────────
-  let countryScores = {};
-  let signalData    = {};
-  let lastUpdated   = null;
-
-  // ── Color scale ───────────────────────────────────────────────────────────
-  const colorScale = d3.scaleLinear()
-    .domain([0, 25, 50, 75, 100])
-    .range(['#d0d0d0', '#e8a090', '#d45040', '#aa2020', '#6b0000']);
-
-  function scoreToColor(score) { return colorScale(score); }
-
-  function relativeTime(isoStr) {
-    const diff = Math.floor((Date.now() - new Date(isoStr)) / 60000);
-    if (diff < 1)   return 'just now';
-    if (diff === 1)  return '1 minute ago';
-    if (diff < 60)   return diff + ' minutes ago';
-    const h = Math.floor(diff / 60);
-    if (h < 24) return h === 1 ? '1 hour ago' : h + ' hours ago';
-    const d = Math.floor(h / 24);
-    return d === 1 ? '1 day ago' : d + ' days ago';
-  }
-
-  function escHtml(str) {
-    return String(str)
-      .replace(/&/g, '&amp;')
-      .replace(/</g, '&lt;')
-      .replace(/>/g, '&gt;')
-      .replace(/"/g, '&quot;');
-  }
-
-  function formatUSD(val) {
-    if (val >= 1e9) return (val / 1e9).toFixed(1) + 'B';
-    if (val >= 1e6) return (val / 1e6).toFixed(1) + 'M';
-    if (val >= 1e3) return (val / 1e3).toFixed(0) + 'K';
-    return val.toFixed(0);
-  }
-
-  // ── ISO alpha-2 → display name ─────────────────────────────────────────────
-  const ISO_A2_TO_NAME = {
-    AF:'Afghanistan', AL:'Albania', DZ:'Algeria', AO:'Angola', AR:'Argentina',
-    AM:'Armenia', AU:'Australia', AT:'Austria', AZ:'Azerbaijan', BH:'Bahrain',
-    BD:'Bangladesh', BY:'Belarus', BE:'Belgium', BZ:'Belize', BJ:'Benin',
-    BT:'Bhutan', BO:'Bolivia', BA:'Bosnia', BW:'Botswana', BR:'Brazil',
-    BG:'Bulgaria', BN:'Brunei', BF:'Burkina Faso', BI:'Burundi', CV:'Cabo Verde', KH:'Cambodia',
-    CM:'Cameroon', CA:'Canada', CF:'Central African Rep.', TD:'Chad', CL:'Chile',
-    CN:'China', CO:'Colombia', KM:'Comoros', CG:'Congo (Republic)', CD:'Congo (DRC)',
-    CR:'Costa Rica', HR:'Croatia', CU:'Cuba', CY:'Cyprus', CZ:'Czechia',
-    DK:'Denmark', DJ:'Djibouti', DO:'Dominican Republic', EC:'Ecuador',
-    EG:'Egypt', SV:'El Salvador', GQ:'Equatorial Guinea', ER:'Eritrea',
-    EE:'Estonia', ET:'Ethiopia', FJ:'Fiji', FI:'Finland', FR:'France',
-    GA:'Gabon', GM:'Gambia', GE:'Georgia', DE:'Germany', GH:'Ghana',
-    GL:'Greenland', GR:'Greece', GT:'Guatemala', GN:'Guinea', GW:'Guinea-Bissau', GY:'Guyana',
-    HT:'Haiti', HN:'Honduras', HU:'Hungary', IS:'Iceland', IN:'India',
-    ID:'Indonesia', IR:'Iran', IQ:'Iraq', IE:'Ireland', IL:'Israel',
-    IT:'Italy', CI:"Ivory Coast", JM:'Jamaica', JP:'Japan', JO:'Jordan',
-    KZ:'Kazakhstan', KE:'Kenya', KP:'North Korea', KR:'South Korea',
-    KW:'Kuwait', KG:'Kyrgyzstan', LA:'Laos', LV:'Latvia', LB:'Lebanon',
-    LS:'Lesotho', LR:'Liberia', LY:'Libya', LT:'Lithuania', MG:'Madagascar',
-    MW:'Malawi', MY:'Malaysia', MV:'Maldives', ML:'Mali', MR:'Mauritania',
-    MU:'Mauritius', MX:'Mexico', MD:'Moldova', MN:'Mongolia', ME:'Montenegro',
-    MA:'Morocco', MZ:'Mozambique', MM:'Myanmar', NA:'Namibia', NP:'Nepal',
-    NL:'Netherlands', NZ:'New Zealand', NI:'Nicaragua', NE:'Niger', NG:'Nigeria',
-    MK:'North Macedonia', NO:'Norway', OM:'Oman', PK:'Pakistan', PA:'Panama',
-    PG:'Papua New Guinea', PY:'Paraguay', PE:'Peru', PH:'Philippines',
-    PL:'Poland', PT:'Portugal', PS:'Palestine', QA:'Qatar', RO:'Romania',
-    RU:'Russia', RW:'Rwanda', SA:'Saudi Arabia', SN:'Senegal', RS:'Serbia',
-    SL:'Sierra Leone', SG:'Singapore', SK:'Slovakia', SI:'Slovenia',
-    SO:'Somalia', ZA:'South Africa', SS:'South Sudan', ES:'Spain',
-    LK:'Sri Lanka', SD:'Sudan', SR:'Suriname', SE:'Sweden', SZ:'Eswatini',
-    CH:'Switzerland', SY:'Syria', TW:'Taiwan', TJ:'Tajikistan', TZ:'Tanzania',
-    TH:'Thailand', TL:'Timor-Leste', TG:'Togo', TT:'Trinidad and Tobago',
-    TN:'Tunisia', TR:'Turkey', TM:'Turkmenistan', UG:'Uganda', UA:'Ukraine',
-    AE:'UAE', GB:'United Kingdom', US:'United States', UY:'Uruguay',
-    UZ:'Uzbekistan', VU:'Vanuatu', VE:'Venezuela', VN:'Vietnam',
-    WS:'Samoa', YE:'Yemen', ZM:'Zambia', ZW:'Zimbabwe',
-  };
-
-  // ── Leaflet map init ───────────────────────────────────────────────────────
-  const map = L.map('map', {
-    center: [20, 10], zoom: 2, minZoom: 2, maxZoom: 6,
-    zoomControl: true, attributionControl: false,
-  });
-
-  // ── ISO numeric → alpha-2 ──────────────────────────────────────────────────
-  const ISO_NUMERIC_TO_A2 = {
-    '004':'AF','008':'AL','012':'DZ','024':'AO','031':'AZ','032':'AR',
-    '036':'AU','040':'AT','048':'BH','050':'BD','051':'AM','056':'BE',
-    '064':'BT','068':'BO','070':'BA','072':'BW','076':'BR','084':'BZ',
-    '096':'BN','100':'BG','104':'MM','108':'BI','112':'BY','116':'KH',
-    '120':'CM','124':'CA','132':'CV','140':'CF','144':'LK','148':'TD',
-    '152':'CL','156':'CN','158':'TW','170':'CO','174':'KM','178':'CG',
-    '180':'CD','188':'CR','191':'HR','192':'CU','196':'CY','203':'CZ',
-    '204':'BJ','208':'DK','214':'DO','218':'EC','222':'SV','226':'GQ',
-    '231':'ET','232':'ER','233':'EE','242':'FJ','246':'FI','250':'FR',
-    '262':'DJ','266':'GA','268':'GE','270':'GM','275':'PS','276':'DE',
-    '288':'GH','300':'GR','304':'GL','320':'GT','324':'GN','328':'GY','332':'HT',
-    '340':'HN','348':'HU','352':'IS','356':'IN','360':'ID','364':'IR',
-    '368':'IQ','372':'IE','376':'IL','380':'IT','384':'CI','388':'JM',
-    '392':'JP','398':'KZ','400':'JO','404':'KE','408':'KP','410':'KR',
-    '414':'KW','417':'KG','418':'LA','422':'LB','426':'LS','428':'LV',
-    '430':'LR','434':'LY','440':'LT','450':'MG','454':'MW','458':'MY',
-    '462':'MV','466':'ML','478':'MR','480':'MU','484':'MX','496':'MN',
-    '498':'MD','499':'ME','504':'MA','508':'MZ','512':'OM','516':'NA',
-    '524':'NP','528':'NL','548':'VU','554':'NZ','558':'NI','562':'NE',
-    '566':'NG','578':'NO','586':'PK','591':'PA','598':'PG','600':'PY',
-    '604':'PE','608':'PH','616':'PL','620':'PT','624':'GW','626':'TL',
-    '634':'QA','642':'RO','643':'RU','646':'RW','682':'SA','686':'SN',
-    '688':'RS','694':'SL','702':'SG','703':'SK','704':'VN','705':'SI',
-    '706':'SO','710':'ZA','716':'ZW','724':'ES','728':'SS','729':'SD',
-    '740':'SR','748':'SZ','752':'SE','756':'CH','760':'SY','762':'TJ',
-    '764':'TH','768':'TG','780':'TT','784':'AE','788':'TN','792':'TR',
-    '795':'TM','800':'UG','804':'UA','807':'MK','818':'EG','826':'GB',
-    '834':'TZ','840':'US','854':'BF','858':'UY','860':'UZ','862':'VE',
-    '882':'WS','887':'YE','894':'ZM',
-  };
-
-  let geoLayer = null;
-
-  // ── Load topojson lib, then geo data, then signals ────────────────────────
-  const script = document.createElement('script');
-  script.src = 'https://cdn.jsdelivr.net/npm/topojson-client@3/dist/topojson-client.min.js';
-  script.onload = () => fetchGeoData().then(() => {
-    fetchSignals();
-    setInterval(fetchSignals, 5 * 60 * 1000);
-  });
-  document.head.appendChild(script);
-
-  async function fetchGeoData() {
-    const world = await fetch('https://cdn.jsdelivr.net/npm/world-atlas@2/countries-110m.json').then(r => r.json());
-    const countries = topojson.feature(world, world.objects.countries);
-    countries.features = countries.features.filter(f => {
-      const id = Number(f.id);
-      return id !== 10 && id !== -99 && !isNaN(id);
-    });
-    countries.features.forEach(f => {
-      if (!f.geometry) return;
-      const fix = ring => {
-        for (let i = 1; i < ring.length; i++) {
-          const dx = ring[i][0] - ring[i - 1][0];
-          if (dx > 180)  ring[i][0] -= 360;
-          if (dx < -180) ring[i][0] += 360;
-        }
-      };
-      const coords = f.geometry.coordinates;
-      if (f.geometry.type === 'Polygon')      coords.forEach(fix);
-      if (f.geometry.type === 'MultiPolygon') coords.forEach(p => p.forEach(fix));
-    });
-    renderMap(countries);
-  }
-
-  function getCountryISO(feature) {
-    return ISO_NUMERIC_TO_A2[String(feature.id).padStart(3, '0')] || null;
-  }
-
-  function styleFeature(feature) {
-    const iso = getCountryISO(feature);
-    const score = iso != null ? countryScores[iso] : undefined;
-    return {
-      fillColor: (score != null && score > 0) ? scoreToColor(score) : '#efefef',
-      fillOpacity: 1,
-      color: '#ccc',
-      weight: 0.5,
-      opacity: 1,
-    };
-  }
-
-  function renderMap(geojson) {
-    geoLayer = L.geoJSON(geojson, {
-      style: styleFeature,
-      onEachFeature(feature, layer) {
-        layer.on({
-          mouseover(e) {
-            const iso   = getCountryISO(feature);
-            const score = iso != null ? countryScores[iso] : undefined;
-            const name  = ISO_A2_TO_NAME[iso] || iso || '';
-            e.target.setStyle({
-              fillColor: (score != null && score > 0) ? scoreToColor(score) : '#e0e0e0',
-              weight: 1.5,
-              color: '#888',
-            });
-            const tip = document.getElementById('tooltip');
-            tip.textContent = (score != null && score > 0) ? name + ' · ' + score : name;
-            tip.style.display = 'block';
-          },
-          mouseout(e) {
-            geoLayer.resetStyle(e.target);
-            document.getElementById('tooltip').style.display = 'none';
-          },
-          click() { openPanel(feature); },
-        });
-      },
-    }).addTo(map);
-  }
-
-  // ── Fetch and process signals.json ─────────────────────────────────────────
-  async function fetchSignals() {
-    try {
-      const data = await fetch('./data/signals.json?t=' + Date.now()).then(r => r.json());
-      const signals = data.signals;
-      if (!signals || signals.length === 0) throw new Error('empty');
-
-      signalData = data;
-
-      // Count records per ISO
-      const counts = {};
-      for (const sig of signals) {
-        if (!sig.iso || sig.iso === 'XN') continue;
-        counts[sig.iso] = (counts[sig.iso] || 0) + 1;
+    function fmtValue(v) {
+      if (v == null) return '';
+      if (v >= 1e9) {
+        const n = v / 1e9;
+        return '$' + (Number.isInteger(n) ? n : n.toFixed(1)) + 'B';
       }
-
-      // Normalize against 90th percentile
-      const vals = Object.values(counts);
-      const sorted = [...vals].sort((a, b) => a - b);
-      const p90idx = Math.floor(sorted.length * 0.9);
-      const p90 = sorted[Math.min(p90idx, sorted.length - 1)] || 1;
-
-      countryScores = {};
-      for (const [iso, count] of Object.entries(counts)) {
-        countryScores[iso] = Math.round(Math.min(count / p90, 1) * 100);
+      if (v >= 1e6) {
+        const n = v / 1e6;
+        return '$' + (Number.isInteger(n) ? n : n.toFixed(1)) + 'M';
       }
-
-      if (geoLayer) geoLayer.setStyle(styleFeature);
-      renderRankings();
-
-      lastUpdated = data.generated_at;
-      document.getElementById('updated').textContent = 'Updated ' + relativeTime(data.generated_at);
-
-    } catch (err) {
-      document.getElementById('error-banner').style.display = 'block';
-    }
-  }
-
-  // ── Rankings list ──────────────────────────────────────────────────────────
-  function renderRankings() {
-    const list = document.getElementById('rankings-list');
-    const sorted = Object.entries(countryScores).filter(([, s]) => s > 0).sort((a, b) => b[1] - a[1]);
-    list.innerHTML = '';
-    sorted.forEach(([iso, score], i) => {
-      const name = ISO_A2_TO_NAME[iso] || iso;
-      const row = document.createElement('div');
-      row.className = 'rank-row';
-      row.innerHTML =
-        '<span class="rank-num">' + (i + 1) + '</span>' +
-        '<span class="rank-swatch" style="background:' + scoreToColor(score) + '"></span>' +
-        '<span class="rank-name">' + name + '</span>' +
-        '<span class="rank-score">' + score + '</span>';
-      row.addEventListener('click', () => openPanelForCountry(iso, name, score));
-      list.appendChild(row);
-    });
-  }
-
-  // ── Panel ──────────────────────────────────────────────────────────────────
-  const panel        = document.getElementById('panel');
-  const panelCountry = document.getElementById('panel-country');
-  const panelScore   = document.getElementById('panel-score');
-  const panelFill    = document.getElementById('panel-score-fill');
-  const panelDesc    = document.getElementById('panel-desc');
-  const panelSources = document.getElementById('panel-sources');
-
-  function openPanelForCountry(iso, name, score) {
-    panelCountry.textContent = name;
-    panelSources.textContent = '';
-
-    if (score != null && score > 0) {
-      panelScore.textContent     = score;
-      panelScore.style.color     = scoreToColor(score);
-      panelFill.style.width      = score + '%';
-      panelFill.style.background = scoreToColor(score);
-    } else {
-      panelScore.textContent     = '—';
-      panelScore.style.color     = '#111';
-      panelFill.style.width      = '0%';
-      panelFill.style.background = '#eee';
+      if (v >= 1e3) {
+        const n = v / 1e3;
+        return '$' + (Number.isInteger(n) ? n : n.toFixed(1)) + 'K';
+      }
+      return '$' + v.toFixed(0);
     }
 
-    // Filter and sort signals for this country
-    const signals = (signalData.signals || [])
-      .filter(s => s.iso === iso)
-      .sort((a, b) => (b.signal_date || '').localeCompare(a.signal_date || ''));
-
-    const count = signals.length;
-    const sources = [...new Set(signals.map(s => s.source).filter(Boolean))];
-
-    let html = '';
-
-    if (count > 0) {
-      html += '<div class="panel-meta">' +
-        count + ' signal' + (count !== 1 ? 's' : '') +
-        (sources.length ? ' &middot; ' + sources.map(escHtml).join(', ') : '') +
-        '</div>';
-      html += '<div class="signal-list">';
-      for (const sig of signals) {
-        const safeTitle = escHtml(sig.title || '—');
-        const titleEl = sig.pdf_url
-          ? '<a href="' + escHtml(sig.pdf_url) + '" target="_blank" rel="noopener">' + safeTitle + '</a>'
-          : safeTitle;
-        const valueEl = sig.value_usd != null
-          ? ' <span class="sig-value">$' + formatUSD(sig.value_usd) + '</span>'
-          : '';
-        html += '<div class="sig-row">' +
-          '<span class="sig-date">' + escHtml(sig.signal_date || '—') + '</span>' +
-          '<span class="sig-title">' + titleEl + valueEl + '</span>' +
-          '<span class="sig-source">' + escHtml(sig.source || '') + '</span>' +
-          '</div>';
-      }
-      html += '</div>';
-    } else {
-      html += '<div class="panel-meta">No signals for this country.</div>';
+    function fmtDate(iso) {
+      if (!iso) return '';
+      const [y, m, d] = iso.split('-').map(Number);
+      return new Date(y, m - 1, d).toLocaleDateString('en-US', {
+        month: 'short', day: 'numeric', year: 'numeric'
+      });
     }
 
-    panelDesc.innerHTML = html;
-    panel.classList.add('open');
+    function fmtUpdated(isoStr) {
+      if (!isoStr) return '';
+      const dt = new Date(isoStr);
+      return 'last updated ' + dt.toLocaleDateString('en-US', {
+        month: 'short', day: 'numeric', year: 'numeric',
+        hour: '2-digit', minute: '2-digit', timeZoneName: 'short'
+      });
+    }
 
-    // Fetch profile lazily
-    if (iso) {
-      fetch('data/profiles/' + iso + '.json')
-        .then(r => r.ok ? r.json() : Promise.reject())
-        .then(profile => {
-          let pHtml = '<div class="profile-section">';
-          if (profile.structural_interest_score != null) {
-            pHtml += '<div class="profile-row">' +
-              '<span class="profile-label">Structural interest</span>' +
-              '<span class="profile-val">' + escHtml(String(profile.structural_interest_score)) + '</span>' +
-              '</div>';
-          }
-          if (profile.score_rationale) {
-            pHtml += '<div class="profile-rationale">' + escHtml(profile.score_rationale) + '</div>';
-          }
-          if (profile.key_structural_interests && profile.key_structural_interests.length) {
-            pHtml += '<div class="profile-label">Key interests</div>' +
-              '<ul class="profile-list">';
-            for (const item of profile.key_structural_interests) {
-              pHtml += '<li>' + escHtml(item) + '</li>';
-            }
-            pHtml += '</ul>';
-          }
-          if (profile.suppression_baseline) {
-            pHtml += '<div class="profile-row">' +
-              '<span class="profile-label">Suppression baseline</span>' +
-              '<span class="profile-val">' + escHtml(profile.suppression_baseline) + '</span>' +
-              '</div>';
-          }
-          pHtml += '</div>';
-          panelDesc.innerHTML += pHtml;
+    function scoreDots(score) {
+      const n = Math.min(Math.max(Math.round(score || 0), 0), 10);
+      let html = '<span class="score-dots">';
+      for (let i = 0; i < 10; i++) {
+        html += `<span class="dot${i < n ? ' on' : ''}"></span>`;
+      }
+      return html + '</span>';
+    }
+
+    function esc(str) {
+      return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;');
+    }
+
+    // ── Profile cache ────────────────────────────────────────────────────────
+
+    const profileCache = {};
+
+    async function loadProfile(iso) {
+      if (iso in profileCache) return profileCache[iso];
+      try {
+        const r = await fetch(PROFILES_BASE + iso + '.json');
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        profileCache[iso] = await r.json();
+      } catch (e) {
+        console.warn(`[HARPY] no profile for ${iso}:`, e.message);
+        profileCache[iso] = null;
+      }
+      return profileCache[iso];
+    }
+
+    // ── Render one item ──────────────────────────────────────────────────────
+
+    function renderItem(sig, profile) {
+      const country = profile ? profile.name : sig.iso;
+      const score   = profile ? profile.structural_interest_score : null;
+      const context = profile && Array.isArray(profile.key_structural_interests) && profile.key_structural_interests.length
+                    ? profile.key_structural_interests[0]
+                    : null;
+
+      const el = document.createElement('div');
+      el.className = 'item';
+
+      const sourceHtml = sig.page_url
+        ? `<a href="${esc(sig.page_url)}" target="_blank" rel="noopener">source →</a>`
+        : '';
+
+      const scoreHtml = score != null
+        ? `<span class="item-score">${scoreDots(score)}<span>${score}/10</span></span>`
+        : '';
+
+      el.innerHTML = `
+        <div class="item-description">${esc(sig.description || '—')}</div>
+        <div class="item-value">${fmtValue(sig.value_usd)}</div>
+        <div class="item-meta">
+          <span class="item-country">${esc(country)}<span class="item-iso">${esc(sig.iso)}</span></span>
+          <span class="item-date">${fmtDate(sig.signal_date)}</span>
+          ${scoreHtml}
+        </div>
+        <div class="item-footer">
+          <span class="item-context">${context ? esc(context) : ''}</span>
+          <span class="item-source">${sourceHtml}</span>
+        </div>
+      `.trim();
+
+      return el;
+    }
+
+    // ── Main ─────────────────────────────────────────────────────────────────
+
+    async function main() {
+      const statusEl  = document.getElementById('status');
+      const feedEl    = document.getElementById('feed');
+      const updatedEl = document.getElementById('last-updated');
+
+      let data;
+      try {
+        const r = await fetch(SIGNALS_URL);
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        data = await r.json();
+      } catch (e) {
+        statusEl.textContent = 'error loading signals.json — ' + e.message;
+        statusEl.className = 'error';
+        return;
+      }
+
+      updatedEl.textContent = fmtUpdated(data.generated_at);
+
+      // Dedupe on cn_number, filter empties, sort newest first
+      const seen = new Set();
+      const signals = (data.signals || [])
+        .filter(s => s.value_usd != null || s.description)
+        .filter(s => {
+          const key = s.cn_number || `${s.iso}|${s.signal_date}|${s.description}`;
+          if (seen.has(key)) return false;
+          seen.add(key);
+          return true;
         })
-        .catch(() => {}); // not found — skip silently
+        .sort((a, b) => (b.signal_date || '').localeCompare(a.signal_date || ''));
+
+      statusEl.remove();
+
+      if (!signals.length) {
+        feedEl.innerHTML = '<div id="status">no signals</div>';
+        return;
+      }
+
+      // Fetch all profiles in parallel, then render in order
+      await Promise.all([...new Set(signals.map(s => s.iso))].map(loadProfile));
+
+      for (const sig of signals) {
+        feedEl.appendChild(renderItem(sig, profileCache[sig.iso] || null));
+      }
     }
-  }
 
-  function openPanel(feature) {
-    const iso   = getCountryISO(feature);
-    const name  = ISO_A2_TO_NAME[iso] || iso || 'Unknown';
-    const raw   = iso != null ? countryScores[iso] : undefined;
-    const score = (raw != null && raw > 0) ? raw : null;
-    openPanelForCountry(iso, name, score);
-  }
-
-  document.getElementById('panel-close').addEventListener('click', () => {
-    panel.classList.remove('open');
-  });
-
-  // ── Rankings toggle (small screens) ───────────────────────────────────────
-  document.getElementById('rankings-toggle').addEventListener('click', () => {
-    document.getElementById('rankings').classList.toggle('visible');
-  });
-
-  // ── Tooltip follows cursor ─────────────────────────────────────────────────
-  document.getElementById('map-container').addEventListener('mousemove', e => {
-    const tip = document.getElementById('tooltip');
-    tip.style.left = (e.clientX + 14) + 'px';
-    tip.style.top  = (e.clientY - 32) + 'px';
-  });
-
-  // ── Relative timestamp refresh ─────────────────────────────────────────────
-  setInterval(() => {
-    if (lastUpdated) {
-      document.getElementById('updated').textContent = 'Updated ' + relativeTime(lastUpdated);
-    }
-  }, 60000);
-</script>
+    main();
+  </script>
 </body>
 </html>
