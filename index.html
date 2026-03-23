@@ -13,7 +13,7 @@
       --sep:     #3a3a3c;
       --text:    #f5f5f7;
       --muted:   #98989f;
-      --accent:  #4ade80;
+      --accent:  #f5f5f7;
       --sans:    system-ui, -apple-system, sans-serif;
     }
 
@@ -95,13 +95,12 @@
       transition: background 0.1s;
     }
 
-    .item.has-profile { cursor: pointer; }
 
     .item:hover                 { background: rgba(255,255,255,0.035); }
-    .item.tint-amber            { background: rgba(245,158,11,0.06); }
-    .item.tint-red              { background: rgba(239,68,68,0.08); }
-    .item.tint-amber:hover      { background: rgba(245,158,11,0.10); }
-    .item.tint-red:hover        { background: rgba(239,68,68,0.13); }
+    .item.tint-amber            { background: rgba(245,158,11,0.12); }
+    .item.tint-red              { background: rgba(239,68,68,0.15); }
+    .item.tint-amber:hover      { background: rgba(245,158,11,0.17); }
+    .item.tint-red:hover        { background: rgba(239,68,68,0.21); }
 
     /* Line 1: description + value */
     .row1 {
@@ -149,39 +148,6 @@
       font-size: 13px;
     }
     .source-link:hover { text-decoration: underline; }
-
-    /* ── Expandable why-section ── */
-    .why-body {
-      overflow: hidden;
-      max-height: 0;
-      opacity: 0;
-      transition: max-height 0.24s ease, opacity 0.2s ease;
-    }
-
-    .item.expanded .why-body {
-      max-height: 240px;
-      opacity: 1;
-    }
-
-    .why-inner {
-      margin-top: 10px;
-      padding-top: 10px;
-      border-top: 1px solid var(--sep);
-      font-size: 12px;
-      color: var(--muted);
-      line-height: 1.65;
-      display: flex;
-      flex-direction: column;
-      gap: 5px;
-    }
-
-    .why-meta {
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 12px;
-      color: var(--muted);
-    }
 
     /* ── Tooltip ── */
     #tooltip {
@@ -326,17 +292,12 @@
         else if (score >= 4) el.classList.add('tint-amber');
       }
 
-      // Tooltip on country name
-      let countryHtml;
+      // Whole-row tooltip
       if (profile) {
-        el.classList.add('has-profile');
         const ttParts = [];
         if (score != null) ttParts.push(`Structural interest: ${score}/10`);
         if (profile.score_rationale) ttParts.push(profile.score_rationale);
-        const tt = ttParts.join('\n');
-        countryHtml = `<span class="item-country" data-tooltip="${esc(tt)}">${esc(country)}</span>`;
-      } else {
-        countryHtml = `<span class="item-country">${esc(country)}</span>`;
+        if (ttParts.length) el.dataset.tooltip = ttParts.join('\n');
       }
 
       // Source link (inline on row 2)
@@ -344,42 +305,13 @@
         ? `<span class="sep">·</span>${fmtDate(sig.signal_date)}<span class="sep">·</span><a class="source-link" href="${esc(sig.page_url)}" target="_blank" rel="noopener">source →</a>`
         : `<span class="sep">·</span>${fmtDate(sig.signal_date)}`;
 
-      // Expandable why section
-      let whyHtml = '';
-      if (profile) {
-        const rationale = profile.score_rationale || '';
-        const interests = Array.isArray(profile.key_structural_interests) && profile.key_structural_interests.length
-                        ? profile.key_structural_interests.join(', ')
-                        : '';
-        const srcLink = sig.page_url
-          ? `<span class="sep">·</span><a class="source-link" href="${esc(sig.page_url)}" target="_blank" rel="noopener">source →</a>`
-          : '';
-        whyHtml = `
-          <div class="why-body">
-            <div class="why-inner">
-              ${rationale ? `<div>${esc(rationale)}</div>` : ''}
-              ${interests ? `<div>${esc(interests)}</div>` : ''}
-              <div class="why-meta">Structural interest: ${score != null ? score + '/10' : '—'}${srcLink}</div>
-            </div>
-          </div>`;
-      }
-
       el.innerHTML = `
         <div class="row1">
           <span class="item-desc">${esc(sig.description || '—')}</span>
           <span class="item-val">${fmtValue(sig.value_usd)}</span>
         </div>
-        <div class="row2">${countryHtml}${sourceInline}</div>
-        ${whyHtml}
+        <div class="row2"><span class="item-country">${esc(country)}</span>${sourceInline}</div>
       `.trim();
-
-      // Click to expand/collapse (skip if click target is a link)
-      if (profile) {
-        el.addEventListener('click', e => {
-          if (e.target.closest('a')) return;
-          el.classList.toggle('expanded');
-        });
-      }
 
       return el;
     }
