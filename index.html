@@ -336,10 +336,10 @@
 
       updatedEl.textContent = fmtUpdated(data.generated_at);
 
-      // Dedupe on cn_number, filter empties, sort newest first
+      // Dedupe on cn_number, skip US/null iso, sort newest first
       const seen = new Set();
       const signals = (data.signals || [])
-        .filter(s => s.value_usd != null || s.description)
+        .filter(s => s.iso && s.iso !== 'US')
         .filter(s => {
           const key = s.cn_number || `${s.iso}|${s.signal_date}|${s.description}`;
           if (seen.has(key)) return false;
