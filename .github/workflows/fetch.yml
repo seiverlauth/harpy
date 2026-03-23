@@ -48,7 +48,7 @@ jobs:
 
       - name: Commit updated data
         run: |
-          git add data/signals.json data/dsca_signals.json data/dsca_nato.json data/sam_signals.json data/ofac_signals.json
+          git add data/signals.json data/dsca_signals.json data/dsca_nato.json data/sam_signals.json data/ofac_signals.json data/ofac_known_uids.json
           git commit -m "update signals [skip ci]" || echo "nothing to commit"
           git push origin main --force-with-lease
         env:
