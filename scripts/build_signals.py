@@ -39,6 +39,12 @@ def main():
 
         signals = data.get("signals", [])
 
+        # Drop records with neither value_usd nor description
+        signals = [
+            s for s in signals
+            if s.get("value_usd") is not None or s.get("description")
+        ]
+
         # Add weight field to every record
         weighted = []
         for sig in signals:
