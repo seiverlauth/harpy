@@ -136,12 +136,24 @@
       color: var(--muted);
     }
 
-    /* Line 3: description */
+    /* Line 3: description (collapsed by default, click to expand) */
     .row3 {
       margin-top: 3px;
       font-size: 12px;
       color: var(--muted);
       opacity: 0.65;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      cursor: pointer;
+      user-select: none;
+    }
+    .row3:hover { opacity: 0.85; }
+    .item.expanded .row3 {
+      white-space: normal;
+      overflow: visible;
+      text-overflow: clip;
+      opacity: 0.85;
     }
 
     .item-country {
@@ -325,8 +337,7 @@
         : `<span class="sep">·</span>${fmtDate(sig.signal_date)}`;
 
       const descRaw = sig.description || '';
-      const descText = descRaw.length > 120 ? descRaw.slice(0, 120) + '…' : descRaw;
-      const descRow = descText ? `<div class="row3">${esc(descText)}</div>` : '';
+      const descRow = descRaw ? `<div class="row3">${esc(descRaw)}</div>` : '';
 
       el.innerHTML = `
         <div class="row1">
@@ -336,6 +347,13 @@
         <div class="row2"><span class="source-tag">${esc(sig.source || '')}</span><span class="sep">·</span><span class="item-country">${esc(country)}</span>${sourceInline}</div>
         ${descRow}
       `.trim();
+
+      if (descRaw) {
+        el.querySelector('.row3').addEventListener('click', e => {
+          e.stopPropagation();
+          el.classList.toggle('expanded');
+        });
+      }
 
       return el;
     }
