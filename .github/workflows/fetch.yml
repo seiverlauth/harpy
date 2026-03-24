@@ -18,7 +18,7 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Install dependencies
-        run: pip3 install requests beautifulsoup4 curl_cffi
+        run: pip3 install --upgrade curl_cffi requests beautifulsoup4
 
       - name: Configure git and pull latest
         run: |
