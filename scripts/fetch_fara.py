@@ -2,16 +2,19 @@
 """
 fetch_fara.py — FARA new registrant pipeline for HARPY
 
-Source: https://efile.fara.gov/api/v1/Registrants/New.json
-        date range: yesterday → today
+Flow:
+  1. GET /api/v1/Registrants/json/New?from=...&to=... → list of new registration numbers
+  2. For each new reg number, GET /api/v1/ForeignPrincipals/json/Active/{regNumber}
+     → registrant name, foreign principal name, country
+  3. Emit one signal per registration. Append to data/fara_signals.json.
+     Deduplicate by registration_number across runs.
 
-Emits one signal per new registration where the foreign principal country
-resolves to a known ISO code. Unknown countries are kept (iso = "XX").
-Appends to data/fara_signals.json; deduplicates by registration_number.
+Rate limit: 5 requests / 10 seconds. Delay between enrichment calls: 2s.
 """
 
 import json
 import sys
+import time
 import urllib.request
 import urllib.parse
 from datetime import datetime, timedelta, timezone
@@ -21,8 +24,9 @@ from pathlib import Path
 # Configuration
 # ---------------------------------------------------------------------------
 
-FARA_API_BASE = "https://efile.fara.gov/api/v1/Registrants/New.json"
-LOOKBACK_DAYS = 1
+FARA_BASE        = "https://efile.fara.gov/api/v1"
+LOOKBACK_DAYS    = 1
+ENRICH_DELAY     = 2.0  # seconds between ForeignPrincipals calls
 
 # ---------------------------------------------------------------------------
 # Country name → ISO alpha-2
@@ -81,12 +85,37 @@ COUNTRY_NAME_TO_ISO2 = {
 # Paths
 # ---------------------------------------------------------------------------
 
-REPO_ROOT = Path(__file__).parent.parent
+REPO_ROOT    = Path(__file__).parent.parent
 SIGNALS_PATH = REPO_ROOT / "data" / "fara_signals.json"
 
 # ---------------------------------------------------------------------------
 # Helpers
 # ---------------------------------------------------------------------------
+
+def api_get(url: str) -> dict:
+    """Fetch a FARA API URL, follow redirects, return parsed JSON."""
+    req = urllib.request.Request(url, headers={"Accept": "application/json"})
+    with urllib.request.urlopen(req, timeout=30) as resp:
+        return json.loads(resp.read())
+
+
+def unwrap_rowset(data: dict) -> list:
+    """
+    FARA API wraps all responses in {"ROWSET": {"ROW": ...}}.
+    ROW is a dict for a single result, a list for multiple.
+    Returns a plain list (possibly empty).
+    """
+    rowset = data.get("ROWSET") or {}
+    row = rowset.get("ROW")
+    if row is None:
+        return []
+    return row if isinstance(row, list) else [row]
+
+
+def parse_date(raw: str) -> str:
+    """'2026-03-23T00:00:00' → '2026-03-23'"""
+    return raw[:10] if raw else ""
+
 
 def country_to_iso2(name: str) -> str:
     if not name:
@@ -111,51 +140,6 @@ def raw_score_for(iso2: str) -> float:
     return float(score) if score is not None else 0.0
 
 
-def extract_rows(data: dict) -> list:
-    """
-    Return the list of registrant records from the API response.
-    REGISTRANT_NEW_LIST is the expected key; if absent or empty, log all
-    top-level keys so the actual key name is visible in the run log.
-    """
-    rows = data.get("REGISTRANT_NEW_LIST") or []
-    if not rows:
-        top_keys = list(data.keys())
-        print(f"[fara] REGISTRANT_NEW_LIST missing or empty. "
-              f"Top-level keys in response: {top_keys}")
-        # Try common alternates before giving up
-        for alt in ("registrantNewList", "RegistrantNewList", "registrants", "results"):
-            rows = data.get(alt) or []
-            if rows:
-                print(f"[fara] Found records under key '{alt}' ({len(rows)} rows)")
-                break
-    return rows
-
-
-def to_signal(record: dict) -> dict:
-    registrant        = (record.get("registrantName") or "").strip()
-    foreign_principal = (record.get("foreignPrincipalName") or "").strip()
-    country_name      = (record.get("country") or "").strip()
-    filed_date        = (record.get("registrationDate") or "").strip()
-    reg_number        = record.get("registrationNumber")
-
-    iso = country_to_iso2(country_name)
-
-    title = f"{registrant} — {foreign_principal}" if foreign_principal else registrant
-    description = ", ".join(filter(None, [registrant, foreign_principal, country_name]))
-
-    return {
-        "registration_number": reg_number,
-        "iso": iso,
-        "source": "fara",
-        "signal_date": filed_date,
-        "title": title,
-        "value_usd": None,
-        "description": description,
-        "raw_score": raw_score_for(iso),
-        "weight": 1.0,
-    }
-
-
 # ---------------------------------------------------------------------------
 # Main
 # ---------------------------------------------------------------------------
@@ -166,22 +150,21 @@ def main():
     from_str  = yesterday.strftime("%m-%d-%Y")
     to_str    = today.strftime("%m-%d-%Y")
 
-    params = {"from": from_str, "to": to_str}
-    url = FARA_API_BASE + "?" + urllib.parse.urlencode(params)
-
+    # Step 1: fetch new registration numbers
+    url = (f"{FARA_BASE}/Registrants/json/New"
+           f"?{urllib.parse.urlencode({'from': from_str, 'to': to_str})}")
     print(f"[fara] GET {url}")
     try:
-        with urllib.request.urlopen(url, timeout=30) as resp:
-            data = json.loads(resp.read())
+        data = api_get(url)
     except Exception as e:
         print(f"[fara] ERROR: request failed: {e}", file=sys.stderr)
         _write_error(str(e))
         sys.exit(0)
 
-    rows = extract_rows(data)
-    print(f"[fara] {len(rows)} new registrant(s) returned")
+    new_rows = unwrap_rowset(data)
+    print(f"[fara] {len(new_rows)} new registration(s)")
 
-    # Load existing signals; deduplicate by registration_number
+    # Load existing signals; build dedup set
     if SIGNALS_PATH.exists():
         try:
             existing = json.loads(SIGNALS_PATH.read_text())
@@ -196,16 +179,55 @@ def main():
         if s.get("registration_number") is not None
     }
 
+    # Step 2: enrich each new registration via ForeignPrincipals endpoint
     new_signals = []
-    for row in rows:
-        reg_num = row.get("registrationNumber")
-        if reg_num in known_reg_numbers:
-            print(f"[fara] reg {reg_num} already present — skip")
+    for row in new_rows:
+        reg_number = row.get("REGISTRATION_x0020_NUMBER")
+        if reg_number in known_reg_numbers:
+            print(f"[fara] reg {reg_number} already present — skip")
             continue
-        sig = to_signal(row)
+
+        filed_date = parse_date(row.get("REGISTRATION_x0020_DATE") or "")
+
+        time.sleep(ENRICH_DELAY)
+        fp_url = f"{FARA_BASE}/ForeignPrincipals/json/Active/{reg_number}"
+        print(f"[fara] GET {fp_url}")
+        try:
+            fp_data = api_get(fp_url)
+            fp_rows = unwrap_rowset(fp_data)
+        except Exception as e:
+            print(f"[fara] WARNING: ForeignPrincipals fetch failed for {reg_number}: {e}")
+            fp_rows = []
+
+        if fp_rows:
+            fp = fp_rows[0]
+            registrant     = (fp.get("REGISTRANT_NAME") or row.get("NAME") or "").strip()
+            fp_name        = (fp.get("FP_NAME") or "").strip()
+            country_name   = (fp.get("COUNTRY_NAME") or "").strip()
+            filed_date     = filed_date or parse_date(fp.get("REG_DATE") or "")
+        else:
+            registrant   = (row.get("NAME") or "").strip()
+            fp_name      = ""
+            country_name = ""
+
+        iso   = country_to_iso2(country_name)
+        title = f"{registrant} — {fp_name}" if fp_name else registrant
+        desc  = ", ".join(filter(None, [registrant, fp_name, country_name]))
+
+        sig = {
+            "registration_number": reg_number,
+            "iso":         iso,
+            "source":      "fara",
+            "signal_date": filed_date,
+            "title":       title,
+            "value_usd":   None,
+            "description": desc,
+            "raw_score":   raw_score_for(iso),
+            "weight":      1.0,
+        }
         new_signals.append(sig)
-        known_reg_numbers.add(reg_num)
-        print(f"[fara] + reg {reg_num}  {sig['iso']}  {sig['title'][:60]}")
+        known_reg_numbers.add(reg_number)
+        print(f"[fara] + reg {reg_number}  {iso}  {title[:60]}")
 
     print(f"[fara] {len(new_signals)} new signal(s)")
 
@@ -214,8 +236,8 @@ def main():
 
     SIGNALS_PATH.write_text(json.dumps({
         "generated_at": today.isoformat(),
-        "sources": ["fara"],
-        "signals": all_signals,
+        "sources":      ["fara"],
+        "signals":      all_signals,
     }, indent=2))
     print(f"[fara] Wrote {len(all_signals)} total signals ({len(new_signals)} new) → {SIGNALS_PATH}")
 
