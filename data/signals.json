@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-03-24T06:14:03.454426+00:00",
+  "generated_at": "2026-03-24T06:21:35.403819+00:00",
   "sources": [
     "dsca",
     "fara",
@@ -13238,6 +13238,17 @@
       "cn_number": "25-105",
       "pdf_url": "https://media.defense.gov/2026/Feb/06/2003871961/-1/-1/0/PRESS RELEASE - UKRAINE 25-105 CN.PDF",
       "page_url": "https://www.dsca.mil/Press-Media/Major-Arms-Sales/Article-Display/Article/4399552/ukraine-class-ix-spare-parts",
+      "weight": 1.0
+    },
+    {
+      "registration_number": 7705,
+      "iso": "TW",
+      "source": "fara",
+      "signal_date": "2026-03-23",
+      "title": "Javelin Advisors, LLC \u2014 Taipei Economic and Cultural Representative Office in the United States, on behalf of Taiwan",
+      "value_usd": null,
+      "description": "Javelin Advisors, LLC, Taipei Economic and Cultural Representative Office in the United States, on behalf of Taiwan, TAIWAN",
+      "raw_score": 7.0,
       "weight": 1.0
     }
   ]
