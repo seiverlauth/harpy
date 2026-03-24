@@ -120,6 +120,20 @@ def get_session():
     return s
 
 
+def _country_name(iso2: str) -> str:
+    """Return human-readable country name from profile, else iso2 code."""
+    p = Path(__file__).parent.parent / "data" / "profiles" / f"{iso2}.json"
+    try:
+        return json.loads(p.read_text()).get("name") or iso2
+    except Exception:
+        return iso2
+
+
+def _build_dsca_title(iso2: str, description: str) -> str:
+    """'Saudi Arabia — PATRIOT Missile System'"""
+    return f"{_country_name(iso2)} — {description}"
+
+
 def parse_date_from_url(url):
     """Extract date from media.defense.gov URL: /YYYY/Mon/DD/"""
     m = re.search(r"/(\d{4})/([A-Za-z]{3})/(\d{2})/", url)
@@ -503,6 +517,8 @@ def enrich_signals(signals_path, session, test_n=None):
             signal["value_usd"]   = parsed["value_usd"]
             if parsed.get("quantity") is not None:
                 signal["quantity"] = parsed["quantity"]
+            if parsed.get("description"):
+                signal["title"] = _build_dsca_title(signal.get("iso"), parsed["description"])
             enriched += 1
 
     if test_n is None:
@@ -596,13 +612,14 @@ def scrape_daily(signals_path, session):
             print(f"[daily] CN {cn} already present — skip")
             continue
 
+        desc = parsed.get("description")
         entry = {
             "iso":         iso2,
             "source":      "dsca",
             "signal_date": item["date_str"],
-            "title":       item["title"],
+            "title":       _build_dsca_title(iso2, desc) if desc else item["title"],
             "value_usd":   parsed.get("value_usd"),
-            "description": parsed.get("description"),
+            "description": desc,
             "raw_score":   None,
             "cn_number":   cn,
             "pdf_url":     None,
@@ -775,6 +792,30 @@ def write_signals(notifications_path, signals_path):
 
 
 # ---------------------------------------------------------------------------
+# Backfill titles
+# ---------------------------------------------------------------------------
+
+def backfill_titles(signals_path):
+    """
+    One-time pass: for every record in dsca_signals.json that has a description
+    but a raw PDF filename as its title, rewrite title to '{Country} — {description}'.
+    """
+    data    = json.loads(signals_path.read_text())
+    updated = 0
+    for s in data["signals"]:
+        desc = s.get("description")
+        iso2 = s.get("iso")
+        if not desc or not iso2:
+            continue
+        new_title = _build_dsca_title(iso2, desc)
+        if s.get("title") != new_title:
+            s["title"] = new_title
+            updated += 1
+    signals_path.write_text(json.dumps(data, indent=2))
+    print(f"[backfill-titles] Updated {updated} of {len(data['signals'])} records → {signals_path}")
+
+
+# ---------------------------------------------------------------------------
 # Backtest
 # ---------------------------------------------------------------------------
 
@@ -812,6 +853,8 @@ def main():
                         help="Fetch article pages to populate description, value_usd, quantity, page_url")
     parser.add_argument("--test-enrich", action="store_true",
                         help="Dry-run enrich on 5 most recent records — print results, do not write")
+    parser.add_argument("--backfill-titles", action="store_true",
+                        help="Rewrite titles on all enriched records to '{Country} — {description}'")
     args = parser.parse_args()
 
     repo_root    = Path(__file__).parent.parent
@@ -832,6 +875,10 @@ def main():
 
     if args.enrich:
         enrich_signals(signals_path, get_session())
+        sys.exit(0)
+
+    if args.backfill_titles:
+        backfill_titles(signals_path)
         sys.exit(0)
 
     if args.full_scrape:
