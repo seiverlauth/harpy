@@ -730,8 +730,10 @@ def scrape_state_arms(signals_path):
         title_raw    = BeautifulSoup(post.get("title", {}).get("rendered", ""), "html.parser").get_text()
         date_str     = (post.get("date") or "")[:10]
         page_url     = post.get("link", "") or None
-        content_html = post.get("content", {}).get("rendered", "")
-        content_text = BeautifulSoup(content_html, "html.parser").get_text(" ", strip=True)
+        content_html  = post.get("content", {}).get("rendered", "")
+        content_soup  = BeautifulSoup(content_html, "html.parser")
+        body_el       = content_soup.select_one("div.classic-block-wrapper")
+        content_text  = body_el.get_text(" ", strip=True) if body_el else content_soup.get_text(" ", strip=True)
 
         iso2 = country_iso_from_title(title_raw)
         if not iso2:
@@ -757,8 +759,8 @@ def scrape_state_arms(signals_path):
             multiplier = 1_000_000_000 if m.group(2).lower() == "billion" else 1_000_000
             value_usd  = raw * multiplier
 
-        # Description: first substantive sentence from content
-        first_para = content_text.strip().split("\n")[0][:400].strip() if content_text else None
+        # Description: first 400 chars of the notification body
+        first_para = content_text.strip()[:400] if content_text else None
 
         entry = {
             "iso":         iso2,
