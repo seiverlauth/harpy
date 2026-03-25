@@ -15,14 +15,13 @@ Usage:
 import argparse
 import json
 import re
-import subprocess
 import sys
-import tempfile
 import time
 from datetime import datetime, timezone
 from pathlib import Path
 
 from bs4 import BeautifulSoup
+from curl_cffi import requests as cffi_requests
 
 # ---------------------------------------------------------------------------
 # Configuration
@@ -115,27 +114,10 @@ BACKTEST_END   = "2022-02-24"
 # Helpers
 # ---------------------------------------------------------------------------
 
-_UA = HEADERS["User-Agent"]
-
-class _Resp:
-    def __init__(self, status_code, text):
-        self.status_code = status_code
-        self.text        = text
+_SESSION = cffi_requests.Session()
 
 def _get(url, timeout=30):
-    with tempfile.NamedTemporaryFile(suffix='.html', delete=False) as f:
-        tmp = f.name
-    try:
-        r = subprocess.run(
-            ['curl', '-s', '-A', _UA, '--compressed', '-L',
-             '--max-time', str(timeout), '-o', tmp, '-w', '%{http_code}', url],
-            capture_output=True, text=True
-        )
-        status = int(r.stdout.strip()) if r.stdout.strip().isdigit() else 0
-        text   = Path(tmp).read_text(encoding='utf-8', errors='replace')
-    finally:
-        Path(tmp).unlink(missing_ok=True)
-    return _Resp(status, text)
+    return _SESSION.get(url, timeout=timeout, impersonate="chrome120")
 
 
 def _country_name(iso2: str) -> str:
@@ -713,12 +695,14 @@ def scrape(output_path):
             try:
                 resp = _get(url, timeout=60)
                 break
-            except subprocess.TimeoutExpired:
-                wait = 5 * (attempt + 1)
-                print(f"[scrape] Page {page_num} timeout (attempt {attempt+1}/3) — waiting {wait}s")
-                time.sleep(wait)
             except Exception as e:
-                print(f"[scrape] Page {page_num} error: {e} — skipping")
+                if "timeout" in str(e).lower() or "timed out" in str(e).lower():
+                    wait = 5 * (attempt + 1)
+                    print(f"[scrape] Page {page_num} timeout (attempt {attempt+1}/3) — waiting {wait}s")
+                    time.sleep(wait)
+                else:
+                    print(f"[scrape] Page {page_num} error: {e} — skipping")
+                    break
                 break
 
         if resp is None or resp.status_code != 200:
