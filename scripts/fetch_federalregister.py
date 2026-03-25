@@ -188,13 +188,13 @@ def to_signal(doc):
     doc_type = (doc.get("type") or "").strip()
     doc_number = (doc.get("document_number") or "").strip()
 
+    action = (doc.get("action") or "").strip()
+    lead = action or doc_type
     desc_parts = []
-    if doc_type:
-        desc_parts.append(doc_type)
-    if doc_number:
-        desc_parts.append(doc_number)
+    if lead:
+        desc_parts.append(lead)
     if abstract:
-        desc_parts.append(abstract[:300] + ("…" if len(abstract) > 300 else ""))
+        desc_parts.append(abstract)
     description = " · ".join(desc_parts) if desc_parts else None
 
     return {
