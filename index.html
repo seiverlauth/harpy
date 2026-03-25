@@ -221,6 +221,20 @@
     const PROFILES_BASE = 'data/profiles/';
     const SIGNALS_URL   = 'data/signals.json';
 
+    // ── Source labels ────────────────────────────────────────────────────────
+
+    const SOURCE_LABELS = {
+      dsca: 'Defense Security Cooperation Agency',
+      sam:  'System for Award Management',
+      fara: 'Foreign Agents Registration Act',
+      ofac: 'Office of Foreign Assets Control',
+      lda:  'Lobbying Disclosure Act',
+    };
+
+    function sourceLabel(s) {
+      return SOURCE_LABELS[s && s.toLowerCase()] || (s || '').toUpperCase();
+    }
+
     // ── Formatters ──────────────────────────────────────────────────────────
 
     function fmtValue(v) {
@@ -344,7 +358,7 @@
           <span class="item-desc">${esc(sig.title || sig.description || '—')}</span>
           <span class="item-val">${fmtValue(sig.value_usd)}</span>
         </div>
-        <div class="row2"><span class="source-tag">${esc(sig.source || '')}</span><span class="sep">·</span><span class="item-country">${esc(country)}</span>${sourceInline}</div>
+        <div class="row2"><span class="source-tag">${esc(sourceLabel(sig.source))}</span><span class="sep">·</span><span class="item-country">${esc(country)}</span>${sourceInline}</div>
         ${descRow}
       `.trim();
 
