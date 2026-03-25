@@ -1,9 +1,69 @@
 {
-  "generated_at": "2026-03-25T05:47:16.358745+00:00",
+  "generated_at": "2026-03-25T22:48:27.099349+00:00",
   "sources": [
     "federalregister"
   ],
   "signals": [
+    {
+      "iso": null,
+      "source": "federalregister",
+      "signal_date": "2026-03-25",
+      "title": "Request for Expressions of Interest in Membership on the Federal Insurance Office's Federal Advisory Committee on Insurance",
+      "value_usd": null,
+      "description": "Notice. \u00b7 The Federal Insurance Office (FIO) within the Department of the Treasury invites the public to submit expressions of interest in serving as members of the Federal Advisory Committee on Insurance (FACI). Submissions must be received by FIO no later than April 10, 2026.",
+      "raw_score": 1.0,
+      "page_url": "https://www.federalregister.gov/documents/2026/03/25/2026-05811/request-for-expressions-of-interest-in-membership-on-the-federal-insurance-offices-federal-advisory"
+    },
+    {
+      "iso": null,
+      "source": "federalregister",
+      "signal_date": "2026-03-25",
+      "title": "2026 Report on the Effectiveness of the Terrorism Risk Insurance Program",
+      "value_usd": null,
+      "description": "Request for comment. \u00b7 The Terrorism Risk Insurance Act of 2002, as amended (TRIA), established the Terrorism Risk Insurance Program (TRIP or Program). TRIA requires the Secretary of the Treasury (Secretary) to submit a report to Congress by June 30, 2026 concerning, in general, the overall effectiveness of TRIP. To assist the Secretary in formulating the report, the Federal Insurance Office (FIO) within the Department of the Treasury (Treasury) is seeking comments from the insurance sector and other stakeholders on the statutory factors to be analyzed in the report, as well as any other feedback on other issues relating to the effectiveness of TRIP.",
+      "raw_score": 1.0,
+      "page_url": "https://www.federalregister.gov/documents/2026/03/25/2026-05795/2026-report-on-the-effectiveness-of-the-terrorism-risk-insurance-program"
+    },
+    {
+      "iso": null,
+      "source": "federalregister",
+      "signal_date": "2026-03-25",
+      "title": "2026 Terrorism Risk Insurance Program Data Call",
+      "value_usd": null,
+      "description": "Data collection. \u00b7 Pursuant to the Terrorism Risk Insurance Act of 2002, as amended (TRIA), insurers that participate in the Terrorism Risk Insurance Program (TRIP or Program) are directed to submit information for the 2026 TRIP Data Call, which covers the reporting period from January 1, 2025 to December 31, 2025. Participating insurers are required to register and report information in a series of forms approved by the Office of Management and Budget (OMB). All insurers writing commercial property and casualty insurance in lines subject to TRIP, subject to certain exceptions identified in this notice, must respond to this data call no later than May 15, 2026.",
+      "raw_score": 1.0,
+      "page_url": "https://www.federalregister.gov/documents/2026/03/25/2026-05794/2026-terrorism-risk-insurance-program-data-call"
+    },
+    {
+      "iso": null,
+      "source": "federalregister",
+      "signal_date": "2026-03-25",
+      "title": "Notice of Determinations; Culturally Significant Object Being Imported for Exhibition-Determinations: Exhibition of Jean Sim\u00e9on Chardin's \u201cThe Water Cistern\u201d Object",
+      "value_usd": null,
+      "description": "Notice \u00b7 Notice is hereby given of the following determinations: I hereby determine that a certain object being imported from abroad pursuant to an agreement with its foreign owner or custodian for temporary exhibition or display in the European Paintings galleries of The Metropolitan Museum of Art, New York, New York, and at possible additional exhibitions or venues yet to be determined, is of cultural significance, and, further, that its temporary exhibition or display within the United States as aforementioned is in the national interest. I have ordered that Public Notice of these determinations be published in the Federal Register.",
+      "raw_score": 1.0,
+      "page_url": "https://www.federalregister.gov/documents/2026/03/25/2026-05774/notice-of-determinations-culturally-significant-object-being-imported-for-exhibition-determinations"
+    },
+    {
+      "iso": null,
+      "source": "federalregister",
+      "signal_date": "2026-03-25",
+      "title": "Global Magnitsky Human Rights Accountability Act Annual Report",
+      "value_usd": null,
+      "description": "Notice of Report. \u00b7 This notice contains the text of the report required by the Global Magnitsky Human Rights Accountability Act, as submitted by the Secretary of State pursuant to Executive Order 13818.",
+      "raw_score": 1.0,
+      "page_url": "https://www.federalregister.gov/documents/2026/03/25/2026-05753/global-magnitsky-human-rights-accountability-act-annual-report"
+    },
+    {
+      "iso": null,
+      "source": "federalregister",
+      "signal_date": "2026-03-25",
+      "title": "Notice of OFAC Sanctions Action",
+      "value_usd": null,
+      "description": "Notice. \u00b7 The U.S. Department of the Treasury's Office of Foreign Assets Control (OFAC) is publishing the names of one or more persons that have been placed on OFAC's Specially Designated Nationals and Blocked Persons List (SDN List) based on OFAC's determination that one or more applicable legal criteria were satisfied. All property and interests in property subject to U.S. jurisdiction of these persons are blocked, and U.S. persons are generally prohibited from engaging in transactions with them.",
+      "raw_score": 1.0,
+      "page_url": "https://www.federalregister.gov/documents/2026/03/25/2026-05748/notice-of-ofac-sanctions-action"
+    },
     {
       "iso": null,
       "source": "federalregister",

@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-03-25T05:47:14.971530+00:00",
+  "generated_at": "2026-03-25T22:48:24.162590+00:00",
   "sources": [
     "lda"
   ],
@@ -50,6 +50,30 @@
       "description": "SPO, TAX; Switzerland; Issues related to the preparation to host the FIFA World Cup 2026 - no specific legislation.",
       "url": "https://lda.gov/filings/public/filing/22ea354d-6fed-4032-88ef-2d8378529bc6/print/",
       "raw_score": 0.0,
+      "weight": 1.0
+    },
+    {
+      "filing_uuid": "1e8be184-296e-4fbc-88f2-fef384c8d283",
+      "iso": "IT",
+      "source": "lda",
+      "signal_date": "2026-03-24",
+      "title": "Nord Engineering S.P.A. \u2014 via Becker & Poliakoff, P.A.",
+      "value_usd": null,
+      "description": "WAS; Italy; Smart waste management systems",
+      "url": "https://lda.gov/filings/public/filing/1e8be184-296e-4fbc-88f2-fef384c8d283/print/",
+      "raw_score": 3.0,
+      "weight": 1.0
+    },
+    {
+      "filing_uuid": "0aba115d-62b5-4226-aacd-e4b353d0852a",
+      "iso": "AU",
+      "source": "lda",
+      "signal_date": "2026-03-25",
+      "title": "Iluka Resources, Limited \u2014 via Ml Strategies, Llc",
+      "value_usd": null,
+      "description": "DEF; Australia; Issues related to government support advocacy for funding of rear earth mineral facilities",
+      "url": "https://lda.gov/filings/public/filing/0aba115d-62b5-4226-aacd-e4b353d0852a/print/",
+      "raw_score": 5.0,
       "weight": 1.0
     }
   ]
