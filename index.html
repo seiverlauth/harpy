@@ -143,37 +143,37 @@
 
     .sep { color: var(--muted); user-select: none; }
 
-    /* ── Details dropdown ── */
-    .details-toggle {
-      display: inline-block;
+    /* ── Details row ── */
+    .details-row {
       margin-top: 4px;
       font-size: 11px;
+      font-family: monospace;
       color: var(--muted);
       opacity: 0.45;
-      cursor: pointer;
       user-select: none;
     }
-    .details-toggle:hover { opacity: 0.75; }
-    .item.expanded .details-toggle { opacity: 0.75; }
+    .details-row:hover { opacity: 0.65; }
+    .item.expanded .details-row { opacity: 0.65; }
+
+    .details-btn {
+      cursor: pointer;
+    }
+    .details-btn:hover { text-decoration: underline; }
+
+    .details-pipe {
+      margin: 0 4px;
+    }
 
     .details-body {
       display: none;
       margin-top: 6px;
       font-size: 12px;
+      font-family: monospace;
       color: var(--muted);
       opacity: 0.75;
       line-height: 1.55;
     }
     .item.expanded .details-body { display: block; }
-
-    .details-source {
-      margin-top: 5px;
-    }
-    .details-source a {
-      color: var(--muted);
-      font-size: 12px;
-    }
-    .details-source a:hover { text-decoration: underline; }
 
     .source-tag {
       font-size: 10px;
@@ -351,13 +351,17 @@
       const sourceUrl = sig.page_url || sig.url || null;
       const descRaw   = sig.description || '';
       const descTrunc = descRaw.length > 800 ? descRaw.slice(0, 800) + '\u2026' : descRaw;
-      const sourceLink = sourceUrl
-        ? `<div class="details-source"><a href="${esc(sourceUrl)}" target="_blank" rel="noopener">source →</a></div>`
+
+      const sourceBtn = sourceUrl
+        ? `<span class="details-pipe">|</span><a class="details-btn" href="${esc(sourceUrl)}" target="_blank" rel="noopener">source</a>`
+        : '';
+      const detailsBtn = descTrunc
+        ? `<span class="details-btn details-expand">details</span>`
         : '';
 
-      const detailsHtml = (descTrunc || sourceLink)
-        ? `<div class="details-toggle">details ▾</div>
-           <div class="details-body">${descTrunc ? `<div>${esc(descTrunc)}</div>` : ''}${sourceLink}</div>`
+      const detailsHtml = (detailsBtn || sourceBtn)
+        ? `<div class="details-row">${detailsBtn}${sourceBtn}</div>
+           <div class="details-body">${descTrunc ? esc(descTrunc) : ''}</div>`
         : '';
 
       el.innerHTML = `
@@ -369,9 +373,9 @@
         ${detailsHtml}
       `.trim();
 
-      const toggle = el.querySelector('.details-toggle');
-      if (toggle) {
-        toggle.addEventListener('click', e => {
+      const expand = el.querySelector('.details-expand');
+      if (expand) {
+        expand.addEventListener('click', e => {
           e.stopPropagation();
           el.classList.toggle('expanded');
         });
