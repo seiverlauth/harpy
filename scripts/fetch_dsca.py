@@ -27,10 +27,12 @@ from curl_cffi import requests as cffi_requests
 # Configuration
 # ---------------------------------------------------------------------------
 
-DSCA_LIBRARY_URL = "https://www.dsca.mil/Press-Media/Major-Arms-Sales/Major-Arms-Sales-Library"
-DSCA_MAIN_URL    = "https://www.dsca.mil/Press-Media/Major-Arms-Sales"
-REQUEST_DELAY    = 1.5  # seconds between library page requests
-ENRICH_DELAY     = 1.0  # seconds between article page fetches (be polite)
+DSCA_LIBRARY_URL   = "https://www.dsca.mil/Press-Media/Major-Arms-Sales/Major-Arms-Sales-Library"
+DSCA_MAIN_URL      = "https://www.dsca.mil/Press-Media/Major-Arms-Sales"
+STATE_ARMS_URL     = "https://www.state.gov/arms-sales-congressional-notifications/"
+STATE_API_BASE     = "https://www.state.gov/wp-json/wp/v2/state_press_release"
+REQUEST_DELAY      = 1.5  # seconds between library page requests
+ENRICH_DELAY       = 1.0  # seconds between article page fetches (be polite)
 
 # Comprehensive country name → ISO alpha-2 map.
 # Covers all countries that commonly appear in DSCA arms sale notifications.
@@ -654,6 +656,134 @@ def scrape_daily(signals_path):
 
 
 # ---------------------------------------------------------------------------
+# State.gov daily scrape — FMS congressional notifications (post-Feb 2026)
+# ---------------------------------------------------------------------------
+
+def scrape_state_arms(signals_path):
+    """
+    Scrape State.gov FMS congressional notifications via WordPress REST API.
+
+    After EO 14383 (Feb 26, 2026), DSCA stopped posting; all notifications
+    moved to state.gov/arms-sales-congressional-notifications/.
+
+    Flow:
+      1. Fetch the arms sales page → extract post IDs from data-returned-posts
+      2. For each new ID: GET /wp-json/wp/v2/state_press_release/{id}
+      3. Parse title, date, value_usd, description
+      4. Append to dsca_signals.json, deduplicate by wp_id
+    """
+    if signals_path.exists():
+        data    = json.loads(signals_path.read_text())
+        signals = data.get("signals", [])
+    else:
+        data    = {"generated_at": None, "sources": ["dsca"], "signals": []}
+        signals = []
+
+    known_wp_ids = {s.get("wp_id") for s in signals if s.get("wp_id")}
+
+    # Step 1: get current post IDs from page
+    print(f"[state] GET {STATE_ARMS_URL}")
+    try:
+        resp = _get(STATE_ARMS_URL, timeout=30)
+    except Exception as e:
+        print(f"[state] ERROR fetching page: {e}", file=sys.stderr)
+        return
+
+    if resp.status_code != 200:
+        print(f"[state] HTTP {resp.status_code}", file=sys.stderr)
+        return
+
+    soup = BeautifulSoup(resp.text, "html.parser")
+    article = soup.find("article", attrs={"data-returned-posts": True})
+    if not article:
+        print("[state] ERROR: data-returned-posts attribute not found", file=sys.stderr)
+        return
+
+    try:
+        post_ids = json.loads(article["data-returned-posts"])
+    except Exception as e:
+        print(f"[state] ERROR parsing post IDs: {e}", file=sys.stderr)
+        return
+
+    print(f"[state] {len(post_ids)} post IDs on page")
+
+    # Step 2: fetch and parse each new post
+    added = 0
+    for wp_id in post_ids:
+        if wp_id in known_wp_ids:
+            print(f"[state] wp_id {wp_id} already present — skip")
+            continue
+
+        time.sleep(ENRICH_DELAY)
+        api_url = f"{STATE_API_BASE}/{wp_id}"
+        print(f"[state] GET {api_url}")
+        try:
+            r = _get(api_url, timeout=30)
+        except Exception as e:
+            print(f"[state] ERROR fetching {wp_id}: {e}")
+            continue
+        if r.status_code != 200:
+            print(f"[state] HTTP {r.status_code} for wp_id {wp_id} — skipping")
+            continue
+
+        post         = json.loads(r.text)
+        title_raw    = BeautifulSoup(post.get("title", {}).get("rendered", ""), "html.parser").get_text()
+        date_str     = (post.get("date") or "")[:10]
+        page_url     = post.get("link", "") or None
+        content_html = post.get("content", {}).get("rendered", "")
+        content_text = BeautifulSoup(content_html, "html.parser").get_text(" ", strip=True)
+
+        iso2 = country_iso_from_title(title_raw)
+        if not iso2:
+            print(f"[state] No country match: {title_raw!r} — skipping")
+            continue
+
+        # Weapon system = everything after the first em-dash or regular dash
+        if "\u2013" in title_raw:
+            weapon = title_raw.split("\u2013", 1)[1].strip()
+        elif " – " in title_raw:
+            weapon = title_raw.split(" – ", 1)[1].strip()
+        else:
+            weapon = title_raw.strip()
+
+        # Value: "estimated cost of $X million/billion" or any $X million/billion
+        value_usd = None
+        m = re.search(
+            r"estimated(?:.*?)\$([0-9,.]+)\s*(million|billion)",
+            content_text, re.IGNORECASE | re.DOTALL,
+        )
+        if m:
+            raw        = float(m.group(1).replace(",", ""))
+            multiplier = 1_000_000_000 if m.group(2).lower() == "billion" else 1_000_000
+            value_usd  = raw * multiplier
+
+        # Description: first substantive sentence from content
+        first_para = content_text.strip().split("\n")[0][:400].strip() if content_text else None
+
+        entry = {
+            "iso":         iso2,
+            "source":      "dsca",
+            "signal_date": date_str,
+            "title":       weapon,
+            "value_usd":   value_usd,
+            "description": first_para,
+            "raw_score":   None,
+            "cn_number":   None,
+            "page_url":    page_url,
+            "wp_id":       wp_id,
+        }
+        signals.append(entry)
+        known_wp_ids.add(wp_id)
+        added += 1
+        print(f"[state] + {iso2}  {date_str}  {weapon[:60]}")
+
+    print(f"[state] {added} new signal(s)")
+    data["generated_at"] = datetime.now(timezone.utc).isoformat()
+    data["signals"]      = sorted(signals, key=lambda s: s.get("signal_date") or "")
+    signals_path.write_text(json.dumps(data, indent=2))
+
+
+# ---------------------------------------------------------------------------
 # Probe mode
 # ---------------------------------------------------------------------------
 
@@ -902,8 +1032,10 @@ def main():
             write_signals(notifications_path, signals_path)
         sys.exit(0)
 
-    # Default: daily incremental update from listing page
+    # Default: daily incremental update
+    # DSCA stopped posting after Feb 26 2026 (EO 14383); State.gov is new source
     scrape_daily(signals_path)
+    scrape_state_arms(signals_path)
 
 
 if __name__ == "__main__":

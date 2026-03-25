@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-03-25T04:45:28.874770+00:00",
+  "generated_at": "2026-03-25T04:56:10.882796+00:00",
   "sources": [
     "dsca",
     "fara",
@@ -15308,6 +15308,71 @@
       "cn_number": "25-105",
       "pdf_url": "https://media.defense.gov/2026/Feb/06/2003871961/-1/-1/0/PRESS RELEASE - UKRAINE 25-105 CN.PDF",
       "page_url": "https://www.dsca.mil/Press-Media/Major-Arms-Sales/Article-Display/Article/4399552/ukraine-class-ix-spare-parts",
+      "weight": 1.0
+    },
+    {
+      "iso": "SE",
+      "source": "dsca",
+      "signal_date": "2026-03-10",
+      "title": "M142 High Mobility Artillery Rocket Systems",
+      "value_usd": 930000000.0,
+      "description": "Home Bureau of Political-Military Affairs Remarks & Releases \u2026 Sweden \u2013 M142 High Mobility Artillery Rocket Systems hide Sweden \u2013 M142 High Mobility Artillery Rocket Systems Foreign Military Sales: Congressional Notification Bureau of Political-Military Affairs March 10, 2026 The U.S. Department of State has made a determination approving a possible Foreign Military Sale to the Government of Swede",
+      "raw_score": null,
+      "cn_number": null,
+      "page_url": "https://www.state.gov/releases/bureau-of-political-military-affairs/2026/03/sweden-m142-high-mobility-artillery-rocket-systems/",
+      "wp_id": 671743,
+      "weight": 1.0
+    },
+    {
+      "iso": "AE",
+      "source": "dsca",
+      "signal_date": "2026-03-19",
+      "title": "Fixed Site-Low, Slow, Small Unmanned Aircraft Integrated Defeat System",
+      "value_usd": 2100000000.0,
+      "description": "Home Bureau of Political-Military Affairs Remarks & Releases \u2026 United Arab Emirates \u2013 Fixed Site-Low, Slow, Small Unmanned Aircraft Integrated Defeat System hide United Arab Emirates \u2013 Fixed Site-Low, Slow, Small Unmanned Aircraft Integrated Defeat System Foreign Military Sales: Congressional Notification Bureau of Political-Military Affairs March 19, 2026 The U.S. Department of State has made a d",
+      "raw_score": null,
+      "cn_number": null,
+      "page_url": "https://www.state.gov/releases/bureau-of-political-military-affairs/2026/03/united-arab-emirates-fixed-site-low-slow-small-unmanned-aircraft-integrated-defeat-system/",
+      "wp_id": 673492,
+      "weight": 1.0
+    },
+    {
+      "iso": "KW",
+      "source": "dsca",
+      "signal_date": "2026-03-19",
+      "title": "Lower Tier Air and Missile Defense Sensor Radars",
+      "value_usd": 8000000000.0,
+      "description": "Home Bureau of Political-Military Affairs Remarks & Releases \u2026 Kuwait \u2013 Lower Tier Air and Missile Defense Sensor Radars hide Kuwait \u2013 Lower Tier Air and Missile Defense Sensor Radars Foreign Military Sales: Congressional Notification Bureau of Political-Military Affairs March 19, 2026 The U.S. Department of State has made a determination approving a possible Foreign Military Sale to the Governmen",
+      "raw_score": null,
+      "cn_number": null,
+      "page_url": "https://www.state.gov/releases/bureau-of-political-military-affairs/2026/03/kuwait-lower-tier-air-and-missile-defense-sensor-radars/",
+      "wp_id": 673488,
+      "weight": 1.0
+    },
+    {
+      "iso": "AE",
+      "source": "dsca",
+      "signal_date": "2026-03-19",
+      "title": "F-16 Munitions and Upgrades",
+      "value_usd": 644000000.0,
+      "description": "Home Bureau of Political-Military Affairs Remarks & Releases \u2026 United Arab Emirates \u2013 F-16 Munitions and Upgrades hide United Arab Emirates \u2013 F-16 Munitions and Upgrades Foreign Military Sales: Congressional Notification Bureau of Political-Military Affairs March 19, 2026 The U.S. Department of State has made a determination approving a possible Foreign Military Sale to the Government of the Unite",
+      "raw_score": null,
+      "cn_number": null,
+      "page_url": "https://www.state.gov/releases/bureau-of-political-military-affairs/2026/03/united-arab-emirates-f-16-munitions-and-upgrades/",
+      "wp_id": 673478,
+      "weight": 1.0
+    },
+    {
+      "iso": "GB",
+      "source": "dsca",
+      "signal_date": "2026-03-20",
+      "title": "Submarine Combat and Weapon Systems, Technical Support, U.S. and UK Embedded Personnel, and Associated Training",
+      "value_usd": 1000000000.0,
+      "description": "Home Bureau of Political-Military Affairs Remarks & Releases \u2026 United Kingdom \u2013 Submarine Combat and Weapon Systems, Technical Support, U.S. and UK Embedded Personnel, and Associated Training hide United Kingdom \u2013 Submarine Combat and Weapon Systems, Technical Support, U.S. and UK Embedded Personnel, and Associated Training Foreign Military Sales: Congressional Notification Bureau of Political-Mil",
+      "raw_score": null,
+      "cn_number": null,
+      "page_url": "https://www.state.gov/releases/bureau-of-political-military-affairs/2026/03/united-kingdom-submarine-combat-and-weapon-systems-technical-support-u-s-and-uk-embedded-personnel-and-associated-training/",
+      "wp_id": 673769,
       "weight": 1.0
     },
     {
