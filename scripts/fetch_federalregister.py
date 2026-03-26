@@ -9,6 +9,7 @@ No API key required.
 Writes data/federalregister_signals.json.
 """
 
+import argparse
 import http.client
 import json
 import re
@@ -23,7 +24,8 @@ from pathlib import Path
 
 FR_HOST = "www.federalregister.gov"
 FR_PATH = "/api/v1/documents.json"
-LOOKBACK_DAYS = 30
+LOOKBACK_DAYS          = 30
+LOOKBACK_DAYS_BACKFILL = 365
 PER_PAGE = 100
 
 # Correct agency slugs from /api/v1/agencies.json
@@ -198,6 +200,7 @@ def to_signal(doc):
     description = " · ".join(desc_parts) if desc_parts else None
 
     return {
+        "document_number": doc_number or None,
         "iso": extract_country(title, abstract),
         "source": "federalregister",
         "signal_date": doc.get("publication_date"),
@@ -214,11 +217,17 @@ def to_signal(doc):
 # ---------------------------------------------------------------------------
 
 def main():
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--backfill", action="store_true",
+                        help=f"Fetch {LOOKBACK_DAYS_BACKFILL} days instead of {LOOKBACK_DAYS}")
+    args = parser.parse_args()
+
     out_path = Path(__file__).parent.parent / "data" / "federalregister_signals.json"
     today = datetime.now(timezone.utc)
-    from_date = (today - timedelta(days=LOOKBACK_DAYS)).strftime("%Y-%m-%d")
+    days = LOOKBACK_DAYS_BACKFILL if args.backfill else LOOKBACK_DAYS
+    from_date = (today - timedelta(days=days)).strftime("%Y-%m-%d")
 
-    print(f"Fetching Federal Register documents since {from_date}…")
+    print(f"Fetching Federal Register documents since {from_date} ({'backfill' if args.backfill else 'daily'})…")
 
     try:
         docs = fetch_all(from_date)
@@ -234,21 +243,46 @@ def main():
 
     print(f"  Retrieved {len(docs)} raw documents")
 
-    signals = []
+    new_signals = []
     for doc in docs:
         if (doc.get("type") or "").strip() not in INCLUDE_TYPES:
             continue
         if is_noise(doc):
             continue
-        signals.append(to_signal(doc))
+        new_signals.append(to_signal(doc))
 
-    output = {
+    # Merge with existing, dedup by document_number
+    existing_signals = []
+    if out_path.exists():
+        try:
+            existing_signals = json.loads(out_path.read_text()).get("signals", [])
+        except Exception:
+            pass
+
+    known_doc_numbers = {
+        s.get("document_number")
+        for s in existing_signals
+        if s.get("document_number")
+    }
+    merged = list(existing_signals)
+    added = 0
+    for sig in new_signals:
+        dn = sig.get("document_number")
+        if dn and dn in known_doc_numbers:
+            continue
+        merged.append(sig)
+        if dn:
+            known_doc_numbers.add(dn)
+        added += 1
+
+    merged.sort(key=lambda s: s.get("signal_date") or "")
+
+    out_path.write_text(json.dumps({
         "generated_at": today.isoformat(),
         "sources": ["federalregister"],
-        "signals": signals,
-    }
-    out_path.write_text(json.dumps(output, indent=2))
-    print(f"Wrote {len(signals)} signals to {out_path}")
+        "signals": merged,
+    }, indent=2))
+    print(f"Wrote {len(merged)} total signals ({added} new) to {out_path}")
 
 
 if __name__ == "__main__":

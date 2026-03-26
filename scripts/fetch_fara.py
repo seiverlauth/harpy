@@ -14,6 +14,7 @@ Flow:
 Rate limit: 5 requests / 10 seconds. Delay between enrichment calls: 2s.
 """
 
+import argparse
 import io
 import json
 import re
@@ -47,9 +48,10 @@ except ImportError:
 # Configuration
 # ---------------------------------------------------------------------------
 
-FARA_BASE        = "https://efile.fara.gov/api/v1"
-LOOKBACK_DAYS    = 1
-ENRICH_DELAY     = 2.0  # seconds between ForeignPrincipals calls
+FARA_BASE              = "https://efile.fara.gov/api/v1"
+LOOKBACK_DAYS          = 1
+LOOKBACK_DAYS_BACKFILL = 365
+ENRICH_DELAY           = 2.0  # seconds between enrichment calls
 
 # ---------------------------------------------------------------------------
 # Country name → ISO alpha-2
@@ -282,10 +284,16 @@ def enrich_from_pdf(pdf_url: str) -> dict:
 # ---------------------------------------------------------------------------
 
 def main():
-    today     = datetime.now(timezone.utc)
-    yesterday = today - timedelta(days=LOOKBACK_DAYS)
-    from_str  = yesterday.strftime("%m-%d-%Y")
-    to_str    = today.strftime("%m-%d-%Y")
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--backfill", action="store_true",
+                        help=f"Fetch {LOOKBACK_DAYS_BACKFILL} days of history")
+    args = parser.parse_args()
+
+    today    = datetime.now(timezone.utc)
+    days     = LOOKBACK_DAYS_BACKFILL if args.backfill else LOOKBACK_DAYS
+    start    = today - timedelta(days=days)
+    from_str = start.strftime("%m-%d-%Y")
+    to_str   = today.strftime("%m-%d-%Y")
 
     # Step 1: fetch new registration numbers
     url = (f"{FARA_BASE}/Registrants/json/New"

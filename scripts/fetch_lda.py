@@ -12,8 +12,10 @@ Deduplicates by filing_uuid. Appends to data/lda_signals.json.
 No API key required — anonymous rate limit (15 req/min) is sufficient.
 """
 
+import argparse
 import json
 import sys
+import time
 import urllib.request
 import urllib.parse
 from datetime import datetime, timedelta, timezone
@@ -23,9 +25,10 @@ from pathlib import Path
 # Configuration
 # ---------------------------------------------------------------------------
 
-LDA_BASE          = "https://lda.gov/api/v1/filings"
-LOOKBACK_DAYS     = 1
-HIGH_SIGNAL_CODES = {"DEF", "FOR", "TRD", "ENE", "HCR"}
+LDA_BASE               = "https://lda.gov/api/v1/filings"
+LOOKBACK_DAYS          = 1
+LOOKBACK_DAYS_BACKFILL = 365
+HIGH_SIGNAL_CODES      = {"DEF", "FOR", "TRD", "ENE", "HCR"}
 
 # ---------------------------------------------------------------------------
 # Paths
@@ -38,10 +41,19 @@ SIGNALS_PATH = REPO_ROOT / "data" / "lda_signals.json"
 # Helpers
 # ---------------------------------------------------------------------------
 
-def api_get(url: str) -> dict:
-    req = urllib.request.Request(url, headers={"Accept": "application/json"})
-    with urllib.request.urlopen(req, timeout=30) as resp:
-        return json.loads(resp.read())
+def api_get(url: str, retries: int = 3) -> dict:
+    for attempt in range(retries):
+        try:
+            req = urllib.request.Request(url, headers={"Accept": "application/json"})
+            with urllib.request.urlopen(req, timeout=30) as resp:
+                return json.loads(resp.read())
+        except urllib.error.HTTPError as e:
+            if e.code == 429 and attempt < retries - 1:
+                wait = 15 * (attempt + 1)
+                print(f"[lda] 429 rate limit — sleeping {wait}s")
+                time.sleep(wait)
+                continue
+            raise
 
 
 def load_profile_score(iso2: str):
@@ -163,6 +175,8 @@ def fetch_filings(after_date: str) -> list:
         data = api_get(url)
         filings.extend(data.get("results") or [])
         url = data.get("next")  # None when exhausted
+        if url:
+            time.sleep(4.5)  # 15 req/min = 1 req per 4s
 
     return filings
 
@@ -172,11 +186,16 @@ def fetch_filings(after_date: str) -> list:
 # ---------------------------------------------------------------------------
 
 def main():
-    today     = datetime.now(timezone.utc)
-    yesterday = today - timedelta(days=LOOKBACK_DAYS)
-    after_str = yesterday.strftime("%Y-%m-%d")
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--backfill", action="store_true",
+                        help=f"Fetch {LOOKBACK_DAYS_BACKFILL} days of history")
+    args = parser.parse_args()
 
-    print(f"[lda] Fetching RR filings posted after {after_str}")
+    today     = datetime.now(timezone.utc)
+    days      = LOOKBACK_DAYS_BACKFILL if args.backfill else LOOKBACK_DAYS
+    after_str = (today - timedelta(days=days)).strftime("%Y-%m-%d")
+
+    print(f"[lda] Fetching RR filings posted after {after_str} ({'backfill' if args.backfill else 'daily'})")
 
     try:
         filings = fetch_filings(after_str)
