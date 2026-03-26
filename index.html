@@ -375,6 +375,7 @@
     const tooltipEl = document.getElementById('tooltip');
 
     document.addEventListener('mouseover', e => {
+      if (e.target.closest('#map')) return;  // map manages its own tooltip
       const target = e.target.closest('[data-tooltip]');
       if (!target) { tooltipEl.style.display = 'none'; return; }
       const [line1, ...rest] = target.dataset.tooltip.split('\n');
@@ -385,6 +386,7 @@
     });
 
     document.addEventListener('mouseout', e => {
+      if (e.target.closest('#map')) return;  // map manages its own tooltip
       if (e.target.closest('[data-tooltip]')) tooltipEl.style.display = 'none';
     });
 
