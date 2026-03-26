@@ -275,6 +275,20 @@
 
     // ── Source labels / short names ──────────────────────────────────────────
 
+    const SOURCE_COLORS = {
+      dsca:           '#4a9eff',
+      fara:           '#ff6b35',
+      lda:            '#a0a0b0',
+      federalregister:'#c084fc',
+      sam:            '#34d399',
+      ofac:           '#a0a0b0',
+      anchor_budget:  '#a0a0b0',
+    };
+
+    function sourceColor(s) {
+      return SOURCE_COLORS[(s || '').toLowerCase()] || '#a0a0b0';
+    }
+
     const SOURCE_LABELS = {
       dsca:           'Defense Security Cooperation Agency',
       sam:            'System for Award Management',
@@ -766,7 +780,7 @@
           `<span class="${countryClass}"${countryTooltip}>${esc(country)}</span>` +
           `<span class="item-sep">\xb7</span>` +
           `<span class="item-title">${esc(titleStr)}</span>` +
-          `<span class="item-src">${esc(sourceShort(sig.source))}</span>` +
+          `<span class="item-src" style="color:${sourceColor(sig.source)}">${esc(sourceShort(sig.source))}</span>` +
           `<span class="item-date">${esc(fmtDate(sig.signal_date))}</span>` +
         `</div>` +
         (hasDetail ? `<div class="item-detail">${detailInner}</div>` : '');
@@ -953,16 +967,16 @@
       if (leafletMap) { leafletMap.remove(); leafletMap = null; }
 
       leafletMap = L.map('map', {
-        center: [20, 10], zoom: 1.5,
+        center: [20, 0], zoom: 2,
         zoomControl: false, attributionControl: false,
         scrollWheelZoom: true,
       });
 
-      const BASE_COLOR      = '#4a5568';
-      const CLUSTER_COLOR   = '#6b7f99';
-      const HOVER_COLOR     = '#8fa8c0';
-      const ACTIVE_COLOR    = '#a0c8e0';
-      const BORDER_COLOR    = '#252530';
+      const BASE_COLOR      = '#484848';
+      const CLUSTER_COLOR   = '#646464';
+      const HOVER_COLOR     = '#848484';
+      const ACTIVE_COLOR    = '#a0a0a0';
+      const BORDER_COLOR    = '#252525';
 
       const isoToLayer = new Map();
 
@@ -1041,7 +1055,7 @@
           const lyr = isoToLayer.get(activeIso);
           if (lyr) leafletMap.fitBounds(lyr.getBounds(), { padding: [30, 30] });
         } else {
-          leafletMap.setView([20, 10], 1.5);
+          leafletMap.setView([20, 0], 2);
         }
       };
     }
