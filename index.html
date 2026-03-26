@@ -686,7 +686,11 @@
       let visible;
       if (activeFilter) {
         visible = signals.filter(s => s.iso === activeFilter);
-        feedHdr.style.display = 'none';
+        feedHdr.style.display = '';
+        const p = profileCache[activeFilter];
+        feedLabel.textContent = p ? p.name : activeFilter;
+        toggleBtn.textContent = '[clear filter]';
+        toggleBtn.onclick = () => { activeFilter = null; document.querySelectorAll('.cluster-entry.active').forEach(r => r.classList.remove('active')); syncMapFilter(null); renderFeed(signals); };
       } else if (feedFilter === 'high') {
         visible = signals.filter(s => {
           const p = profileCache[s.iso];
