@@ -268,21 +268,23 @@
     // ── Source labels / short names ──────────────────────────────────────────
 
     const SOURCE_LABELS = {
-      dsca: 'Defense Security Cooperation Agency',
-      sam:  'System for Award Management',
-      fara: 'Foreign Agents Registration Act',
-      ofac: 'Office of Foreign Assets Control',
-      lda:  'Lobbying Disclosure Act',
-      federalregister: 'Federal Register',
+      dsca:           'Defense Security Cooperation Agency',
+      sam:            'System for Award Management',
+      fara:           'Foreign Agents Registration Act',
+      ofac:           'Office of Foreign Assets Control',
+      lda:            'Lobbying Disclosure Act',
+      federalregister:'Federal Register',
+      anchor_budget:  'Israeli Defense Budget (Knesset Finance Committee)',
     };
 
     const SOURCE_SHORT = {
-      dsca: 'DSCA',
-      sam:  'SAM',
-      fara: 'FARA',
-      ofac: 'OFAC',
-      lda:  'LDA',
-      federalregister: 'FR',
+      dsca:           'DSCA',
+      sam:            'SAM',
+      fara:           'FARA',
+      ofac:           'OFAC',
+      lda:            'LDA',
+      federalregister:'FR',
+      anchor_budget:  'IL-MoD',
     };
 
     function sourceLabel(s) {
@@ -396,6 +398,7 @@
       lda:             'influence',
       federalregister: 'regulatory',
       sam:             'procurement',
+      anchor_budget:   'influence',
     };
 
     function sigLayer(sig) {

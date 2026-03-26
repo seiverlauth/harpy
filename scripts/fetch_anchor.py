@@ -13,8 +13,8 @@ the database when approved, before any mainstream coverage.
 No API key required.
 
 Usage:
-  python fetch_israel.py             # last 45 days
-  python fetch_israel.py --backfill  # last 365 days
+  python fetch_anchor.py             # last 45 days
+  python fetch_anchor.py --backfill  # last 365 days
 """
 
 import argparse
@@ -42,6 +42,56 @@ ILS_TO_USD         = 1 / 3.7    # approximate NIS → USD conversion rate
 # 0031 = Ministry of Defense
 # 0010 = PM's Office (includes National Security Staff 00105101)
 DEFENSE_CODE_PATTERNS = ["0031", "00105101"]
+
+# ---------------------------------------------------------------------------
+# Hebrew → English translation tables
+# ---------------------------------------------------------------------------
+
+BUDGET_ITEM_NAMES = {
+    "הוצאות ביטחוניות":            "Defense Expenses (MoD §31)",
+    "הוצאות ביטחוניות שונות":       "Miscellaneous Defense Expenses",
+    "הוצאות ביטחון":                "Defense Expenses",
+    "תקציב הביטחון שונות":          "Defense Budget Miscellaneous",
+    "הוצאות ביטחון שונות - חרבות ברזל": "Defense Expenses — Iron Swords",
+    "מטה לביטחון לאומי":            "National Security Staff (NSC)",
+    "תפעול ורכש מבצעי (ביטחון ומודיעין)": "Operational Procurement (Defense & Intelligence)",
+    "מרכיבי ביטחון - רכש רב שנתי":  "Defense Components — Multi-Year Procurement",
+    "מרכיבי ביטחון - רכש שוטף":     "Defense Components — Current Procurement",
+    "מרכיבי ביטחון":                "Defense Components",
+}
+
+CHANGE_TYPE_NAMES = {
+    "מרזרבה כללית":    "from general reserve",
+    "לרזרבה כללית":    "to general reserve",
+    "תקציב נוסף":      "supplemental budget",
+    "העברה לרזרבה":    "transfer to reserve",
+    "שינוי פנימי":     "internal transfer",
+    "הגדלה רגילה":     "standard increase",
+    "עודפים":          "surplus allocation",
+    "לרזרבה":          "to reserve",
+    "מרזרבה":          "from reserve",
+    "העברה":           "transfer",
+}
+
+COMMITTEE_NAMES = {
+    "אישור ועדה":      "Knesset Finance Committee",
+    "אישור שר":        "Minister approval",
+    "אישור ממשלה":     "Cabinet approval",
+}
+
+
+def tr_budget_item(he: str) -> str:
+    return BUDGET_ITEM_NAMES.get(he.strip(), he.strip())
+
+
+def tr_change_type(parts: list) -> str:
+    translated = [CHANGE_TYPE_NAMES.get(p.strip(), p.strip()) for p in parts]
+    return ", ".join(translated) if translated else "budget modification"
+
+
+def tr_committee(parts: list) -> str:
+    translated = [COMMITTEE_NAMES.get(p.strip(), p.strip()) for p in parts]
+    return ", ".join(translated)
 
 # ---------------------------------------------------------------------------
 # Paths
@@ -120,43 +170,42 @@ def extract_defense_items(row: dict) -> list:
 
 
 def make_title(row: dict, defense_items: list) -> str:
-    change_type = ", ".join(row.get("change_title") or []) or "budget modification"
-    # Use the most significant defense item title
+    change_type = tr_change_type(row.get("change_title") or [])
     if defense_items:
-        item_title = defense_items[0].get("budget_code_title", "").split(":")[-1].strip()
+        item_he = defense_items[0].get("budget_code_title", "").split(":")[-1].strip()
     else:
-        # Fall back to any defense code in budget_code_title
         codes = row.get("budget_code_title") or []
-        item_title = next(
+        item_he = next(
             (c.split(":")[-1].strip() for c in codes if any(p in c for p in DEFENSE_CODE_PATTERNS)),
             "defense budget"
         )
-    return f"IL — {item_title}: {change_type}"
+    return f"IL — {tr_budget_item(item_he)}: {change_type}"
 
 
 def make_description(row: dict, defense_items: list) -> str:
     parts = []
-    # AI explanation for defense-specific items
-    for item in defense_items[:2]:
-        expl = (item.get("ai_change_explanation") or "").strip()
-        if expl:
-            parts.append(expl)
-    # Fallback to full explanation
-    if not parts:
-        expl = (row.get("explanation") or "").strip()
-        if expl:
-            parts.append(expl[:300])
-    # Net expense diff for defense codes
+    # Structured English summary: what moved, how much, why
     for item in defense_items[:1]:
         diff = item.get("net_expense_diff")
         if diff:
             sign = "+" if diff > 0 else ""
             ils_m = round(diff / 1_000_000, 1)
-            parts.append(f"Net expense diff: {sign}{ils_m}M ILS")
-    # Committee approval
-    committee_type = ", ".join(row.get("change_type_name") or [])
-    if committee_type:
-        parts.append(f"Approved by: {committee_type}")
+            item_he = item.get("budget_code_title", "").split(":")[-1].strip()
+            parts.append(f"{tr_budget_item(item_he)}: {sign}{ils_m}M ILS net")
+    # Committee / approval authority
+    committee = tr_committee(row.get("change_type_name") or [])
+    if committee:
+        parts.append(f"Approved by: {committee}")
+    # Government decision reference if visible in explanation
+    expl = (row.get("explanation") or "")
+    import re
+    m = re.search(r"החלטת ממשלה\s+(\d+)", expl)
+    if m:
+        parts.append(f"Govt Decision #{m.group(1)}")
+    # Transaction reference
+    txn = row.get("transaction_id")
+    if txn:
+        parts.append(f"Ref: {txn}")
     return " | ".join(parts) if parts else None
 
 
