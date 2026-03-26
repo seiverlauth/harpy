@@ -445,7 +445,7 @@
         const anomalyFmt = cl.anomaly >= 10
           ? '\xd7' + Math.round(cl.anomaly)
           : '\xd7' + cl.anomaly.toFixed(1);
-        const hot = cl.score > 3;
+        const hot = cl.score > 5;
 
         const row = document.createElement('div');
         row.className = 'cluster-row' + (hot ? ' hot' : '');
