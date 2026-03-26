@@ -17,7 +17,7 @@ import json
 import re
 import sys
 import time
-from datetime import datetime, timezone
+from datetime import datetime, timedelta, timezone
 from pathlib import Path
 
 from bs4 import BeautifulSoup
@@ -367,7 +367,7 @@ def parse_article_page(html):
 
     value_usd = None
     m = re.search(
-        r"estimated(?:\s+total)?\s+cost(?:\s+(?:of|is))?\s+\$([0-9,.]+)\s*(million|billion)",
+        r"estimated(?:\s+total)?\s+cost(?:\s+(?:of|is))?(?:\s+up\s+to)?\s+\$([0-9,.]+)\s*(million|billion)",
         body_text, re.IGNORECASE,
     )
     if m:
@@ -427,9 +427,14 @@ def build_article_url_map(target_signals):
 
         for item in items:
             iso2 = country_iso_from_title(item["title"])
-            if item["date_str"] and iso2:
-                key = (item["date_str"], iso2)
-                by_date_iso.setdefault(key, []).append(item["article_url"])
+            if iso2:
+                if item["date_str"]:
+                    key = (item["date_str"], iso2)
+                    by_date_iso.setdefault(key, []).append(item["article_url"])
+                # Also index by iso-only for fuzzy date fallback
+                by_date_iso.setdefault(("*", iso2), []).append(
+                    (item["date_str"], item["article_url"])
+                )
 
         page_dates = [item["date_str"] for item in items if item["date_str"]]
         if page_dates and min(page_dates) < oldest_date:
@@ -445,12 +450,27 @@ def find_page_url_for_signal(signal, by_date_iso):
     """
     Resolve the DSCA article page URL for a signal.
 
-    Matches by (signal_date, iso2). When multiple articles share the same date
-    and country, fetches each candidate to check for the matching CN number.
+    Tries exact (date, iso) match first, then a ±3-day fuzzy window using the
+    iso-only index. When multiple candidates exist, disambiguates by CN number.
     Returns the article URL string, or None if not found.
     """
-    key        = (signal.get("signal_date"), signal.get("iso"))
+    iso        = signal.get("iso")
+    sig_date   = signal.get("signal_date")
+    key        = (sig_date, iso)
     candidates = by_date_iso.get(key, [])
+
+    if not candidates and sig_date and iso:
+        # Fuzzy fallback: check all articles for this iso within ±3 days
+        try:
+            dt = datetime.strptime(sig_date, "%Y-%m-%d")
+            window = {(dt + timedelta(days=d)).strftime("%Y-%m-%d") for d in range(-3, 4)}
+        except ValueError:
+            window = set()
+        fuzzy = [
+            url for (d, url) in by_date_iso.get(("*", iso), [])
+            if d in window or d is None
+        ]
+        candidates = fuzzy
 
     if not candidates:
         return None
