@@ -3,222 +3,90 @@
     {
       "iso": "IL",
       "source": "anchor_budget",
-      "signal_date": "2025-12-28",
-      "title": "IL — Defense Expenses (MoD §31): from general reserve, to general reserve",
-      "value_usd": 49459459.46,
-      "description": "Defense Expenses (MoD §31): +22.0M ILS net | Approved by: Knesset Finance Committee | Ref: 2025/31-019",
+      "signal_date": "2026-02-18",
+      "title": "IL — Elbit Systems Awarded $277 Million Contracts for 30mm Turrets and Munitions by an International Customer",
+      "value_usd": 277000000.0,
+      "description": "(NASDAQ: ESLT) (TASE: ESLT) (“Elbit Systems” or the “Company”) announced today that it has been awarded contracts in an aggregate value of approximately $277 million by an international customer for supply of 30 mm turrets and munitions. | EDGAR: 0001178913-26-000537",
       "raw_score": 7.0,
       "weight": 1.0,
-      "transaction_id": "2025/31-019"
+      "accession": "0001178913-26-000537"
     },
     {
       "iso": "IL",
       "source": "anchor_budget",
-      "signal_date": "2025-12-24",
-      "title": "IL — Defense Expenses (MoD §31): to general reserve",
-      "value_usd": 5940262702.7,
-      "description": "Defense Expenses (MoD §31): -10989.5M ILS net | Approved by: Knesset Finance Committee | Ref: 2025/31-018",
+      "signal_date": "2026-02-17",
+      "title": "IL — Elbit Systems Awarded Contracts Valued at Approximately $435 Million for Advanced Defense Systems",
+      "value_usd": 435000000.0,
+      "description": "(NASDAQ: ESLT) (TASE: ESLT) (“Elbit Systems” or the “Company”) announced today that it was awarded several contracts with a total value of approximately $435 million from an international customer. | EDGAR: 0001178913-26-000482",
       "raw_score": 7.0,
       "weight": 1.0,
-      "transaction_id": "2025/31-018"
+      "accession": "0001178913-26-000482"
     },
     {
       "iso": "IL",
       "source": "anchor_budget",
-      "signal_date": "2025-12-24",
-      "title": "IL — Defense Expenses (MoD §31): to general reserve",
-      "value_usd": 48837297.3,
-      "description": "Defense Expenses (MoD §31): -90.3M ILS net | Approved by: Knesset Finance Committee | Ref: 2025/31-013",
+      "signal_date": "2026-01-26",
+      "title": "IL — Elbit Systems Awarded $228 Million Follow-on Contract to Provide Iron Fist APS for U.S. Army Bradley IFV Upgrades",
+      "value_usd": 228000000.0,
+      "description": "Army Bradley IFV Upgrades Haifa, Israel, January 26, 2026 – Elbit Systems Ltd . | EDGAR: 0001178913-26-000214",
       "raw_score": 7.0,
       "weight": 1.0,
-      "transaction_id": "2025/31-013"
+      "accession": "0001178913-26-000214"
     },
     {
       "iso": "IL",
       "source": "anchor_budget",
-      "signal_date": "2025-12-24",
-      "title": "IL — Defense Expenses (MoD §31): from general reserve, to general reserve",
-      "value_usd": null,
-      "description": "Defense Expenses (MoD §31): -18.8M ILS net | Approved by: Knesset Finance Committee | Ref: 2025/16-016",
+      "signal_date": "2025-11-19",
+      "title": "IL — Elbit Systems Awarded Contracts in an Aggregate Amount of $210 Million from Israel Ministry of Defense for Tank Upgrades",
+      "value_usd": 210000000.0,
+      "description": "(NASDAQ: ESLT) (TASE: ESLT) (“Elbit Systems” or the “Company”) announced today that it has been awarded contracts from the Israel Ministry of Defense in an aggregate amount of approximately $210 million for the upgrade of Merkava Main Battle Tanks (MBTs). | EDGAR: 0001178913-25-003892",
       "raw_score": 7.0,
       "weight": 1.0,
-      "transaction_id": "2025/16-016"
+      "accession": "0001178913-25-003892"
     },
     {
       "iso": "IL",
       "source": "anchor_budget",
-      "signal_date": "2025-12-18",
-      "title": "IL — Defense Expenses (MoD §31): to general reserve, from general reserve",
-      "value_usd": 41785405.41,
-      "description": "Defense Expenses (MoD §31): -4.5M ILS net | Approved by: Knesset Finance Committee | Govt Decision #2825 | Ref: 2025/04-034",
+      "signal_date": "2025-11-17",
+      "title": "IL — Elbit Systems Signs a $2.3 Billion International Contract",
+      "value_usd": 2300000000.0,
+      "description": "(NASDAQ: ESLT) (TASE: ESLT) (“Elbit Systems” or the “Company”) announced today that it has signed an international contract for a strategic solution in an amount of approximately $2.3 billion. | EDGAR: 0001178913-25-003866",
       "raw_score": 7.0,
       "weight": 1.0,
-      "transaction_id": "2025/04-034"
-    },
-    {
-      "iso": "IL",
-      "source": "anchor_budget",
-      "signal_date": "2025-12-18",
-      "title": "IL — Defense Expenses (MoD §31): to general reserve, from general reserve",
-      "value_usd": null,
-      "description": "Defense Expenses (MoD §31): -111.8M ILS net | Approved by: Knesset Finance Committee | Ref: 2025/46-006",
-      "raw_score": 7.0,
-      "weight": 1.0,
-      "transaction_id": "2025/46-006"
-    },
-    {
-      "iso": "IL",
-      "source": "anchor_budget",
-      "signal_date": "2025-12-18",
-      "title": "IL — Defense Expenses (MoD §31): from general reserve, to general reserve",
-      "value_usd": null,
-      "description": "Defense Expenses (MoD §31): -16.0M ILS net | Approved by: Knesset Finance Committee | Ref: 2025/01-005",
-      "raw_score": 7.0,
-      "weight": 1.0,
-      "transaction_id": "2025/01-005"
-    },
-    {
-      "iso": "IL",
-      "source": "anchor_budget",
-      "signal_date": "2025-12-18",
-      "title": "IL — Defense Expenses (MoD §31): from general reserve, to general reserve",
-      "value_usd": null,
-      "description": "Defense Expenses (MoD §31): -153.7M ILS net | Approved by: Knesset Finance Committee | Ref: 2025/52-004",
-      "raw_score": 7.0,
-      "weight": 1.0,
-      "transaction_id": "2025/52-004"
-    },
-    {
-      "iso": "IL",
-      "source": "anchor_budget",
-      "signal_date": "2025-12-18",
-      "title": "IL — Defense Expenses (MoD §31): to general reserve, from general reserve",
-      "value_usd": 17418918.92,
-      "description": "Approved by: Knesset Finance Committee | Ref: 2025/83-032",
-      "raw_score": 7.0,
-      "weight": 1.0,
-      "transaction_id": "2025/83-032"
-    },
-    {
-      "iso": "IL",
-      "source": "anchor_budget",
-      "signal_date": "2025-12-14",
-      "title": "IL — Defense Expenses (MoD §31): to general reserve, from general reserve",
-      "value_usd": 9189189.19,
-      "description": "Defense Expenses (MoD §31): -4.0M ILS net | Approved by: Knesset Finance Committee | Ref: 2025/38-015",
-      "raw_score": 7.0,
-      "weight": 1.0,
-      "transaction_id": "2025/38-015"
-    },
-    {
-      "iso": "IL",
-      "source": "anchor_budget",
-      "signal_date": "2025-12-09",
-      "title": "IL — Defense Expenses (MoD §31): to general reserve",
-      "value_usd": 1297297.3,
-      "description": "Defense Expenses (MoD §31): -2.4M ILS net | Approved by: Knesset Finance Committee | Ref: 2025/31-010",
-      "raw_score": 7.0,
-      "weight": 1.0,
-      "transaction_id": "2025/31-010"
-    },
-    {
-      "iso": "IL",
-      "source": "anchor_budget",
-      "signal_date": "2025-12-03",
-      "title": "IL — Defense Expenses (MoD §31): from general reserve, to general reserve",
-      "value_usd": null,
-      "description": "Defense Expenses (MoD §31): -500.0M ILS net | Approved by: Knesset Finance Committee | Ref: 2025/07-008",
-      "raw_score": 7.0,
-      "weight": 1.0,
-      "transaction_id": "2025/07-008"
-    },
-    {
-      "iso": "IL",
-      "source": "anchor_budget",
-      "signal_date": "2025-12-03",
-      "title": "IL — Defense Expenses (MoD §31): from general reserve, to general reserve",
-      "value_usd": null,
-      "description": "Defense Expenses (MoD §31): +262.3M ILS net | Approved by: Knesset Finance Committee | Ref: 2025/31-005",
-      "raw_score": 7.0,
-      "weight": 1.0,
-      "transaction_id": "2025/31-005"
-    },
-    {
-      "iso": "IL",
-      "source": "anchor_budget",
-      "signal_date": "2025-11-26",
-      "title": "IL — Defense Expenses (MoD §31): transfer to reserve",
-      "value_usd": 11547027.03,
-      "description": "Defense Expenses (MoD §31): -21.4M ILS net | Approved by: Knesset Finance Committee | Ref: 2025/31-006",
-      "raw_score": 7.0,
-      "weight": 1.0,
-      "transaction_id": "2025/31-006"
-    },
-    {
-      "iso": "IL",
-      "source": "anchor_budget",
-      "signal_date": "2025-11-26",
-      "title": "IL — National Security Staff (NSC): transfer to reserve",
-      "value_usd": 41081.08,
-      "description": "National Security Staff (NSC): -0.1M ILS net | Approved by: Knesset Finance Committee | Ref: 2025/10-006",
-      "raw_score": 7.0,
-      "weight": 1.0,
-      "transaction_id": "2025/10-006"
-    },
-    {
-      "iso": "IL",
-      "source": "anchor_budget",
-      "signal_date": "2025-09-30",
-      "title": "IL — Defense Expenses (MoD §31): supplemental budget",
-      "value_usd": 3364324324.32,
-      "description": "Defense Expenses (MoD §31): +6224.0M ILS net | Approved by: Knesset Finance Committee | Ref: 2025/31-004",
-      "raw_score": 7.0,
-      "weight": 1.0,
-      "transaction_id": "2025/31-004"
+      "accession": "0001178913-25-003866"
     },
     {
       "iso": "IL",
       "source": "anchor_budget",
       "signal_date": "2025-08-13",
-      "title": "IL — Defense Expenses (MoD §31): to general reserve",
-      "value_usd": 1621621.62,
-      "description": "Defense Expenses (MoD §31): -3.0M ILS net | Approved by: Knesset Finance Committee | Ref: 2025/31-003",
+      "title": "IL — Elbit Systems Awarded $1.635 Billion Contract to Deliver a Range of Defense Solutions to a European Country",
+      "value_usd": 1635000000.0,
+      "description": "(NASDAQ: ESLT) (TASE: ESLT) (“Elbit Systems” or the “Company”) announced today that is has been awarded $1.635 Billion contract to deliver a range of defense solutions to a European country. | EDGAR: 0001178913-25-002820",
       "raw_score": 7.0,
       "weight": 1.0,
-      "transaction_id": "2025/31-003"
+      "accession": "0001178913-25-002820"
     },
     {
       "iso": "IL",
       "source": "anchor_budget",
-      "signal_date": "2025-07-09",
-      "title": "IL — Defense Expenses (MoD §31): to general reserve, from general reserve",
-      "value_usd": null,
-      "description": "Defense Expenses (MoD §31): -1.0M ILS net | Approved by: Knesset Finance Committee | Ref: 2025/10-003",
+      "signal_date": "2025-08-11",
+      "title": "IL — Elbit Systems Awarded Two Contracts in an Aggregate Amount of Approximately $260 Million for the Supply of Advanced Airborne Munitions to the Israel M",
+      "value_usd": 260000000.0,
+      "description": "(NASDAQ: ESLT) (TASE: ESLT) (“Elbit Systems” or the “Company”) announced today, that it was awarded two contracts in an aggregate amount of approximately $260 million for the supply of advanced airborne munitions to the Israel Ministry of Defense (IMOD). | EDGAR: 0001178913-25-002709",
       "raw_score": 7.0,
       "weight": 1.0,
-      "transaction_id": "2025/10-003"
+      "accession": "0001178913-25-002709"
     },
     {
       "iso": "IL",
       "source": "anchor_budget",
-      "signal_date": "2025-06-24",
-      "title": "IL — National Security Staff (NSC): transfer to reserve",
-      "value_usd": 149729.73,
-      "description": "National Security Staff (NSC): -0.3M ILS net | Approved by: Knesset Finance Committee | Ref: 2025/10-004",
+      "signal_date": "2025-07-28",
+      "title": "IL — Elbit Systems Awarded $260 Million Contract to Supply DIRCM Self-Protection Systems for Germany's A400M Aircraft Fleet",
+      "value_usd": 260000000.0,
+      "description": "The contract, to be executed over a 6-year period, follows a procurement decision by the Federal Office for Equipment, Information Technology and Operations of the Bundeswehr (BAAINBw). | EDGAR: 0001178913-25-002470",
       "raw_score": 7.0,
       "weight": 1.0,
-      "transaction_id": "2025/10-004"
-    },
-    {
-      "iso": "IL",
-      "source": "anchor_budget",
-      "signal_date": "2025-06-10",
-      "title": "IL — National Security Staff (NSC): surplus allocation",
-      "value_usd": 4949189.19,
-      "description": "National Security Staff (NSC): +9.2M ILS net | Approved by: הודעה לועדה | Ref: 2025/10-001",
-      "raw_score": 7.0,
-      "weight": 1.0,
-      "transaction_id": "2025/10-001"
+      "accession": "0001178913-25-002470"
     }
   ]
 }

@@ -1,16 +1,15 @@
 #!/usr/bin/env python3
 """
-fetch_anchor.py — Israeli defense budget modifications pipeline for HARPY
+fetch_anchor.py — Israeli defense industry EDGAR 6-K pipeline for HARPY
 
-Source: OpenBudget API (next.obudget.org) — aggregates from official Israeli
-        government budget change filings approved by the Knesset Finance Committee.
+Source: SEC EDGAR Form 6-K filings from Israeli defense contractors.
+        Elbit Systems (CIK 1027664) files a 6-K for every material contract win,
+        typically within 24-48h of announcement. No authentication required.
 
-Filters to changes affecting budget code 0031 (Ministry of Defense).
-Each record represents a formal budget modification — money moved in or out of
-the defense budget, approved by the Knesset Finance Committee. These appear in
-the database when approved, before any mainstream coverage.
+Each signal = one contract announcement. Title and value extracted from the
+press release exhibit. Buyer country extracted where disclosed.
 
-No API key required.
+No API key required. Rate limit: 10 req/s per SEC EDGAR fair-use guidelines.
 
 Usage:
   python fetch_anchor.py             # last 45 days
@@ -18,84 +17,35 @@ Usage:
 """
 
 import argparse
+import html
 import json
+import re
 import sys
 import time
 import urllib.request
 import urllib.parse
 from datetime import datetime, timedelta, timezone
+
+# Literal dollar-sign character for regex patterns — r"\$" behaves as end-anchor
+# in Python 3.9's re module; use [$] (character class) instead.
+_USD = "[$]"
 from pathlib import Path
 
 # ---------------------------------------------------------------------------
 # Configuration
 # ---------------------------------------------------------------------------
 
-OBUDGET_API        = "https://next.obudget.org/api/query"
-LOOKBACK_DAYS      = 45
+EDGAR_SUBMISSIONS = "https://data.sec.gov/submissions/CIK{cik}.json"
+EDGAR_ARCHIVE     = "https://www.sec.gov/Archives/edgar/data/{cik}/{acc_nodash}/"
+
+LOOKBACK_DAYS         = 45
 LOOKBACK_DAYS_BACKFILL = 365
-PAGE_SIZE          = 50
-MAX_PAGES          = 20          # 1000 records max
-REQUEST_DELAY      = 1.0         # seconds between requests
-ILS_TO_USD         = 1 / 3.7    # approximate NIS → USD conversion rate
+REQUEST_DELAY         = 0.15   # stay under SEC 10 req/s guideline
 
-# Budget codes to track (text LIKE match against budget_code_title array)
-# 0031 = Ministry of Defense
-# 0010 = PM's Office (includes National Security Staff 00105101)
-DEFENSE_CODE_PATTERNS = ["0031", "00105101"]
-
-# ---------------------------------------------------------------------------
-# Hebrew → English translation tables
-# ---------------------------------------------------------------------------
-
-BUDGET_ITEM_NAMES = {
-    "הוצאות ביטחוניות":            "Defense Expenses (MoD §31)",
-    "הוצאות ביטחוניות שונות":       "Miscellaneous Defense Expenses",
-    "הוצאות ביטחון":                "Defense Expenses",
-    "תקציב הביטחון שונות":          "Defense Budget Miscellaneous",
-    "הוצאות ביטחון שונות - חרבות ברזל": "Defense Expenses — Iron Swords",
-    "מטה לביטחון לאומי":            "National Security Staff (NSC)",
-    "תפעול ורכש מבצעי (ביטחון ומודיעין)": "Operational Procurement (Defense & Intelligence)",
-    "מרכיבי ביטחון - רכש רב שנתי":  "Defense Components — Multi-Year Procurement",
-    "מרכיבי ביטחון - רכש שוטף":     "Defense Components — Current Procurement",
-    "מרכיבי ביטחון":                "Defense Components",
-}
-
-CHANGE_TYPE_NAMES = {
-    "מרזרבה כללית":    "from general reserve",
-    "לרזרבה כללית":    "to general reserve",
-    "תקציב נוסף":      "supplemental budget",
-    "העברה לרזרבה":    "transfer to reserve",
-    "שינוי פנימי":     "internal transfer",
-    "הגדלה רגילה":     "standard increase",
-    "עודפים":          "surplus allocation",
-    "לרזרבה":          "to reserve",
-    "מרזרבה":          "from reserve",
-    "העברה":           "transfer",
-}
-
-COMMITTEE_NAMES = {
-    "אישור ועדה":      "Knesset Finance Committee",
-    "אישור שר":        "Minister approval",
-    "אישור ממשלה":     "Cabinet approval",
-}
-
-
-def tr_budget_item(he: str) -> str:
-    return BUDGET_ITEM_NAMES.get(he.strip(), he.strip())
-
-
-def tr_change_type(parts: list) -> str:
-    translated = [CHANGE_TYPE_NAMES.get(p.strip(), p.strip()) for p in parts]
-    return ", ".join(translated) if translated else "budget modification"
-
-
-def tr_committee(parts: list) -> str:
-    translated = [COMMITTEE_NAMES.get(p.strip(), p.strip()) for p in parts]
-    return ", ".join(translated)
-
-# ---------------------------------------------------------------------------
-# Paths
-# ---------------------------------------------------------------------------
+# Israeli defense contractors with SEC filings
+COMPANIES = [
+    {"name": "Elbit Systems",    "cik": "0001027664", "iso": "IL"},
+]
 
 REPO_ROOT    = Path(__file__).parent.parent
 SIGNALS_PATH = REPO_ROOT / "data" / "anchor_signals.json"
@@ -105,7 +55,7 @@ IL_PROFILE   = REPO_ROOT / "data" / "profiles" / "IL.json"
 # Helpers
 # ---------------------------------------------------------------------------
 
-def load_il_score() -> float:
+def load_il_score():
     if IL_PROFILE.exists():
         try:
             return float(json.loads(IL_PROFILE.read_text()).get("structural_interest_score", 8))
@@ -119,112 +69,144 @@ def load_existing(path: Path):
         try:
             data = json.loads(path.read_text())
             signals = data.get("signals", [])
-            seen = {s["transaction_id"] for s in signals if "transaction_id" in s}
+            seen = {s["accession"] for s in signals if "accession" in s}
             return signals, seen
         except Exception:
             pass
     return [], set()
 
 
-def api_query(sql: str) -> dict:
-    params = urllib.parse.urlencode({"query": sql})
-    url = f"{OBUDGET_API}?{params}"
-    req = urllib.request.Request(url, headers={"Accept": "application/json", "User-Agent": "harpy/1.0"})
-    with urllib.request.urlopen(req, timeout=30) as resp:
-        return json.loads(resp.read())
+def http_get(url: str, retries: int = 3) -> bytes:
+    for attempt in range(retries):
+        try:
+            req = urllib.request.Request(url, headers={
+                "User-Agent": "harpy research@harpy.io",
+                "Accept": "application/json, text/html, */*",
+            })
+            with urllib.request.urlopen(req, timeout=30) as r:
+                return r.read()
+        except urllib.error.HTTPError as e:
+            if e.code in (429, 503) and attempt < retries - 1:
+                time.sleep(5 * (attempt + 1))
+                continue
+            raise
+    raise RuntimeError(f"Failed after {retries} attempts: {url}")
 
 
-def to_usd(ils):
-    if ils is None:
-        return None
+def get_filing_docs(cik_num: str, accession: str) -> list:
+    """Return list of document filenames in this filing's EDGAR directory."""
+    acc_nodash = accession.replace("-", "")
+    url = EDGAR_ARCHIVE.format(cik=cik_num, acc_nodash=acc_nodash)
     try:
-        v = float(ils)
-    except (TypeError, ValueError):
-        return None
-    if v == 0:
-        return None
-    return round(abs(v) * ILS_TO_USD, 2)
+        html = http_get(url).decode("utf-8", errors="ignore")
+        return re.findall(r'href="/Archives/edgar/data/\d+/\d+/([^"]+\.htm)"', html)
+    except Exception:
+        return []
 
 
-def pick_date(row: dict):
-    dates = row.get("date") or []
-    if dates:
-        return str(dates[0])[:10]
+def fetch_exhibit(cik_num: str, accession: str, docs: list) -> str:
+    """Fetch the press release exhibit from the filing. Returns plain text."""
+    acc_nodash = accession.replace("-", "")
+    # Prefer files named exhibit*, ex99*, ex-99*, zk* (Elbit pattern)
+    priority = sorted(docs, key=lambda d: (
+        0 if re.match(r"exhibit[_-]?1", d, re.I) else
+        1 if re.match(r"ex.?99", d, re.I) else
+        2 if d.lower().startswith("zk") else
+        3
+    ))
+    for doc in priority:
+        # Skip the cover 6-K itself
+        if doc.lower().startswith("cover"):
+            continue
+        url = f"https://www.sec.gov/Archives/edgar/data/{cik_num}/{acc_nodash}/{doc}"
+        try:
+            time.sleep(REQUEST_DELAY)
+            raw = http_get(url).decode("utf-8", errors="ignore")
+            text = re.sub(r"<[^>]+>", " ", raw)
+            text = html.unescape(text)           # decode &#160; &#8217; etc.
+            text = re.sub(r"\s+", " ", text).strip()
+            if len(text) > 200:
+                return text
+        except Exception:
+            continue
+    return ""
+
+
+def extract_value_usd(text: str):
+    """Pull the contract dollar value from the press release text.
+    Searches near award/contract language first to avoid earnings data."""
+    # Look for the value in award context first (most accurate)
+    award_patterns = [
+        rf"(?:awarded?|contract[s]?)[^.{{0,200}}]{_USD}\s*([\d,]+(?:\.\d+)?)\s*(billion|million)",
+        rf"aggregate[d]?\s+value[^.{{0,100}}]{_USD}\s*([\d,]+(?:\.\d+)?)\s*(million|billion)",
+        rf"approximately\s+{_USD}\s*([\d,]+(?:\.\d+)?)\s*(billion|million)",
+        rf"{_USD}\s*([\d,]+(?:\.\d+)?)\s*(billion|million)",
+    ]
+    for pat in award_patterns:
+        for m in re.finditer(pat, text, re.I):
+            raw = m.group(1).replace(",", "")
+            val = float(raw)
+            unit = m.group(2).lower()
+            val *= 1e9 if unit == "billion" else 1e6
+            if val >= 1e6:  # skip values under $1M
+                return val
     return None
 
 
-def is_defense_related(row: dict) -> bool:
-    """True if any budget code in the change touches the MoD or NSS."""
-    codes_str = json.dumps(row.get("budget_code_title") or [])
-    return any(p in codes_str for p in DEFENSE_CODE_PATTERNS)
-
-
-def extract_defense_items(row: dict) -> list:
-    """Return change_list entries that touch defense budget codes."""
-    items = []
-    for cl in (row.get("change_list") or []):
-        code_title = cl.get("budget_code_title") or ""
-        if any(p in code_title for p in DEFENSE_CODE_PATTERNS):
-            items.append(cl)
-    return items
-
-
-def make_title(row: dict, defense_items: list) -> str:
-    change_type = tr_change_type(row.get("change_title") or [])
-    if defense_items:
-        item_he = defense_items[0].get("budget_code_title", "").split(":")[-1].strip()
-    else:
-        codes = row.get("budget_code_title") or []
-        item_he = next(
-            (c.split(":")[-1].strip() for c in codes if any(p in c for p in DEFENSE_CODE_PATTERNS)),
-            "defense budget"
-        )
-    return f"IL — {tr_budget_item(item_he)}: {change_type}"
-
-
-def make_description(row: dict, defense_items: list) -> str:
-    parts = []
-    # Structured English summary: what moved, how much, why
-    for item in defense_items[:1]:
-        diff = item.get("net_expense_diff")
-        if diff:
-            sign = "+" if diff > 0 else ""
-            ils_m = round(diff / 1_000_000, 1)
-            item_he = item.get("budget_code_title", "").split(":")[-1].strip()
-            parts.append(f"{tr_budget_item(item_he)}: {sign}{ils_m}M ILS net")
-    # Committee / approval authority
-    committee = tr_committee(row.get("change_type_name") or [])
-    if committee:
-        parts.append(f"Approved by: {committee}")
-    # Government decision reference if visible in explanation
-    expl = (row.get("explanation") or "")
-    import re
-    m = re.search(r"החלטת ממשלה\s+(\d+)", expl)
+def extract_title(text: str, company_name: str) -> str:
+    """Pull the headline from the press release (first bold/header line)."""
+    # Look for the announcement headline — typically right after the boilerplate
+    m = re.search(
+        rf"{re.escape(company_name)}\s+(?:Awarded|Wins?|Secures?|Announces?|Selected|Signs?)[^\n]{{10,200}}",
+        text, re.I
+    )
     if m:
-        parts.append(f"Govt Decision #{m.group(1)}")
-    # Transaction reference
-    txn = row.get("transaction_id")
-    if txn:
-        parts.append(f"Ref: {txn}")
-    return " | ".join(parts) if parts else None
+        title = re.sub(r"\s+", " ", m.group(0)).strip()
+        # Strip city/date boilerplate: "… Haifa, Israel, …" or "… Tel Aviv, …"
+        title = re.sub(r"\s+(?:Haifa|Tel Aviv|Jerusalem|Herzliya)[,.].*", "", title, flags=re.I)
+        return title[:150]
+    # Fallback: first sentence mentioning a dollar amount
+    m2 = re.search(rf"[A-Z][^.{{20,150}}]{_USD}[^.]+[.]", text)
+    if m2:
+        return re.sub(r"\s+", " ", m2.group(0)).strip()[:150]
+    return f"{company_name} contract announcement"
 
 
-def signal_from_row(row: dict, il_score: float) -> dict:
-    defense_items = extract_defense_items(row)
-    sig_date = pick_date(row)
-    value_usd = to_usd(row.get("amount"))
-
-    return {
-        "iso": "IL",
-        "source": "anchor_budget",
-        "signal_date": sig_date,
-        "title": make_title(row, defense_items),
-        "value_usd": value_usd,
-        "description": make_description(row, defense_items),
-        "raw_score": il_score,
-        "weight": 1.0,
-        "transaction_id": row.get("transaction_id"),
+def extract_buyer_iso(text: str) -> str:
+    """Try to identify buyer country ISO2 from the press release text."""
+    # Named countries
+    country_map = {
+        r"\bIsrael(?:i)?\b": "IL",
+        r"\bUnited States\b|\bU\.S\.\s": "US",
+        r"\bGermany\b|\bGerman\b": "DE",
+        r"\bIndia\b|\bIndian\b": "IN",
+        r"\bAustralia\b|\bAustralian\b": "AU",
+        r"\bUkraine\b|\bUkrainian\b": "UA",
+        r"\bBrazil\b|\bBrazilian\b": "BR",
+        r"\bPhilippines\b|\bFilipino\b": "PH",
+        r"\bSingapore\b": "SG",
+        r"\bNATO\b": "ZZ",  # NATO collective
+        r"\bIsrael Defense Forces\b|\bIDF\b": "IL",
     }
+    for pattern, iso in country_map.items():
+        if re.search(pattern, text):
+            return iso
+    return "IL"  # default: Israeli company, probably Israeli or undisclosed buyer
+
+
+def make_description(text: str, accession: str) -> str:
+    parts = []
+    # First substantive sentence — skip city/date lines and boilerplate headers
+    sentences = re.split(r"(?<=[.!?])\s+", text)
+    for s in sentences[1:6]:
+        s = s.strip()
+        if (len(s) > 60
+                and not re.match(r"(?:Haifa|Tel Aviv|Jerusalem|Herzliya|EX-|EXHIBIT)", s, re.I)
+                and not re.match(r"[A-Z]{2,}\s+[A-Z]{2,}", s)):  # skip ALL-CAPS header lines
+            parts.append(s[:300])
+            break
+    parts.append(f"EDGAR: {accession}")
+    return " | ".join(parts) if parts else None
 
 
 # ---------------------------------------------------------------------------
@@ -232,84 +214,87 @@ def signal_from_row(row: dict, il_score: float) -> dict:
 # ---------------------------------------------------------------------------
 
 def main():
-    parser = argparse.ArgumentParser(description="HARPY anchor defense budget change scraper")
-    parser.add_argument("--backfill", action="store_true", help="Extend lookback to 365 days")
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--backfill", action="store_true")
     args = parser.parse_args()
 
     lookback = LOOKBACK_DAYS_BACKFILL if args.backfill else LOOKBACK_DAYS
-    cutoff_dt = datetime.now(timezone.utc) - timedelta(days=lookback)
-    cutoff_str = cutoff_dt.strftime("%Y-%m-%d")
-    print(f"[anchor] lookback={lookback}d  cutoff={cutoff_str}")
+    cutoff = (datetime.now(timezone.utc) - timedelta(days=lookback)).strftime("%Y-%m-%d")
+    print(f"[anchor] lookback={lookback}d  cutoff={cutoff}")
 
     il_score = load_il_score()
     existing_signals, seen_ids = load_existing(SIGNALS_PATH)
-    print(f"[anchor] existing records: {len(existing_signals)}, seen ids: {len(seen_ids)}")
+    print(f"[anchor] existing={len(existing_signals)}  seen={len(seen_ids)}")
 
     new_signals = []
-    offset = 0
-    done = False
 
-    for page in range(MAX_PAGES):
-        if done:
-            break
+    for company in COMPANIES:
+        name  = company["name"]
+        cik   = company["cik"]
+        iso   = company["iso"]
+        cik_num = cik.lstrip("0")
 
-        # Query for any budget change touching 0031 (MoD) or 00105101 (NSS)
-        # Use OR conditions since we can't easily query array contains in this API
-        sql = (
-            f"SELECT * FROM budget_changes "
-            f"WHERE (budget_code_title::text LIKE '%0031%' "
-            f"   OR budget_code_title::text LIKE '%00105101%') "
-            f"ORDER BY date DESC "
-            f"LIMIT {PAGE_SIZE} OFFSET {offset}"
-        )
-
+        print(f"[anchor] fetching {name} (CIK {cik})")
         try:
-            data = api_query(sql)
+            sub_url = EDGAR_SUBMISSIONS.format(cik=cik)
+            sub_data = json.loads(http_get(sub_url))
         except Exception as e:
-            print(f"[anchor] ERROR on page {page}: {e}", file=sys.stderr)
-            break
+            print(f"[anchor] ERROR fetching submissions for {name}: {e}", file=sys.stderr)
+            continue
 
-        if not data.get("success"):
-            print(f"[anchor] API error: {data.get('error')}", file=sys.stderr)
-            break
+        filings = sub_data["filings"]["recent"]
+        forms       = filings["form"]
+        dates       = filings["filingDate"]
+        accessions  = filings["accessionNumber"]
 
-        rows = data.get("rows", [])
-        print(f"[anchor] page {page}  offset={offset}  rows={len(rows)}")
+        for i, form in enumerate(forms):
+            if form != "6-K":
+                continue
+            filing_date = dates[i]
+            if filing_date < cutoff:
+                break  # submissions are newest-first; stop once past window
 
-        if not rows:
-            break
-
-        for row in rows:
-            sig_date = pick_date(row)
-            if not sig_date:
+            accession = accessions[i]
+            if accession in seen_ids:
                 continue
 
-            # Stop once we pass the lookback window
-            if sig_date < cutoff_str:
-                done = True
-                break
-
-            txn_id = row.get("transaction_id")
-            if txn_id and txn_id in seen_ids:
+            time.sleep(REQUEST_DELAY)
+            docs = get_filing_docs(cik_num, accession)
+            if not docs:
                 continue
 
-            if not is_defense_related(row):
+            time.sleep(REQUEST_DELAY)
+            text = fetch_exhibit(cik_num, accession, docs)
+            if not text or len(text) < 100:
                 continue
 
-            sig = signal_from_row(row, il_score)
-            if sig.get("signal_date"):
-                new_signals.append(sig)
-                if txn_id:
-                    seen_ids.add(txn_id)
+            # Only include filings where the headline is a contract award
+            # (excludes earnings releases, annual reports, prospectuses, etc.)
+            headline_pat = rf"{re.escape(name)}\s+(?:Awarded|Wins?|Secures?|Signs?)[^\n]{{10,200}}"
+            if not re.search(headline_pat, text, re.I):
+                continue
 
-        offset += PAGE_SIZE
-        if len(rows) < PAGE_SIZE:
-            break
+            value_usd = extract_value_usd(text)
+            title     = f"IL — {extract_title(text, name)}"
+            buyer_iso = extract_buyer_iso(text)
+            desc      = make_description(text, accession)
 
-        time.sleep(REQUEST_DELAY)
+            sig = {
+                "iso":         buyer_iso if buyer_iso != "IL" else iso,
+                "source":      "anchor_budget",
+                "signal_date": filing_date,
+                "title":       title,
+                "value_usd":   value_usd,
+                "description": desc,
+                "raw_score":   il_score,
+                "weight":      1.0,
+                "accession":   accession,
+            }
+            new_signals.append(sig)
+            seen_ids.add(accession)
+            print(f"[anchor]   {filing_date}  {value_usd and f'${value_usd/1e6:.0f}M' or '?'}  {title[:70]}")
 
     print(f"[anchor] new signals: {len(new_signals)}")
-
     if not new_signals:
         print("[anchor] nothing new — exiting")
         return
@@ -317,7 +302,7 @@ def main():
     all_signals = existing_signals + new_signals
     SIGNALS_PATH.parent.mkdir(parents=True, exist_ok=True)
     SIGNALS_PATH.write_text(json.dumps({"signals": all_signals}, indent=2, ensure_ascii=False))
-    print(f"[anchor] wrote {len(all_signals)} total records to {SIGNALS_PATH}")
+    print(f"[anchor] wrote {len(all_signals)} total to {SIGNALS_PATH}")
 
 
 if __name__ == "__main__":
