@@ -1,10 +1,12 @@
 {
   "iso": "MW",
   "name": "Malawi",
-  "structural_interest_score": 0,
-  "score_rationale": "No structural indicators",
-  "key_structural_interests": [],
+  "structural_interest_score": 1,
+  "score_rationale": "Landlocked East Africa; limited strategic footprint; uranium deposits at Kayelekera historically of interest",
+  "key_structural_interests": [
+    "East Africa"
+  ],
   "suppression_baseline": "low_coverage",
-  "last_reviewed": "2026-03-15",
-  "last_generated": "2026-03-16"
+  "last_reviewed": "2026-03-27",
+  "last_generated": "2026-03-27"
 }

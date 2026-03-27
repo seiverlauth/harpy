@@ -1,10 +1,12 @@
 {
   "iso": "LI",
   "name": "Liechtenstein",
-  "structural_interest_score": 0,
-  "score_rationale": "No structural indicators",
-  "key_structural_interests": [],
+  "structural_interest_score": 1,
+  "score_rationale": "Microstate financial center; used historically for offshore holding structures and sanctioned-entity asset concealment",
+  "key_structural_interests": [
+    "financial center"
+  ],
   "suppression_baseline": "low_coverage",
-  "last_reviewed": "2026-03-15",
-  "last_generated": "2026-03-16"
+  "last_reviewed": "2026-03-27",
+  "last_generated": "2026-03-27"
 }

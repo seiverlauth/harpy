@@ -1,10 +1,13 @@
 {
   "iso": "SI",
   "name": "Slovenia",
-  "structural_interest_score": 0,
-  "score_rationale": "No structural indicators; NATO/EU member",
-  "key_structural_interests": [],
+  "structural_interest_score": 2,
+  "score_rationale": "NATO/EU member with Adriatic port access at Koper \u2014 Northern European container gateway (+1), Balkans gateway position adjacent to Western Balkans non-NATO states (+1)",
+  "key_structural_interests": [
+    "Adriatic access",
+    "Balkans gateway"
+  ],
   "suppression_baseline": "low_coverage",
-  "last_reviewed": "2026-03-15",
-  "last_generated": "2026-03-16"
+  "last_reviewed": "2026-03-27",
+  "last_generated": "2026-03-27"
 }

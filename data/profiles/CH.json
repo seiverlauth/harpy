@@ -1,10 +1,14 @@
 {
   "iso": "CH",
   "name": "Switzerland",
-  "structural_interest_score": 0,
-  "score_rationale": "No structural indicators; neutral financial center",
-  "key_structural_interests": [],
+  "structural_interest_score": 2,
+  "score_rationale": "Dominant global arms intermediary and commodity trading hub \u2014 Glencore, Gunvor, Trafigura all domiciled here (+1), hosting point for sanctioned-state financial flows and offshore wealth (+1)",
+  "key_structural_interests": [
+    "arms intermediary hub",
+    "commodity trading",
+    "financial flows"
+  ],
   "suppression_baseline": "low_coverage",
-  "last_reviewed": "2026-03-15",
-  "last_generated": "2026-03-16"
+  "last_reviewed": "2026-03-27",
+  "last_generated": "2026-03-27"
 }

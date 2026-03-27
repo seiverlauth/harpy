@@ -1,10 +1,16 @@
 {
   "iso": "CN",
   "name": "China",
-  "structural_interest_score": 0,
-  "score_rationale": "pending",
-  "key_structural_interests": [],
+  "structural_interest_score": 10,
+  "score_rationale": "Contests control of South China Sea \u2014 primary Indo-Pacific chokepoint (+3), major hydrocarbon reserves and transit dependency (+2), active nuclear program \u2014 second-strike capable ICBM/SLBM (+2), dominant rare earth extraction and processing \u2014 ~60% of global supply (+2), regional power and primary proxy hub \u2014 BRI, Pacific islands, Africa, Belt and Road infrastructure leverage (+1)",
+  "key_structural_interests": [
+    "South China Sea",
+    "nuclear program",
+    "rare earths",
+    "BRI",
+    "regional power"
+  ],
   "suppression_baseline": "low_coverage",
-  "last_reviewed": "2026-03-15",
-  "last_generated": "2026-03-16"
+  "last_reviewed": "2026-03-27",
+  "last_generated": "2026-03-27"
 }

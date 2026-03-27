@@ -1,0 +1,15 @@
+{
+  "iso": "HK",
+  "name": "Hong Kong",
+  "structural_interest_score": 4,
+  "score_rationale": "SAR under full PRC authority post-NSL \u2014 US-China friction flashpoint, active sanctions exposure (+1), major financial hub for PRC capital flows and offshore RMB (+1), regional proxy hub for PRC economic statecraft (+1), contested political status and ongoing civil liberties suppression (+1)",
+  "key_structural_interests": [
+    "PRC proxy",
+    "financial hub",
+    "US sanctions exposure",
+    "China friction"
+  ],
+  "suppression_baseline": "low_coverage",
+  "last_reviewed": "2026-03-27",
+  "last_generated": "2026-03-27"
+}

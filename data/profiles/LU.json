@@ -1,10 +1,13 @@
 {
   "iso": "LU",
   "name": "Luxembourg",
-  "structural_interest_score": 0,
-  "score_rationale": "No structural indicators",
-  "key_structural_interests": [],
+  "structural_interest_score": 2,
+  "score_rationale": "NATO SHAPE and EU Court of Justice host \u2014 institutional anchor of Western alliance command structure (+1), major offshore financial center \u2014 largest investment fund domicile in Europe after US (+1)",
+  "key_structural_interests": [
+    "NATO institutional",
+    "financial center"
+  ],
   "suppression_baseline": "low_coverage",
-  "last_reviewed": "2026-03-15",
-  "last_generated": "2026-03-16"
+  "last_reviewed": "2026-03-27",
+  "last_generated": "2026-03-27"
 }

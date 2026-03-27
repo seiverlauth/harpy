@@ -1,0 +1,13 @@
+{
+  "iso": "PR",
+  "name": "Puerto Rico",
+  "structural_interest_score": 2,
+  "score_rationale": "US Commonwealth; Western Hemisphere Caribbean position (+1), US military and naval presence \u2014 Roosevelt Roads naval history, ROTHR radar systems (+1)",
+  "key_structural_interests": [
+    "Western Hemisphere",
+    "US territory"
+  ],
+  "suppression_baseline": "low_coverage",
+  "last_reviewed": "2026-03-27",
+  "last_generated": "2026-03-27"
+}

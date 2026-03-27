@@ -1,0 +1,12 @@
+{
+  "iso": "KY",
+  "name": "Cayman Islands",
+  "structural_interest_score": 1,
+  "score_rationale": "UK Overseas Territory; largest offshore hedge fund and private equity domicile \u2014 LDA signals reflect funds registered here, not Caymanian state interests",
+  "key_structural_interests": [
+    "offshore financial center"
+  ],
+  "suppression_baseline": "low_coverage",
+  "last_reviewed": "2026-03-27",
+  "last_generated": "2026-03-27"
+}

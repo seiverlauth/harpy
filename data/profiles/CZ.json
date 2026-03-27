@@ -1,10 +1,14 @@
 {
   "iso": "CZ",
   "name": "Czechia",
-  "structural_interest_score": 0,
-  "score_rationale": "No structural indicators; NATO/EU member",
-  "key_structural_interests": [],
+  "structural_interest_score": 3,
+  "score_rationale": "NATO/EU member on Russia's western perimeter (+1), significant legacy arms export industry \u2014 one of Europe's top small arms and ammunition exporters (+1), uranium deposits at Doln\u00ed Ro\u017e\u00ednka \u2014 only active mine in Central Europe (+1)",
+  "key_structural_interests": [
+    "NATO flank",
+    "arms export",
+    "uranium"
+  ],
   "suppression_baseline": "low_coverage",
-  "last_reviewed": "2026-03-15",
-  "last_generated": "2026-03-16"
+  "last_reviewed": "2026-03-27",
+  "last_generated": "2026-03-27"
 }

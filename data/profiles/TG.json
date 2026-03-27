@@ -1,10 +1,13 @@
 {
   "iso": "TG",
   "name": "Togo",
-  "structural_interest_score": 0,
-  "score_rationale": "No structural indicators",
-  "key_structural_interests": [],
+  "structural_interest_score": 2,
+  "score_rationale": "Port of Lom\u00e9 \u2014 one of West Africa's deepest natural harbors, major regional container hub (+1), phosphate reserves \u2014 significant agricultural input export (+1)",
+  "key_structural_interests": [
+    "Lom\u00e9 port",
+    "phosphates"
+  ],
   "suppression_baseline": "low_coverage",
-  "last_reviewed": "2026-03-15",
-  "last_generated": "2026-03-16"
+  "last_reviewed": "2026-03-27",
+  "last_generated": "2026-03-27"
 }

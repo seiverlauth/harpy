@@ -1,0 +1,12 @@
+{
+  "iso": "BM",
+  "name": "Bermuda",
+  "structural_interest_score": 1,
+  "score_rationale": "UK Overseas Territory; major offshore financial and insurance center \u2014 LDA signals reflect companies domiciled here, not Bermudian state interests",
+  "key_structural_interests": [
+    "offshore financial center"
+  ],
+  "suppression_baseline": "low_coverage",
+  "last_reviewed": "2026-03-27",
+  "last_generated": "2026-03-27"
+}
