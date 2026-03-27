@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-03-26T04:50:10.506499+00:00",
+  "generated_at": "2026-03-27T16:29:30.773981+00:00",
   "sources": [
     "federalregister"
   ],
@@ -5017,6 +5017,50 @@
       "description": "Notice. \u00b7 The U.S. Department of the Treasury's Office of Foreign Assets Control (OFAC) is publishing the names of one or more persons that have been placed on OFAC's Specially Designated Nationals and Blocked Persons List (SDN List) based on OFAC's determination that one or more applicable legal criteria were satisfied. All property and interests in property subject to U.S. jurisdiction of these persons are blocked, and U.S. persons are generally prohibited from engaging in transactions with them.",
       "raw_score": 1.0,
       "page_url": "https://www.federalregister.gov/documents/2026/03/25/2026-05748/notice-of-ofac-sanctions-action"
+    },
+    {
+      "document_number": "2026-05896",
+      "iso": null,
+      "source": "federalregister",
+      "signal_date": "2026-03-26",
+      "title": "Preparer Tax Identification Number (PTIN) User Fee Update; Hearing",
+      "value_usd": null,
+      "description": "Notice of proposed rulemaking; notice of hearing. \u00b7 This document provides a notice of public hearing on the notice of proposed rulemaking (REG-108673-25) published in the Federal Register on Tuesday, September 30, 2025. The notice of proposed rulemaking by cross-reference to the interim final regulations published in the Federal Register on Tuesday, September 30, 2025, proposed to amend the current regulations to reduce from $11 to $10 the amount of the user fee imposed on tax return preparers to apply for or renew a preparer tax identification number (PTIN) plus an amount payable directly to the third party contractor.",
+      "raw_score": 1.0,
+      "page_url": "https://www.federalregister.gov/documents/2026/03/26/2026-05896/preparer-tax-identification-number-ptin-user-fee-update-hearing"
+    },
+    {
+      "document_number": "2026-05841",
+      "iso": null,
+      "source": "federalregister",
+      "signal_date": "2026-03-26",
+      "title": "Submission for OMB Review; Comment Request",
+      "value_usd": null,
+      "description": "30-Day information collection notice. \u00b7 The DoD has submitted to the Office of Management and Budget (OMB) for clearance the following proposal for collection of information under the provisions of the Paperwork Reduction Act.",
+      "raw_score": 1.0,
+      "page_url": "https://www.federalregister.gov/documents/2026/03/26/2026-05841/submission-for-omb-review-comment-request"
+    },
+    {
+      "document_number": "2026-05840",
+      "iso": null,
+      "source": "federalregister",
+      "signal_date": "2026-03-26",
+      "title": "Submission for OMB Review; Comment Request",
+      "value_usd": null,
+      "description": "30-Day information collection notice. \u00b7 The DoD has submitted to the Office of Management and Budget (OMB) for clearance the following proposal for collection of information under the provisions of the Paperwork Reduction Act.",
+      "raw_score": 1.0,
+      "page_url": "https://www.federalregister.gov/documents/2026/03/26/2026-05840/submission-for-omb-review-comment-request"
+    },
+    {
+      "document_number": "2026-05839",
+      "iso": null,
+      "source": "federalregister",
+      "signal_date": "2026-03-26",
+      "title": "Submission for OMB Review; Comment Request",
+      "value_usd": null,
+      "description": "30-Day information collection notice. \u00b7 The DoD has submitted to the Office of Management and Budget (OMB) for clearance the following proposal for collection of information under the provisions of the Paperwork Reduction Act.",
+      "raw_score": 1.0,
+      "page_url": "https://www.federalregister.gov/documents/2026/03/26/2026-05839/submission-for-omb-review-comment-request"
     }
   ]
 }

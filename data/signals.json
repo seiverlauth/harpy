@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-03-26T15:53:25.864693+00:00",
+  "generated_at": "2026-03-27T16:29:33.743130+00:00",
   "sources": [
     "anchor",
     "dsca",
@@ -22315,6 +22315,54 @@
       "weight": 1.0
     },
     {
+      "document_number": "2026-05896",
+      "iso": null,
+      "source": "federalregister",
+      "signal_date": "2026-03-26",
+      "title": "Preparer Tax Identification Number (PTIN) User Fee Update; Hearing",
+      "value_usd": null,
+      "description": "Notice of proposed rulemaking; notice of hearing. \u00b7 This document provides a notice of public hearing on the notice of proposed rulemaking (REG-108673-25) published in the Federal Register on Tuesday, September 30, 2025. The notice of proposed rulemaking by cross-reference to the interim final regulations published in the Federal Register on Tuesday, September 30, 2025, proposed to amend the current regulations to reduce from $11 to $10 the amount of the user fee imposed on tax return preparers to apply for or renew a preparer tax identification number (PTIN) plus an amount payable directly to the third party contractor.",
+      "raw_score": 1.0,
+      "page_url": "https://www.federalregister.gov/documents/2026/03/26/2026-05896/preparer-tax-identification-number-ptin-user-fee-update-hearing",
+      "weight": 1.0
+    },
+    {
+      "document_number": "2026-05841",
+      "iso": null,
+      "source": "federalregister",
+      "signal_date": "2026-03-26",
+      "title": "Submission for OMB Review; Comment Request",
+      "value_usd": null,
+      "description": "30-Day information collection notice. \u00b7 The DoD has submitted to the Office of Management and Budget (OMB) for clearance the following proposal for collection of information under the provisions of the Paperwork Reduction Act.",
+      "raw_score": 1.0,
+      "page_url": "https://www.federalregister.gov/documents/2026/03/26/2026-05841/submission-for-omb-review-comment-request",
+      "weight": 1.0
+    },
+    {
+      "document_number": "2026-05840",
+      "iso": null,
+      "source": "federalregister",
+      "signal_date": "2026-03-26",
+      "title": "Submission for OMB Review; Comment Request",
+      "value_usd": null,
+      "description": "30-Day information collection notice. \u00b7 The DoD has submitted to the Office of Management and Budget (OMB) for clearance the following proposal for collection of information under the provisions of the Paperwork Reduction Act.",
+      "raw_score": 1.0,
+      "page_url": "https://www.federalregister.gov/documents/2026/03/26/2026-05840/submission-for-omb-review-comment-request",
+      "weight": 1.0
+    },
+    {
+      "document_number": "2026-05839",
+      "iso": null,
+      "source": "federalregister",
+      "signal_date": "2026-03-26",
+      "title": "Submission for OMB Review; Comment Request",
+      "value_usd": null,
+      "description": "30-Day information collection notice. \u00b7 The DoD has submitted to the Office of Management and Budget (OMB) for clearance the following proposal for collection of information under the provisions of the Paperwork Reduction Act.",
+      "raw_score": 1.0,
+      "page_url": "https://www.federalregister.gov/documents/2026/03/26/2026-05839/submission-for-omb-review-comment-request",
+      "weight": 1.0
+    },
+    {
       "filing_uuid": "2ce398c3-7a9c-44de-bfbc-2bdd1065574d",
       "iso": "DE",
       "source": "lda",
@@ -30831,6 +30879,18 @@
       "value_usd": null,
       "description": "DEF; Australia; Issues related to government support advocacy for funding of rear earth mineral facilities",
       "url": "https://lda.gov/filings/public/filing/0aba115d-62b5-4226-aacd-e4b353d0852a/print/",
+      "raw_score": 5.0,
+      "weight": 1.0
+    },
+    {
+      "filing_uuid": "585860bc-af15-4e03-a51e-7b10e683c7cd",
+      "iso": "GB",
+      "source": "lda",
+      "signal_date": "2026-03-26",
+      "title": "Delta Three Oscar \u2014 via Galvanize Partners Llc",
+      "value_usd": null,
+      "description": "DEF; FY27 Defense Appropriations",
+      "url": "https://lda.gov/filings/public/filing/585860bc-af15-4e03-a51e-7b10e683c7cd/print/",
       "raw_score": 5.0,
       "weight": 1.0
     }

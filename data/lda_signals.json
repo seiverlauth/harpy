@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-03-26T04:50:17.521706+00:00",
+  "generated_at": "2026-03-27T16:29:29.298285+00:00",
   "sources": [
     "lda"
   ],
@@ -8521,6 +8521,18 @@
       "value_usd": null,
       "description": "DEF; Australia; Issues related to government support advocacy for funding of rear earth mineral facilities",
       "url": "https://lda.gov/filings/public/filing/0aba115d-62b5-4226-aacd-e4b353d0852a/print/",
+      "raw_score": 5.0,
+      "weight": 1.0
+    },
+    {
+      "filing_uuid": "585860bc-af15-4e03-a51e-7b10e683c7cd",
+      "iso": "GB",
+      "source": "lda",
+      "signal_date": "2026-03-26",
+      "title": "Delta Three Oscar \u2014 via Galvanize Partners Llc",
+      "value_usd": null,
+      "description": "DEF; FY27 Defense Appropriations",
+      "url": "https://lda.gov/filings/public/filing/585860bc-af15-4e03-a51e-7b10e683c7cd/print/",
       "raw_score": 5.0,
       "weight": 1.0
     }
