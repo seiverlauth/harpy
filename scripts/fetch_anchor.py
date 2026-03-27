@@ -279,6 +279,8 @@ def main():
             buyer_iso = extract_buyer_iso(text)
             desc      = make_description(text, accession)
 
+            acc_nodash = accession.replace("-", "")
+
             sig = {
                 "iso":         buyer_iso if buyer_iso != "IL" else iso,
                 "source":      "anchor_budget",
@@ -289,6 +291,7 @@ def main():
                 "raw_score":   il_score,
                 "weight":      1.0,
                 "accession":   accession,
+                "page_url":    f"https://www.sec.gov/Archives/edgar/data/{cik_num}/{acc_nodash}/",
             }
             new_signals.append(sig)
             seen_ids.add(accession)

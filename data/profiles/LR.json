@@ -1,10 +1,11 @@
 {
   "iso": "LR",
   "name": "Liberia",
-  "structural_interest_score": 1,
-  "score_rationale": "World's second-largest flag of convenience registry \u2014 maritime tracking indicator (+1)",
+  "structural_interest_score": 2,
+  "score_rationale": "World's second-largest flag of convenience registry \u2014 maritime tracking and sanctions-evasion indicator (+1); iron ore deposits, Nimba Range (+1)",
   "key_structural_interests": [
-    "maritime registry"
+    "maritime registry",
+    "iron ore"
   ],
   "suppression_baseline": "low_coverage",
   "last_reviewed": "2026-03-15",

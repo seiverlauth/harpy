@@ -1,0 +1,14 @@
+{
+  "iso": "EH",
+  "name": "Western Sahara",
+  "structural_interest_score": 5,
+  "score_rationale": "Bou Craa phosphate deposits — world's largest recoverable phosphate reserve, critical to global food security (+2); occupied/disputed territory, Morocco unilateral control contested by Polisario Front (SADR) and Algeria, kinetic activity resumed 2020 in buffer zone (+2); Morocco-Algeria proxy dimension, Sahel spillover (+1)",
+  "key_structural_interests": [
+    "phosphate reserves",
+    "disputed territory",
+    "Morocco-Algeria proxy"
+  ],
+  "suppression_baseline": "low_coverage",
+  "last_reviewed": "2026-03-26",
+  "last_generated": "2026-03-26"
+}
